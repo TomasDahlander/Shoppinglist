@@ -1,0 +1,100 @@
+[
+    {
+        "id": 21,
+        "name": "Tandtråd",
+        "checked": true,
+        "category": {
+            "id": 1,
+            "name": "Hygien",
+            "color": "rgb(255,192,203)",
+            "colorfade": "rgb(255,192,203,0.4)"
+        },
+        "user": {
+            "id": 7
+        }
+    },
+    {
+        "id": 22,
+        "name": "Rucola",
+        "checked": false,
+        "category": {
+            "id": 2,
+            "name": "Frukt & Grönt",
+            "color": "rgb(50,205,50)",
+            "colorfade": "rgb(50,205,50,0.4)"
+        },
+        "user": {
+            "id": 7
+        }
+    },
+    {
+        "id": 23,
+        "name": "Mjölk",
+        "checked": false,
+        "category": {
+            "id": 3,
+            "name": "Kylvaror",
+            "color": "rgb(30,144,255)",
+            "colorfade": "rgb(30,144,255,0.4)"
+        },
+        "user": {
+            "id": 7
+        }
+    },
+    {
+        "id": 24,
+        "name": "Youghurt",
+        "checked": false,
+        "category": {
+            "id": 3,
+            "name": "Kylvaror",
+            "color": "rgb(30,144,255)",
+            "colorfade": "rgb(30,144,255,0.4)"
+        },
+        "user": {
+            "id": 7
+        }
+    },
+    {
+        "id": 25,
+        "name": "Ris",
+        "checked": true,
+        "category": {
+            "id": 4,
+            "name": "Skafferi",
+            "color": "rgb(255,255,0)",
+            "colorfade": "rgb(255,255,0,0.4)"
+        },
+        "user": {
+            "id": 7
+        }
+    },
+    {
+        "id": 26,
+        "name": "Hallon",
+        "checked": false,
+        "category": {
+            "id": 5,
+            "name": "Frysvaror",
+            "color": "rgb(0,255,255)",
+            "colorfade": "rgb(0,255,255,0.4)"
+        },
+        "user": {
+            "id": 7
+        }
+    },
+    {
+        "id": 27,
+        "name": "Metalsax",
+        "checked": false,
+        "category": {
+            "id": 6,
+            "name": "Övrigt",
+            "color": "rgb(119,136,153)",
+            "colorfade": "rgb(119,136,153,0.4)"
+        },
+        "user": {
+            "id": 7
+        }
+    }
+]
