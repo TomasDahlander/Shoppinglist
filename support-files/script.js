@@ -27,16 +27,9 @@ $(document).ready(function () {
         modalAdd.css("display", "none");
         resetAddInputValue();
     });
-    /**
-     * Doesn't work but should close the modal if user click outside of rule modal
-     * @param {event} event
-     */
-    // window.onclick = function (event) {
-    //     if (event.target == modal) {
-    //         modal.css("display", "none");
-    //     }
-    // };
+   
     // Functions ***********************************************************************************************************
+
     /**
      * Fetches the category array from a JSON file
      */
@@ -71,12 +64,19 @@ $(document).ready(function () {
         `);
     }
 
+    /**
+     * Fetches the item array from a JSON file
+     */
     function fetchItems(){
         fetch("/support-files/Items.json")
         .then((response) => response.json())
         .then((data) => setAndRenderItems(data));
     }
 
+    /**
+     * Receives JSON data with items
+     * @param {JSON} categoryDataArray
+     */
     function setAndRenderItems(itemDataArray){
         itemList = itemDataArray;
         
@@ -85,6 +85,10 @@ $(document).ready(function () {
         }
     }
 
+    /**
+     * Functions that appends one item to the table for items
+     * @param {Object} item
+     */
     function renderItem(item){
         let color;
         let rowClasses;
@@ -102,11 +106,6 @@ $(document).ready(function () {
                 <td class="row-button">&vellip;</td>
             </tr>
         `);
-
-        // <tr id="21" style="background-color: rgb(255,192,203);">
-        //     <td class="row-item">Tandtråd och tandborste</td>
-        //     <td class="row-button">&vellip;</td>
-        // </tr>
     }
 
     /**
