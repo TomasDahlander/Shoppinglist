@@ -1,14 +1,16 @@
 // Global variables ********************************************************************************************************
 
 let categories;
+let itemList;
 
 // Modals
 let modalAdd;
-let modalSetting;
+// let modalSetting;
 
 // Elements
 let categorySelect;
 let addInputField;
+let tableArea;
 
 $(document).ready(function () {
     // Listeners ***********************************************************************************************************
@@ -40,12 +42,12 @@ $(document).ready(function () {
      */
     function fetchCategories() {
         fetch("/support-files/Categories.json")
-            .then((resp) => resp.json())
+            .then((response) => response.json())
             .then((data) => setAndRenderCategories(data));
     }
     /**
-     * Receives JSON data
-     * @param {JSON} questionsDataArray
+     * Receives JSON data with categories
+     * @param {JSON} categoryDataArray
      */
     function setAndRenderCategories(categoryDataArray) {
         categories = categoryDataArray;
@@ -69,6 +71,44 @@ $(document).ready(function () {
         `);
     }
 
+    function fetchItems(){
+        fetch("/support-files/Items.json")
+        .then((response) => response.json())
+        .then((data) => setAndRenderItems(data));
+    }
+
+    function setAndRenderItems(itemDataArray){
+        itemList = itemDataArray;
+        
+        for(item of itemList){
+            renderItem(item);
+        }
+    }
+
+    function renderItem(item){
+        let color;
+        let rowClasses;
+        if(item.checked) {
+            color = item.category.colorfade;
+            rowClasses = "row-item checked-item";
+        }
+        else {
+            color = item.category.color;
+            rowClasses = "row-item";
+        }
+        tableArea.append(`
+            <tr id="${item.id}" style="background-color: ${color};">
+                <td class="${rowClasses}">${item.name}</td>
+                <td class="row-button">&vellip;</td>
+            </tr>
+        `);
+
+        // <tr id="21" style="background-color: rgb(255,192,203);">
+        //     <td class="row-item">Tandtråd och tandborste</td>
+        //     <td class="row-button">&vellip;</td>
+        // </tr>
+    }
+
     /**
      * Function that resets the values in the addModals input fields
      */
@@ -82,7 +122,9 @@ $(document).ready(function () {
 
     // Runs when loaded ****************************************************************************************************
     fetchCategories(); // Call our categoryfetch function
-    modalAdd = $("#add-modal-div"); // sets our modal for adding to a variable
-    categorySelect = $("#modal-category-input"); // sets out option selectos to a variable
-    addInputField = $("#addInput");
+    fetchItems();
+    modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
+    categorySelect = $("#modal-category-input"); // sets the option selector to a variable
+    addInputField = $("#addInput"); // sets the input field in the add modal to a variable
+    tableArea = $("#tableArea"); // sets the item table to a variable
 });
