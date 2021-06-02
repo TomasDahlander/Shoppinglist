@@ -2,7 +2,7 @@
     {
         "id": 21,
         "name": "Tandtråd",
-        "checked": true,
+        "checked": false,
         "category": {
             "id": 1,
             "name": "Hygien",
@@ -44,7 +44,7 @@
     {
         "id": 24,
         "name": "Youghurt",
-        "checked": false,
+        "checked": true,
         "category": {
             "id": 3,
             "name": "Kylvaror",
@@ -58,7 +58,7 @@
     {
         "id": 25,
         "name": "Ris",
-        "checked": true,
+        "checked": false,
         "category": {
             "id": 4,
             "name": "Skafferi",
@@ -90,8 +90,8 @@
         "category": {
             "id": 6,
             "name": "Övrigt",
-            "color": "rgb(119,136,153)",
-            "colorfade": "rgb(119,136,153,0.4)"
+            "color": "rgb(179,183,187)",
+            "colorfade": "rgb(179,183,187,0.4)"
         },
         "user": {
             "id": 7

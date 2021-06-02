@@ -2,11 +2,20 @@ body {
     background-color: linen;
 }
 
-/* Classes */
+td{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color:rgb(0, 0, 0);
+}
+
+/* Pre Classes */
 
 .row {
     padding: 5px;
+    font-size: 1.1rem;
 }
+
+/* Own Classes */
 
 .main-button {
     text-align: center;
@@ -17,6 +26,22 @@ body {
 .option-input {
     color: black;
     font-weight: bold;
+}
+
+.checked-item{
+    text-decoration: line-through;
+    color:rgb(0, 0, 0, 0.3);
+}
+
+.row-item{
+    text-align: left!important;
+    padding-left: 5px;
+    font-weight: bold;
+    
+}
+
+.row-button{
+    padding-right: 5px;
 }
 
 /* Modal classes */
