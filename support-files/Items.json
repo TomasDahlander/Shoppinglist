@@ -10,7 +10,9 @@
             "colorfade": "rgb(255,192,203,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -24,7 +26,9 @@
             "colorfade": "rgb(50,205,50,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -38,7 +42,9 @@
             "colorfade": "rgb(30,144,255,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -52,7 +58,9 @@
             "colorfade": "rgb(30,144,255,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -66,7 +74,9 @@
             "colorfade": "rgb(255,255,0,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -80,7 +90,9 @@
             "colorfade": "rgb(0,255,255,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -94,7 +106,9 @@
             "colorfade": "rgb(179,183,187,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -108,7 +122,9 @@
             "colorfade": "rgb(255,192,203,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -122,7 +138,9 @@
             "colorfade": "rgb(50,205,50,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -136,7 +154,9 @@
             "colorfade": "rgb(30,144,255,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -150,7 +170,9 @@
             "colorfade": "rgb(255,255,0,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -164,7 +186,9 @@
             "colorfade": "rgb(0,255,255,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     },
     {
@@ -178,7 +202,9 @@
             "colorfade": "rgb(179,183,187,0.4)"
         },
         "users": {
-            "id": 7
+            "id": 7,
+            "username": "lt",
+            "password": "lt"
         }
     }
 ]

@@ -2,6 +2,7 @@
 
 let categories;
 let itemList;
+let user;
 
 // Modals
 let modalAdd;
@@ -37,6 +38,26 @@ $(document).ready(function () {
    
     // Functions ***********************************************************************************************************
 
+    /**
+     * Fetches the user from a JSON file
+     */
+     function fetchUser() {
+        fetch("/support-files/Users.json")
+            .then((response) => response.json())
+            .then((data) => setUser(data));
+    }
+    /**
+     * Receives JSON data with user info
+     * @param {JSON} categoryDataArray
+     */
+    function setUser(userInfo) {
+        user = userInfo;
+    }
+
+    /**
+     * Function that reads the input from the add modal and sends an item object to the 
+     * renderItem function with false to onload so the item will be placed on the top of the list
+     */
     function getInfoFromAddModal(){
         const itemName = addInputField.val();
         const categoryName = categorySelect.val();
@@ -63,7 +84,7 @@ $(document).ready(function () {
                 "colorfade": colorfade
             },
             "users": {
-                "id": 7
+                "id": user.id
             }
         }
         renderItem(item, false);
@@ -170,8 +191,9 @@ $(document).ready(function () {
     }
 
     // Runs when loaded ****************************************************************************************************
-    fetchCategories(); // Call our categoryfetch function
-    fetchItems();
+    fetchUser() // Call the user fetch function
+    fetchCategories(); // Call the category fetch function
+    fetchItems(); // Call the item fetch function
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
     categorySelect = $("#modal-category-input"); // sets the option selector to a variable
     addInputField = $("#addInput"); // sets the input field in the add modal to a variable
