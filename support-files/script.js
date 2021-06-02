@@ -20,15 +20,54 @@ $(document).ready(function () {
     $("#addBtn").click(function () {
         modalAdd.css("display", "block");
     });
+
     /**
-     * Hides the modal when clicking on the x or ok in the modalAdd
+     * Hides the modal when clicking on the x in the modalAdd
      */
     $("#modal-closer").click(function () {
         modalAdd.css("display", "none");
         resetAddInputValue();
     });
+
+    $("#okAddBtn").click(function(){
+        getInfoFromAddModal()
+        modalAdd.css("display", "none");
+        resetAddInputValue();
+    });
    
     // Functions ***********************************************************************************************************
+
+    function getInfoFromAddModal(){
+        const itemName = addInputField.val();
+        const categoryName = categorySelect.val();
+
+        let categoryid; 
+        let color;
+        let colorfade;
+
+        for(cat of categories){
+            if(cat.name == categoryName) {
+                categoryid = cat.id;
+                color = cat.color;
+                colorfade = cat.colorfade;
+            }
+        }
+
+        let item = {
+            "name": itemName,
+            "checked": false,
+            "category": {
+                "id": categoryid,
+                "name": categoryName,
+                "color": color,
+                "colorfade": colorfade
+            },
+            "users": {
+                "id": 7
+            }
+        }
+        renderItem(item, false);
+    }
 
     /**
      * Fetches the category array from a JSON file
@@ -58,7 +97,7 @@ $(document).ready(function () {
      */
     function renderCategory(category, selected) {
         categorySelect.append(`
-            <option class="option-input" style="background-color: ${category.color};" value="${category.id}" ${selected}>
+            <option id="${category.id}" class="option-input" style="background-color: ${category.color};" ${selected}>
             ${category.name}
             </option>
         `);
@@ -81,7 +120,7 @@ $(document).ready(function () {
         itemList = itemDataArray;
         
         for(item of itemList){
-            renderItem(item);
+            renderItem(item, true);
         }
     }
 
@@ -89,7 +128,7 @@ $(document).ready(function () {
      * Functions that appends one item to the table for items
      * @param {Object} item
      */
-    function renderItem(item){
+    function renderItem(item, onload){
         let color;
         let rowClasses;
         if(item.checked) {
@@ -100,12 +139,23 @@ $(document).ready(function () {
             color = item.category.color;
             rowClasses = "row-item";
         }
-        tableArea.append(`
+        if(onload){
+            tableArea.append(`
             <tr id="${item.id}" style="background-color: ${color};">
                 <td class="${rowClasses}">${item.name}</td>
                 <td class="row-button">&vellip;</td>
             </tr>
-        `);
+            `);
+        }
+        else{
+            tableArea.prepend(`
+            <tr id="${item.id}" style="background-color: ${color};">
+                <td class="${rowClasses}">${item.name}</td>
+                <td class="row-button">&vellip;</td>
+            </tr>
+            `);
+        }
+        
     }
 
     /**
