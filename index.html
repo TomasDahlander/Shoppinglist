@@ -20,6 +20,7 @@
 
             <!-- Add modal start -->
             <div id="add-modal-div" class="add-modal">
+
                 <div class="add-modal-content">
                     <span id="modal-closer" class="close float-end">&times;</span>
 
@@ -30,14 +31,18 @@
                         placeholder="input item"
                         class="form-control"
                         maxlength="30"
-                        style="margin-top: 40px"
                     />
 
-                    <!-- Category choice -->
-                    <select id="modal-category-input" class="form-select float-start"></select>
-
-                    <!-- Buttons -->
-                    <button id="okAddBtn" class="btn btn-primary float-end">OK</button>
+                    <!-- Category choice and button -->
+                    <div class="row">
+                        <div class="col-8 text-start">
+                            <select id="modal-category-input" class="form-select float-start"></select>
+                        </div>
+                        <div class="col-4 text-end">
+                            <button id="okAddBtn" class="btn btn-primary float-end">OK</button>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <!-- Add modal ends -->

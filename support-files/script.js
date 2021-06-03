@@ -78,7 +78,8 @@ $(document).ready(function () {
     function getInfoFromAddModal(){
         const itemName = addInputField.val();
         const categoryName = categorySelect.val();
-
+        if(itemName.length == 0) return;
+    
         let categoryid; 
         let color;
         let colorfade;
