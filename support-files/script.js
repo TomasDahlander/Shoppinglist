@@ -10,12 +10,13 @@ let modalAdd;
 // let modalSetting;
 
 // Elements
-let categorySelect;
-let addInputField;
-let tableArea;
+let categorySelect; // The selector field where you choose the category for your item which to add to the list
+let addInputField; // The input field where you enter a item to add to the list
+let tableArea; // The table where the items are displayed within
 
 $(document).ready(function () {
     // Listeners ***********************************************************************************************************
+
     /**
      * Displays the modal when clicking add
      */
@@ -34,8 +35,8 @@ $(document).ready(function () {
     /**
      * Collects and adds an item to the list from the add modal
      */
-    $("#okAddBtn").click(function(){
-        getInfoFromAddModal()
+    $("#okAddBtn").click(function () {
+        getInfoFromAddModal();
         modalAdd.css("display", "none");
         resetAddInputValue();
     });
@@ -43,30 +44,30 @@ $(document).ready(function () {
     /**
      * Sorts the elements in the list depending on the sorting value for that category
      */
-    $("#sortingBtn").click(function(){
+    $("#sortingBtn").click(function () {
         sortTable();
     });
-   
+
     // Functions ***********************************************************************************************************
 
     /**
      * Fetches the user from a JSON file and sets it to the variable user
      */
-     function fetchUser() {
-        fetch("/support-files/Users.json")
+    function fetchUser() {
+        fetch("/support-files/mockdata/Users.json")
             .then((response) => response.json())
-            .then(function(userinfo){
-                user = userinfo
+            .then(function (userinfo) {
+                user = userinfo;
             });
     }
 
     /**
      * Fetches the sorter from a JSON file and sets it to the variabler sorter
      */
-    function fetchSorter(){
-        fetch("/support-files/Sorter.json")
+    function fetchSorter() {
+        fetch("/support-files/mockdata/Sorter.json")
             .then((response) => response.json())
-            .then(function(data){
+            .then(function (data) {
                 sorter = data;
             });
     }
@@ -74,8 +75,8 @@ $(document).ready(function () {
     /**
      * Fetches the category array from a JSON file
      */
-     function fetchCategories() {
-        fetch("/support-files/Categories.json")
+    function fetchCategories() {
+        fetch("/support-files/mockdata/Categories.json")
             .then((response) => response.json())
             .then((data) => setAndRenderCategories(data));
     }
@@ -109,20 +110,20 @@ $(document).ready(function () {
     /**
      * Fetches the item array from a JSON file
      */
-     function fetchItems(){
-        fetch("/support-files/Items.json")
-        .then((response) => response.json())
-        .then((data) => setAndRenderItems(data));
+    function fetchItems() {
+        fetch("/support-files/mockdata/Items.json")
+            .then((response) => response.json())
+            .then((data) => setAndRenderItems(data));
     }
 
     /**
      * Receives JSON data with items
      * @param {JSON} categoryDataArray
      */
-    function setAndRenderItems(itemDataArray){
+    function setAndRenderItems(itemDataArray) {
         itemList = itemDataArray;
-        
-        for(item of itemList){
+
+        for (item of itemList) {
             renderItem(item, true);
         }
     }
@@ -131,36 +132,34 @@ $(document).ready(function () {
      * Functions that appends one item to the table for items
      * @param {Object} item
      */
-    function renderItem(item, onload){
+    function renderItem(item, onload) {
         let color;
         let rowClasses;
         let sortvalue;
 
-        for(s of sorter){
-            if(s.categoryName == item.category.name){
+        for (s of sorter) {
+            if (s.categoryName == item.category.name) {
                 sortvalue = s.sortvalue;
                 break;
             }
         }
 
-        if(item.checked) {
+        if (item.checked) {
             color = item.category.colorfade;
             rowClasses = "row-item checked-item";
-        }
-        else {
+        } else {
             color = item.category.color;
             rowClasses = "row-item";
         }
 
-        if(onload){
+        if (onload) {
             tableArea.append(`
             <tr id="${item.id}" style="background-color: ${color};">
                 <td value="${sortvalue}" class="${rowClasses}">${item.name}</td>
                 <td class="row-button">&vellip;</td>
             </tr>
             `);
-        }
-        else{
+        } else {
             tableArea.prepend(`
             <tr id="${item.id}" style="background-color: ${color};">
                 <td value="${sortvalue}" class="${rowClasses}">${item.name}</td>
@@ -168,24 +167,23 @@ $(document).ready(function () {
             </tr>
             `);
         }
-        
     }
 
     /**
-     * Function that reads the input from the add modal and sends an item object to the 
+     * Function that reads the input from the add modal and sends an item object to the
      * renderItem function with false to onload so the item will be placed on the top of the list
      */
-    function getInfoFromAddModal(){
+    function getInfoFromAddModal() {
         const itemName = addInputField.val();
+        if (itemName.length == 0) return; // if no content is typed in exit the function here
+
         const categoryName = categorySelect.val();
-        if(itemName.length == 0) return; // if no content is typed in exit the function here
-    
-        let categoryid; 
+        let categoryid;
         let color;
         let colorfade;
 
-        for(cat of categories){
-            if(cat.name == categoryName) {
+        for (cat of categories) {
+            if (cat.name == categoryName) {
                 categoryid = cat.id;
                 color = cat.color;
                 colorfade = cat.colorfade;
@@ -193,18 +191,18 @@ $(document).ready(function () {
         }
 
         let item = {
-            "name": itemName,
-            "checked": false,
-            "category": {
-                "id": categoryid,
-                "name": categoryName,
-                "color": color,
-                "colorfade": colorfade
+            name: itemName,
+            checked: false,
+            category: {
+                id: categoryid,
+                name: categoryName,
+                color: color,
+                colorfade: colorfade,
             },
-            "users": {
-                "id": user.id
-            }
-        }
+            users: {
+                id: user.id,
+            },
+        };
         itemList.unshift(item);
         renderItem(item, false);
     }
@@ -215,7 +213,6 @@ $(document).ready(function () {
     function resetAddInputValue() {
         addInputField.val("");
         $("#modal-category-input option").each(function () {
-            console.log(this.text);
             if (this.text == "Övrigt") {
                 $(this).prop("selected", true);
             }
@@ -225,21 +222,21 @@ $(document).ready(function () {
     /**
      * Sorting the elements in the item table
      */
-    function sortTable(){
-        let table, rows, switching, x, y;
+    function sortTable() {
+        let table, rows, switching, a, b;
 
         table = document.getElementById("tableArea");
         switching = true;
 
-        while(switching){
+        while (switching) {
             switching = false;
             rows = table.rows;
 
-            for(let i = 0; i < (rows.length -1); i++){
-                x = rows[i].getElementsByTagName("td")[0];
-                y = rows[i + 1].getElementsByTagName("td")[0];
+            for (let i = 0; i < rows.length - 1; i++) {
+                a = rows[i].getElementsByTagName("td")[0];
+                b = rows[i + 1].getElementsByTagName("td")[0];
 
-                if(x.getAttribute('value') > y.getAttribute('value')){
+                if (a.getAttribute("value") > b.getAttribute("value")) {
                     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                     switching = true;
                     break;
@@ -249,8 +246,8 @@ $(document).ready(function () {
     }
 
     // Runs when loaded ****************************************************************************************************
-    fetchUser() // Call the user fetch function
-    fetchSorter() // Call the sorter fetch function
+    fetchUser(); // Call the user fetch function
+    fetchSorter(); // Call the sorter fetch function
     fetchCategories(); // Call the category fetch function
     fetchItems(); // Call the item fetch function
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
