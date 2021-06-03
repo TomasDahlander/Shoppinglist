@@ -72,51 +72,14 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that reads the input from the add modal and sends an item object to the 
-     * renderItem function with false to onload so the item will be placed on the top of the list
-     */
-    function getInfoFromAddModal(){
-        const itemName = addInputField.val();
-        const categoryName = categorySelect.val();
-        if(itemName.length == 0) return;
-    
-        let categoryid; 
-        let color;
-        let colorfade;
-
-        for(cat of categories){
-            if(cat.name == categoryName) {
-                categoryid = cat.id;
-                color = cat.color;
-                colorfade = cat.colorfade;
-            }
-        }
-
-        let item = {
-            "name": itemName,
-            "checked": false,
-            "category": {
-                "id": categoryid,
-                "name": categoryName,
-                "color": color,
-                "colorfade": colorfade
-            },
-            "users": {
-                "id": user.id
-            }
-        }
-        itemList.unshift(item);
-        renderItem(item, false);
-    }
-
-    /**
      * Fetches the category array from a JSON file
      */
-    function fetchCategories() {
+     function fetchCategories() {
         fetch("/support-files/Categories.json")
             .then((response) => response.json())
             .then((data) => setAndRenderCategories(data));
     }
+
     /**
      * Receives JSON data with categories
      * @param {JSON} categoryDataArray
@@ -146,7 +109,7 @@ $(document).ready(function () {
     /**
      * Fetches the item array from a JSON file
      */
-    function fetchItems(){
+     function fetchItems(){
         fetch("/support-files/Items.json")
         .then((response) => response.json())
         .then((data) => setAndRenderItems(data));
@@ -209,13 +172,53 @@ $(document).ready(function () {
     }
 
     /**
+     * Function that reads the input from the add modal and sends an item object to the 
+     * renderItem function with false to onload so the item will be placed on the top of the list
+     */
+    function getInfoFromAddModal(){
+        const itemName = addInputField.val();
+        const categoryName = categorySelect.val();
+        if(itemName.length == 0) return; // if no content is typed in exit the function here
+    
+        let categoryid; 
+        let color;
+        let colorfade;
+
+        for(cat of categories){
+            if(cat.name == categoryName) {
+                categoryid = cat.id;
+                color = cat.color;
+                colorfade = cat.colorfade;
+            }
+        }
+
+        let item = {
+            "name": itemName,
+            "checked": false,
+            "category": {
+                "id": categoryid,
+                "name": categoryName,
+                "color": color,
+                "colorfade": colorfade
+            },
+            "users": {
+                "id": user.id
+            }
+        }
+        itemList.unshift(item);
+        renderItem(item, false);
+    }
+
+    /**
      * Function that resets the values in the addModals input fields
      */
     function resetAddInputValue() {
         addInputField.val("");
         $("#modal-category-input option").each(function () {
-            if (this.text == "Övrigt") $(this).prop("selected", true);
-            else $(this).prop("selected", false);
+            console.log(this.text);
+            if (this.text == "Övrigt") {
+                $(this).prop("selected", true);
+            }
         });
     }
 
@@ -244,8 +247,6 @@ $(document).ready(function () {
             }
         }
     }
-
-
 
     // Runs when loaded ****************************************************************************************************
     fetchUser() // Call the user fetch function
