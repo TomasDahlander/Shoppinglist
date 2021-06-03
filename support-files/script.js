@@ -3,6 +3,7 @@
 let categories;
 let itemList;
 let user;
+let sorter;
 
 // Modals
 let modalAdd;
@@ -30,28 +31,44 @@ $(document).ready(function () {
         resetAddInputValue();
     });
 
+    /**
+     * Collects and adds an item to the list from the add modal
+     */
     $("#okAddBtn").click(function(){
         getInfoFromAddModal()
         modalAdd.css("display", "none");
         resetAddInputValue();
     });
+
+    /**
+     * Sorts the elements in the list depending on the sorting value for that category
+     */
+    $("#sortingBtn").click(function(){
+        sortTable();
+    });
    
     // Functions ***********************************************************************************************************
 
     /**
-     * Fetches the user from a JSON file
+     * Fetches the user from a JSON file and sets it to the variable user
      */
      function fetchUser() {
         fetch("/support-files/Users.json")
             .then((response) => response.json())
-            .then((data) => setUser(data));
+            .then(function(userinfo){
+                user = userinfo
+            });
     }
+
     /**
-     * Receives JSON data with user info
-     * @param {JSON} categoryDataArray
+     * Fetches the sorter from a JSON file and sets it to the variabler sorter
      */
-    function setUser(userInfo) {
-        user = userInfo;
+    function fetchSorter(){
+        fetch("/support-files/Sorter.json")
+            .then((response) => response.json())
+            .then(function(data){
+                sorter = data;
+            });
     }
 
     /**
@@ -87,6 +104,7 @@ $(document).ready(function () {
                 "id": user.id
             }
         }
+        itemList.unshift(item);
         renderItem(item, false);
     }
 
@@ -152,6 +170,15 @@ $(document).ready(function () {
     function renderItem(item, onload){
         let color;
         let rowClasses;
+        let sortvalue;
+
+        for(s of sorter){
+            if(s.categoryName == item.category.name){
+                sortvalue = s.sortvalue;
+                break;
+            }
+        }
+
         if(item.checked) {
             color = item.category.colorfade;
             rowClasses = "row-item checked-item";
@@ -160,10 +187,11 @@ $(document).ready(function () {
             color = item.category.color;
             rowClasses = "row-item";
         }
+
         if(onload){
             tableArea.append(`
             <tr id="${item.id}" style="background-color: ${color};">
-                <td class="${rowClasses}">${item.name}</td>
+                <td value="${sortvalue}" class="${rowClasses}">${item.name}</td>
                 <td class="row-button">&vellip;</td>
             </tr>
             `);
@@ -171,7 +199,7 @@ $(document).ready(function () {
         else{
             tableArea.prepend(`
             <tr id="${item.id}" style="background-color: ${color};">
-                <td class="${rowClasses}">${item.name}</td>
+                <td value="${sortvalue}" class="${rowClasses}">${item.name}</td>
                 <td class="row-button">&vellip;</td>
             </tr>
             `);
@@ -190,8 +218,37 @@ $(document).ready(function () {
         });
     }
 
+    /**
+     * Sorting the elements in the item table
+     */
+    function sortTable(){
+        let table, rows, switching, x, y;
+
+        table = document.getElementById("tableArea");
+        switching = true;
+
+        while(switching){
+            switching = false;
+            rows = table.rows;
+
+            for(let i = 0; i < (rows.length -1); i++){
+                x = rows[i].getElementsByTagName("td")[0];
+                y = rows[i + 1].getElementsByTagName("td")[0];
+
+                if(x.getAttribute('value') > y.getAttribute('value')){
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    break;
+                }
+            }
+        }
+    }
+
+
+
     // Runs when loaded ****************************************************************************************************
     fetchUser() // Call the user fetch function
+    fetchSorter() // Call the sorter fetch function
     fetchCategories(); // Call the category fetch function
     fetchItems(); // Call the item fetch function
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable

@@ -1,0 +1,50 @@
+[
+    {
+        "name": "default",
+        "categoryName": "Hygien",
+        "sortvalue": 1,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "name": "default",
+        "categoryName": "Frukt & Grönt",
+        "sortvalue": 2,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "name": "default",
+        "categoryName": "Kylvaror",
+        "sortvalue": 3,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "name": "default",
+        "categoryName": "Skafferi",
+        "sortvalue": 4,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "name": "default",
+        "categoryName": "Frysvaror",
+        "sortvalue": 5,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "name": "default",
+        "categoryName": "Övrigt",
+        "sortvalue": 6,
+        "users": {
+            "id": 7
+        }
+    }
+]
