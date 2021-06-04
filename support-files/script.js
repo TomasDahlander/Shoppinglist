@@ -158,16 +158,16 @@ $(document).ready(function () {
         // Appends or prepends the html element depending on if it is on load or on adding an item
         if (onload) {
             tableArea.append(`
-            <tr id="${item.id}" style="background-color: ${color};">
-                <td value="${sortvalue}" class="${rowClasses}">${item.name}</td>
-                <td class="row-button">&vellip;</td>
+            <tr style="background-color: ${color};">
+                <td id="${item.id}" value="${sortvalue}" class="${rowClasses}">${item.name}</td>
+                <td id="edit${item.id}" class="row-button">&vellip;</td>
             </tr>
             `);
         } else {
             tableArea.prepend(`
-            <tr id="${item.id}" style="background-color: ${color};">
-                <td value="${sortvalue}" class="${rowClasses}">${item.name}</td>
-                <td class="row-button">&vellip;</td>
+            <tr style="background-color: ${color};">
+                <td id="${item.id}" value="${sortvalue}" class="${rowClasses}">${item.name}</td>
+                <td id="edit${item.id}" class="row-button">&vellip;</td>
             </tr>
             `);
         }
@@ -177,7 +177,7 @@ $(document).ready(function () {
          */
         $(`#${item.id}`).click(function(){
             const id = $(this).prop("id");
-            $(this).children("td.row-item").toggleClass("checked-item");
+            $(this).toggleClass("checked-item");
             changeItemCheckedStatusInListForId(id);
         });
     }
