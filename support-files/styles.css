@@ -47,7 +47,7 @@ td {
 /* Modal classes */
 
 /* The Modal (background) */
-.add-modal {
+.modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -61,7 +61,7 @@ td {
 }
 
 /* Modal Content */
-.add-modal-content {
+.modal-content {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;

@@ -27,7 +27,7 @@ $(document).ready(function () {
     /**
      * Hides the modal when clicking on the x in the modalAdd
      */
-    $("#modal-closer").click(function () {
+    $("#add-modal-closer").click(function () {
         modalAdd.css("display", "none");
         resetAddInputValue();
     });
@@ -179,6 +179,13 @@ $(document).ready(function () {
             const id = $(this).prop("id");
             $(this).toggleClass("checked-item");
             changeItemCheckedStatusInListForId(id);
+        });
+
+        /**
+         * Listener for the edit button for each element thats added to the item table list
+         */
+        $(`#edit${item.id}`).click(function(){
+            console.log(`Clicked on edit button id: ${this.id}`);
         });
     }
 
