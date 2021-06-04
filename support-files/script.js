@@ -15,7 +15,7 @@ let addInputField; // The input field where you enter a item to add to the list
 let tableArea; // The table where the items are displayed within
 
 $(document).ready(function () {
-    // Listeners ***********************************************************************************************************
+    // Listeners that can be initiated on load *****************************************************************************
 
     /**
      * Displays the modal when clicking add
@@ -133,7 +133,8 @@ $(document).ready(function () {
      * @param {Object} item
      */
     function renderItem(item, onload) {
-        let color;
+        const color = item.category.color;
+
         let rowClasses;
         let sortvalue;
 
@@ -145,10 +146,8 @@ $(document).ready(function () {
         }
 
         if (item.checked) {
-            color = item.category.colorfade;
             rowClasses = "row-item checked-item";
         } else {
-            color = item.category.color;
             rowClasses = "row-item";
         }
 
@@ -166,6 +165,25 @@ $(document).ready(function () {
                 <td class="row-button">&vellip;</td>
             </tr>
             `);
+        }
+
+        /**
+         * Listener that toggles if the items is checkod or not
+         */
+        $(`#${item.id}`).click(function(){
+            const id = $(this).prop("id");
+            $(this).children("td.row-item").toggleClass("checked-item");
+            changeItemCheckedStatusInListForId(id);
+        });
+    }
+
+    function changeItemCheckedStatusInListForId(id){
+        for(item of itemList){
+            if(item.id == id){
+                if(item.checked) item.checked = false;
+                else item.checked = true;
+                break;
+            }
         }
     }
 

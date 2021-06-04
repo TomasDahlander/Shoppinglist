@@ -88,7 +88,6 @@ td {
     width: 100%;
     margin-top: 10px;
     display: inline;
-    /* margin-bottom: 10px; */
 }
 
 #okAddBtn {
@@ -98,4 +97,13 @@ td {
 
 #addInput{
     margin-top: 30px;
+}
+
+
+/* Media queries */
+
+@media screen and (max-width: 370px){
+    #modal-category-input{
+        font-size: 0.8rem;
+    }
 }
