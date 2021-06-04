@@ -88,6 +88,7 @@ $(document).ready(function () {
     function setAndRenderCategories(categoryDataArray) {
         categories = categoryDataArray;
 
+        // Loops through the categories and sets that the Övrigt should be selected from start
         for (cat of categories) {
             if (cat.name === "Övrigt") renderCategory(cat, "selected");
             else renderCategory(cat, "");
@@ -123,6 +124,7 @@ $(document).ready(function () {
     function setAndRenderItems(itemDataArray) {
         itemList = itemDataArray;
 
+        // Sends each item to the item render function with true becouse this is on page load
         for (item of itemList) {
             renderItem(item, true);
         }
@@ -138,6 +140,7 @@ $(document).ready(function () {
         let rowClasses;
         let sortvalue;
 
+        // Checks the sort value from the sorter for the category and sets the html element value for later sorting
         for (s of sorter) {
             if (s.categoryName == item.category.name) {
                 sortvalue = s.sortvalue;
@@ -145,12 +148,14 @@ $(document).ready(function () {
             }
         }
 
+        // Checks if the item is checked and sets the classes accordingly
         if (item.checked) {
             rowClasses = "row-item checked-item";
         } else {
             rowClasses = "row-item";
         }
 
+        // Appends or prepends the html element depending on if it is on load or on adding an item
         if (onload) {
             tableArea.append(`
             <tr id="${item.id}" style="background-color: ${color};">
@@ -168,7 +173,7 @@ $(document).ready(function () {
         }
 
         /**
-         * Listener that toggles if the items is checkod or not
+         * Listener on the id for the item element rows that toggles if the items is checkod or not 
          */
         $(`#${item.id}`).click(function(){
             const id = $(this).prop("id");
@@ -177,6 +182,10 @@ $(document).ready(function () {
         });
     }
 
+    /**
+     * Function that toggle the checked status in the itemList
+     * @param {Long} id 
+     */
     function changeItemCheckedStatusInListForId(id){
         for(item of itemList){
             if(item.id == id){
@@ -192,6 +201,7 @@ $(document).ready(function () {
      * renderItem function with false to onload so the item will be placed on the top of the list
      */
     function getInfoFromAddModal() {
+        // Get and check the input value
         const itemName = addInputField.val();
         if (itemName.length == 0) return; // if no content is typed in exit the function here
 
@@ -200,6 +210,7 @@ $(document).ready(function () {
         let color;
         let colorfade;
 
+        // Loops through the categories to get the correct id and color values
         for (cat of categories) {
             if (cat.name == categoryName) {
                 categoryid = cat.id;
@@ -208,6 +219,7 @@ $(document).ready(function () {
             }
         }
 
+        // Creates an item object
         let item = {
             name: itemName,
             checked: false,
@@ -221,12 +233,14 @@ $(document).ready(function () {
                 id: user.id,
             },
         };
+
+        // Adds the item to the itemList and render the item to the html list
         itemList.unshift(item);
         renderItem(item, false);
     }
 
     /**
-     * Function that resets the values in the addModals input fields
+     * Function that resets the values in the addModals input fields by looping through and checks for category Övrigt
      */
     function resetAddInputValue() {
         addInputField.val("");
@@ -243,17 +257,21 @@ $(document).ready(function () {
     function sortTable() {
         let table, rows, switching, a, b;
 
+        // Set the table to a variable and start with the switching
         table = document.getElementById("tableArea");
         switching = true;
 
+        // Loops while not all is sorted
         while (switching) {
             switching = false;
             rows = table.rows;
 
+            // Loops through all the tr elements in the table
             for (let i = 0; i < rows.length - 1; i++) {
                 a = rows[i].getElementsByTagName("td")[0];
                 b = rows[i + 1].getElementsByTagName("td")[0];
 
+                // Switch places of two elements if the are in the wrong sort order and starts a new loop
                 if (a.getAttribute("value") > b.getAttribute("value")) {
                     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
                     switching = true;
