@@ -6,8 +6,7 @@
         "category": {
             "id": 1,
             "name": "Hygien",
-            "color": "rgb(255,192,203)",
-            "colorfade": "rgb(255,192,203,0.4)"
+            "color": "rgb(255,192,203)"
         },
         "users": {
             "id": 7,
@@ -22,8 +21,7 @@
         "category": {
             "id": 2,
             "name": "Frukt & Grönt",
-            "color": "rgb(50,205,50)",
-            "colorfade": "rgb(50,205,50,0.4)"
+            "color": "rgb(50,205,50)"
         },
         "users": {
             "id": 7,
@@ -38,8 +36,7 @@
         "category": {
             "id": 3,
             "name": "Kylvaror",
-            "color": "rgb(30,144,255)",
-            "colorfade": "rgb(30,144,255,0.4)"
+            "color": "rgb(30,144,255)"
         },
         "users": {
             "id": 7,
@@ -54,8 +51,7 @@
         "category": {
             "id": 3,
             "name": "Kylvaror",
-            "color": "rgb(30,144,255)",
-            "colorfade": "rgb(30,144,255,0.4)"
+            "color": "rgb(30,144,255)"
         },
         "users": {
             "id": 7,
@@ -70,8 +66,7 @@
         "category": {
             "id": 4,
             "name": "Skafferi",
-            "color": "rgb(255,255,0)",
-            "colorfade": "rgb(255,255,0,0.4)"
+            "color": "rgb(255,255,0)"
         },
         "users": {
             "id": 7,
@@ -86,8 +81,7 @@
         "category": {
             "id": 5,
             "name": "Frysvaror",
-            "color": "rgb(0,255,255)",
-            "colorfade": "rgb(0,255,255,0.4)"
+            "color": "rgb(0,255,255)"
         },
         "users": {
             "id": 7,
@@ -102,8 +96,7 @@
         "category": {
             "id": 6,
             "name": "Övrigt",
-            "color": "rgb(179,183,187)",
-            "colorfade": "rgb(179,183,187,0.4)"
+            "color": "rgb(179,183,187)"
         },
         "users": {
             "id": 7,
@@ -118,8 +111,7 @@
         "category": {
             "id": 1,
             "name": "Hygien",
-            "color": "rgb(255,192,203)",
-            "colorfade": "rgb(255,192,203,0.4)"
+            "color": "rgb(255,192,203)"
         },
         "users": {
             "id": 7,
@@ -134,8 +126,7 @@
         "category": {
             "id": 2,
             "name": "Frukt & Grönt",
-            "color": "rgb(50,205,50)",
-            "colorfade": "rgb(50,205,50,0.4)"
+            "color": "rgb(50,205,50)"
         },
         "users": {
             "id": 7,
@@ -150,8 +141,7 @@
         "category": {
             "id": 3,
             "name": "Kylvaror",
-            "color": "rgb(30,144,255)",
-            "colorfade": "rgb(30,144,255,0.4)"
+            "color": "rgb(30,144,255)"
         },
         "users": {
             "id": 7,
@@ -166,8 +156,7 @@
         "category": {
             "id": 4,
             "name": "Skafferi",
-            "color": "rgb(255,255,0)",
-            "colorfade": "rgb(255,255,0,0.4)"
+            "color": "rgb(255,255,0)"
         },
         "users": {
             "id": 7,
@@ -182,8 +171,7 @@
         "category": {
             "id": 5,
             "name": "Frysvaror",
-            "color": "rgb(0,255,255)",
-            "colorfade": "rgb(0,255,255,0.4)"
+            "color": "rgb(0,255,255)"
         },
         "users": {
             "id": 7,
@@ -198,8 +186,7 @@
         "category": {
             "id": 6,
             "name": "Övrigt",
-            "color": "rgb(179,183,187)",
-            "colorfade": "rgb(179,183,187,0.4)"
+            "color": "rgb(179,183,187)"
         },
         "users": {
             "id": 7,

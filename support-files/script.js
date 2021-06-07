@@ -18,8 +18,8 @@ let categorySelectEditModal;
 let editInputField;
 let tableArea; // The table where the items are displayed within
 
-// Element for edit a list item
-let listElement;
+// Cache memory for less looping
+let currentEditableItemId;
 
 $(document).ready(function () {
     // Listeners that can be initiated on load *****************************************************************************
@@ -53,6 +53,11 @@ $(document).ready(function () {
         getInfoFromAddModal();
         modalAdd.css("display", "none");
         resetAddInputValue();
+    });
+
+    $("#okEditBtn").click(function(){
+        updateHtmlListItem();
+        modalEdit.css("display", "none");
     });
 
     /**
@@ -204,7 +209,8 @@ $(document).ready(function () {
          * Listener for the edit button for each element thats added to the item table list
          */
         $(`#edit${item.id}`).click(function(){
-            listElement = $(this).parent();
+            // listElement = $(this).parent();
+            currentEditableItemId = `${item.id}`;
             // listElement.css({"background-color":"orange"});
             setUpEditModal(`${item.id}`);
             modalEdit.css("display", "block");
@@ -241,6 +247,53 @@ $(document).ready(function () {
     }
 
     /**
+     * 
+     * @returns Exits function if input field is empty.
+     */
+    function updateHtmlListItem(){
+        const itemName = editInputField.val();
+        if(itemName.length == 0) return; // if no content is typed in exit the function here
+
+        const categoryName = categorySelectEditModal.val();
+        let categoryId;
+        let color;
+        let sortvalue;
+
+        // Loops through the categories to get the correct id and color values
+        for (cat of categories) {
+            if (cat.name == categoryName) {
+                categoryId = cat.id;
+                color = cat.color;
+            }
+        }
+
+        // Checks the sort value from the sorter for the category and sets the html element value for later sorting
+        for (s of sorter) {
+            if (s.categoryName == categoryName) {
+                sortvalue = s.sortvalue;
+                break;
+            }
+        }
+
+        // Update the array and then the html list
+        for(item of itemList){
+            if(item.id == currentEditableItemId){
+                item.name = itemName;
+                item.category.id = categoryId;
+                item.category.name = categoryName;
+                item.category.color = color;
+                break;
+            }
+        }
+
+        // Changes the html element
+        $(`#${currentEditableItemId}`).text(itemName);
+        $(`#${currentEditableItemId}`).attr("value",sortvalue);
+        $(`#${currentEditableItemId}`).parent().css({"background-color":`${color}`});
+
+    }
+
+    /**
      * Function that reads the input from the add modal and sends an item object to the
      * renderItem function with false to onload so the item will be placed on the top of the list
      */
@@ -252,14 +305,12 @@ $(document).ready(function () {
         const categoryName = categorySelectAddModal.val();
         let categoryid;
         let color;
-        let colorfade;
 
         // Loops through the categories to get the correct id and color values
         for (cat of categories) {
             if (cat.name == categoryName) {
                 categoryid = cat.id;
                 color = cat.color;
-                colorfade = cat.colorfade;
             }
         }
 
@@ -271,14 +322,13 @@ $(document).ready(function () {
                 id: categoryid,
                 name: categoryName,
                 color: color,
-                colorfade: colorfade,
             },
             users: {
                 id: user.id,
             },
         };
 
-        // Adds the item to the itemList and render the item to the html list
+        // Adds the item to the itemList and render the item to the html list with the parameter onload = false
         itemList.unshift(item);
         renderItem(item, false);
     }
