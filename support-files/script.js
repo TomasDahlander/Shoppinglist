@@ -1,18 +1,25 @@
 // Global variables ********************************************************************************************************
 
-let categories;
+// Lists & items
+let categories; 
 let itemList;
 let user;
 let sorter;
 
 // Modals
 let modalAdd;
+let modalEdit;
 // let modalSetting;
 
 // Elements
-let categorySelect; // The selector field where you choose the category for your item which to add to the list
+let categorySelectAddModal; // The selector field where you choose the category for your item which to add to the list
 let addInputField; // The input field where you enter a item to add to the list
+let categorySelectEditModal;
+let editInputField;
 let tableArea; // The table where the items are displayed within
+
+// Element for edit a list item
+let listElement;
 
 $(document).ready(function () {
     // Listeners that can be initiated on load *****************************************************************************
@@ -30,6 +37,13 @@ $(document).ready(function () {
     $("#add-modal-closer").click(function () {
         modalAdd.css("display", "none");
         resetAddInputValue();
+    });
+
+    /**
+         * Hides the editing when clicking on the x in the modalEdit
+         */
+    $("#edit-modal-closer").click(function () {
+        modalEdit.css("display", "none");
     });
 
     /**
@@ -101,7 +115,12 @@ $(document).ready(function () {
      * @param {String} selected
      */
     function renderCategory(category, selected) {
-        categorySelect.append(`
+        categorySelectAddModal.append(`
+            <option id="${category.id}" class="option-input" style="background-color: ${category.color};" ${selected}>
+            ${category.name}
+            </option>
+        `);
+        categorySelectEditModal.append(`
             <option id="${category.id}" class="option-input" style="background-color: ${category.color};" ${selected}>
             ${category.name}
             </option>
@@ -185,8 +204,11 @@ $(document).ready(function () {
          * Listener for the edit button for each element thats added to the item table list
          */
         $(`#edit${item.id}`).click(function(){
-            console.log(`Clicked on edit button id: ${this.id}`);
+            listElement = $(this).parent();
+            // listElement.css({"background-color":"orange"});
+            modalEdit.css("display", "block");
         });
+
     }
 
     /**
@@ -212,7 +234,7 @@ $(document).ready(function () {
         const itemName = addInputField.val();
         if (itemName.length == 0) return; // if no content is typed in exit the function here
 
-        const categoryName = categorySelect.val();
+        const categoryName = categorySelectAddModal.val();
         let categoryid;
         let color;
         let colorfade;
@@ -294,7 +316,10 @@ $(document).ready(function () {
     fetchCategories(); // Call the category fetch function
     fetchItems(); // Call the item fetch function
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
-    categorySelect = $("#modal-category-input"); // sets the option selector to a variable
+    modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
+    categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal;
+    categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal;
     addInputField = $("#addInput"); // sets the input field in the add modal to a variable
+    editInputField = $("#editInput"); // sets the input field in the edit modal to a variable
     tableArea = $("#tableArea"); // sets the item table to a variable
 });

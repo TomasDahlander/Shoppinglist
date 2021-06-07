@@ -40,7 +40,7 @@
                     <!-- Category choice and button -->
                     <div class="row">
                         <div class="col-8 text-start">
-                            <select id="modal-category-input" class="form-select float-start"></select>
+                            <select id="add-modal-category-input" class="form-select category-input float-start"></select>
                         </div>
                         <div class="col-4 text-end">
                             <button id="okAddBtn" class="btn btn-primary float-end">OK</button>
@@ -50,6 +50,39 @@
                 </div>
             </div>
             <!-- Add modal ends -->
+
+            <!-- Edit modal start -->
+            <div id="edit-modal-div" class="modal">
+
+                <div class="modal-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <span id="edit-modal-closer" class="close float-end">&times;</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Text input -->
+                    <input
+                        id="editInput"
+                        type="text"
+                        placeholder="input item"
+                        class="form-control"
+                        maxlength="30"
+                    />
+
+                    <!-- Category choice and button -->
+                    <div class="row">
+                        <div class="col-8 text-start">
+                            <select id="edit-modal-category-input" class="form-select category-input float-start"></select>
+                        </div>
+                        <div class="col-4 text-end">
+                            <button id="okEditBtn" class="btn btn-primary float-end">OK</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- Edit modal ends -->
 
             <!-- Buttons start -->
             <div class="row">

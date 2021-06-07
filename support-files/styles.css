@@ -44,6 +44,12 @@ td {
     padding-left: 10px;
 }
 
+.category-input{
+    width: 100%;
+    margin-top: 10px;
+    display: inline;
+}
+
 /* Modal classes */
 
 /* The Modal (background) */
@@ -84,13 +90,12 @@ td {
     color: black;
 }
 
-#modal-category-input {
-    width: 100%;
+#okAddBtn {
     margin-top: 10px;
-    display: inline;
+    width: 100%;
 }
 
-#okAddBtn {
+#okEditBtn{
     margin-top: 10px;
     width: 100%;
 }
@@ -99,11 +104,15 @@ td {
     margin-top: 30px;
 }
 
+#editInput{
+    margin-top: 30px;
+}
+
 
 /* Media queries */
 
 @media screen and (max-width: 370px){
-    #modal-category-input{
+    #add-modal-category-input{
         font-size: 0.8rem;
     }
 }
