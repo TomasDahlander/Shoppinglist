@@ -108,11 +108,14 @@ td {
     margin-top: 30px;
 }
 
-
 /* Media queries */
 
 @media screen and (max-width: 370px){
     #add-modal-category-input{
+        font-size: 0.8rem;
+    }
+    
+    #edit-modal-category-input{
         font-size: 0.8rem;
     }
 }

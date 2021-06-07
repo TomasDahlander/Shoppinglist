@@ -40,8 +40,8 @@ $(document).ready(function () {
     });
 
     /**
-         * Hides the editing when clicking on the x in the modalEdit
-         */
+     * Hides the editing when clicking on the x in the modalEdit
+     */
     $("#edit-modal-closer").click(function () {
         modalEdit.css("display", "none");
     });
@@ -206,6 +206,7 @@ $(document).ready(function () {
         $(`#edit${item.id}`).click(function(){
             listElement = $(this).parent();
             // listElement.css({"background-color":"orange"});
+            setUpEditModal(`${item.id}`);
             modalEdit.css("display", "block");
         });
 
@@ -220,6 +221,20 @@ $(document).ready(function () {
             if(item.id == id){
                 if(item.checked) item.checked = false;
                 else item.checked = true;
+                break;
+            }
+        }
+    }
+
+    /**
+     * Function that populates the modal with the info from the item from the row you clicked on
+     * @param {Long} id 
+     */
+    function setUpEditModal(id){
+        for(item of itemList){
+            if(id == item.id) {
+                editInputField.val(item.name);
+                categorySelectEditModal.val(item.category.name);
                 break;
             }
         }
