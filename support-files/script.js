@@ -183,14 +183,14 @@ $(document).ready(function () {
         if (onload) {
             tableArea.append(`
             <tr style="background-color: ${color};">
-                <td id="${item.id}" value="${sortvalue}" class="${rowClasses}">${item.name}</td>
+                <td id="${item.id}" value="${sortvalue}" name="${item.category.name}" class="${rowClasses}">${item.name}</td>
                 <td id="edit${item.id}" class="row-button">&vellip;</td>
             </tr>
             `);
         } else {
             tableArea.prepend(`
             <tr style="background-color: ${color};">
-                <td id="${item.id}" value="${sortvalue}" class="${rowClasses}">${item.name}</td>
+                <td id="${item.id}" value="${sortvalue}" name="${item.category.name}" class="${rowClasses}">${item.name}</td>
                 <td id="edit${item.id}" class="row-button">&vellip;</td>
             </tr>
             `);
@@ -287,10 +287,11 @@ $(document).ready(function () {
         }
 
         // Changes the html element
-        $(`#${currentEditableItemId}`).text(itemName);
-        $(`#${currentEditableItemId}`).attr("value",sortvalue);
-        $(`#${currentEditableItemId}`).parent().css({"background-color":`${color}`});
-
+        const itemElement = $(`#${currentEditableItemId}`);
+        itemElement.text(itemName);
+        itemElement.attr("value",sortvalue);
+        itemElement.parent().css({"background-color":`${color}`});
+        itemElement.attr("name",categoryName);
     }
 
     /**
