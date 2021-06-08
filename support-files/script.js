@@ -5,6 +5,7 @@ let categories;
 let itemList;
 let user;
 let sorter;
+let stores = [];
 
 // Modals
 let modalAdd;
@@ -16,6 +17,7 @@ let categorySelectAddModal; // The selector field where you choose the category 
 let addInputField; // The input field where you enter a item to add to the list
 let categorySelectEditModal;
 let editInputField;
+let storeSelectSettingModal;
 let tableArea; // The table where the items are displayed within
 
 // Cache memory for less looping
@@ -99,7 +101,26 @@ $(document).ready(function () {
             .then((response) => response.json())
             .then(function (data) {
                 sorter = data;
+            })
+            .then(function(){
+                setUpStoreChoices();
             });
+    }
+
+    function setUpStoreChoices(){
+        for(s of sorter){
+            if(!(stores.includes(s.storeName))){
+                stores.push(s.storeName);
+            }
+        }
+        
+        for(store of stores){
+            storeSelectSettingModal.append(`
+            <option class="option-input">
+                ${store}
+            </option> 
+            `);
+        }
     }
 
     /**
@@ -133,12 +154,12 @@ $(document).ready(function () {
     function renderCategory(category, selected) {
         categorySelectAddModal.append(`
             <option id="${category.id}" class="option-input" style="background-color: ${category.color};" ${selected}>
-            ${category.name}
+                ${category.name}
             </option>
         `);
         categorySelectEditModal.append(`
             <option id="${category.id}" class="option-input" style="background-color: ${category.color};" ${selected}>
-            ${category.name}
+                ${category.name}
             </option>
         `);
     }
@@ -395,8 +416,9 @@ $(document).ready(function () {
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
     modalSettings = $("#settings-modal-div"); // sets the modal for settings to a variable
-    categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal;
-    categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal;
+    categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
+    categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal
+    storeSelectSettingModal = $("#settings-modal-category-input"); // set the option selector to a variable on the setting modal
     addInputField = $("#addInput"); // sets the input field in the add modal to a variable
     editInputField = $("#editInput"); // sets the input field in the edit modal to a variable
     tableArea = $("#tableArea"); // sets the item table to a variable
