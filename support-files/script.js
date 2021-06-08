@@ -90,7 +90,8 @@ $(document).ready(function () {
             .then((response) => response.json())
             .then(function (userinfo) {
                 user = userinfo;
-            });
+            })
+            .then(() => fetchSorter());
     }
 
     /**
@@ -104,7 +105,8 @@ $(document).ready(function () {
             })
             .then(function(){
                 setUpStoreChoices();
-            });
+            })
+            .then(() => fetchCategories());
     }
 
     function setUpStoreChoices(){
@@ -129,7 +131,8 @@ $(document).ready(function () {
     function fetchCategories() {
         fetch("/support-files/mockdata/Categories.json")
             .then((response) => response.json())
-            .then((data) => setAndRenderCategories(data));
+            .then((data) => setAndRenderCategories(data))
+            .then(() => fetchItems());
     }
 
     /**
@@ -409,10 +412,10 @@ $(document).ready(function () {
     }
 
     // Runs when loaded ****************************************************************************************************
-    fetchUser(); // Call the user fetch function
-    fetchSorter(); // Call the sorter fetch function
-    fetchCategories(); // Call the category fetch function
-    fetchItems(); // Call the item fetch function
+    fetchUser(); // Call the user fetch function which is later linked to the remaining 3 fetches below
+    // fetchSorter(); // Call the sorter fetch function
+    // fetchCategories(); // Call the category fetch function
+    // fetchItems(); // Call the item fetch function
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
     modalSettings = $("#settings-modal-div"); // sets the modal for settings to a variable
