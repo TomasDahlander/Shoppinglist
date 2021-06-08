@@ -90,22 +90,21 @@ td {
     color: black;
 }
 
+#updateSettingBtn,
+#showSettingBtn,
+#okEditBtn,
 #okAddBtn {
     margin-top: 10px;
     width: 100%;
 }
 
-#okEditBtn{
-    margin-top: 10px;
-    width: 100%;
-}
-
-#addInput{
-    margin-top: 30px;
-}
-
+#addInput,
 #editInput{
     margin-top: 30px;
+}
+
+#settings-modal-category-input{
+    margin-top: 20px;
 }
 
 /* Media queries */
@@ -116,6 +115,10 @@ td {
     }
     
     #edit-modal-category-input{
+        font-size: 0.8rem;
+    }
+
+    #settings-modal-category-input{
         font-size: 0.8rem;
     }
 }
