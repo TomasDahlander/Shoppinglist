@@ -9,7 +9,7 @@ let sorter;
 // Modals
 let modalAdd;
 let modalEdit;
-// let modalSetting;
+let modalSettings;
 
 // Elements
 let categorySelectAddModal; // The selector field where you choose the category for your item which to add to the list
@@ -55,9 +55,20 @@ $(document).ready(function () {
         resetAddInputValue();
     });
 
+    /**
+     * Updates the current list element both in list and the html table list and closes the modal
+     */
     $("#okEditBtn").click(function(){
         updateHtmlListItem();
         modalEdit.css("display", "none");
+    });
+
+    $("#settingsBtn").click(function(){
+        modalSettings.css("display", "block");
+    });
+
+    $("#settings-modal-closer").click(function(){
+        modalSettings.css("display", "none");
     });
 
     /**
@@ -383,6 +394,7 @@ $(document).ready(function () {
     fetchItems(); // Call the item fetch function
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
+    modalSettings = $("#settings-modal-div"); // sets the modal for settings to a variable
     categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal;
     categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal;
     addInputField = $("#addInput"); // sets the input field in the add modal to a variable
