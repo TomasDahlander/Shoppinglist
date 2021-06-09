@@ -374,11 +374,7 @@ $(document).ready(function () {
      */
     function resetAddInputValue() {
         addInputField.val("");
-        $("#modal-category-input option").each(function () {
-            if (this.text == "Övrigt") {
-                $(this).prop("selected", true);
-            }
-        });
+        $("#add-modal-category-input").val("Övrigt");
     }
 
     /**

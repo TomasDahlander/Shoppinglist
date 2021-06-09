@@ -50,6 +50,19 @@ td {
     display: inline;
 }
 
+.sorter-display{
+    text-align: left !important;
+    padding-left: 5px;
+    font-weight: bold;
+    padding: 0px 0px 0px 5px;
+}
+
+.sorter-input{
+    padding: 0px;
+    
+
+}
+
 /* Modal classes */
 
 /* The Modal (background) */

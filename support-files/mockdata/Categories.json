@@ -2,31 +2,31 @@
     {
         "id": 1,
         "name": "Hygien",
-        "color": "rgb(255,192,203)"
+        "color": "Pink"
     },
     {
         "id": 2,
         "name": "Frukt & Grönt",
-        "color": "rgb(50,205,50)"
+        "color": "Limegreen"
     },
     {
         "id": 3,
         "name": "Kylvaror",
-        "color": "rgb(30,144,255)"
+        "color": "Dodgerblue"
     },
     {
         "id": 4,
         "name": "Skafferi",
-        "color": "rgb(255,255,0)"
+        "color": "Yellow"
     },
     {
         "id": 5,
         "name": "Frysvaror",
-        "color": "rgb(0,255,255)"
+        "color": "Cyan"
     },
     {
         "id": 6,
         "name": "Övrigt",
-        "color": "rgb(179,183,187)"
+        "color": "Lightgrey"
     }
 ]
