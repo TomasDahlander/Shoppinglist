@@ -19,6 +19,7 @@ let categorySelectEditModal;
 let editInputField;
 let storeSelectSettingModal;
 let tableArea; // The table where the items are displayed within
+let sortingtable; // The table where the sorters are displayed within
 
 // Cache memory for less looping
 let currentEditableItemId;
@@ -78,6 +79,10 @@ $(document).ready(function () {
      */
     $("#sortingBtn").click(function () {
         sortTable();
+    });
+
+    $("#showSettingBtn").click(function(){
+        displaySorter();
     });
 
     // Functions ***********************************************************************************************************
@@ -253,6 +258,37 @@ $(document).ready(function () {
 
     }
 
+    function displaySorter(){
+
+        sortingtable.html("");
+        const choice = storeSelectSettingModal.val();
+
+        for(s of sorter){
+            let color;
+            if(s.storeName == choice){
+                for(cat of categories){
+                    if(s.categoryName == cat.name) {
+                        color = cat.color;
+                        break;
+                    }    
+                }
+
+                sortingtable.append(`
+                    <tr>  
+                        <td id="${s.id}" class="sorter-display" style="background-color: ${color};">${s.categoryName}</td>
+                        <td style="width: 20%;" class="sorter-input">
+                            <input 
+                            type="number"
+                            class="form-control"
+                            value="${s.sortvalue}"
+                            >
+                        </td>
+                    </tr>
+                    `);
+            }
+        }
+    }
+
     /**
      * Function that toggle the checked status in the itemList
      * @param {Long} id 
@@ -421,4 +457,5 @@ $(document).ready(function () {
     addInputField = $("#addInput"); // sets the input field in the add modal to a variable
     editInputField = $("#editInput"); // sets the input field in the edit modal to a variable
     tableArea = $("#tableArea"); // sets the item table to a variable
+    sortingtable = $("#sortingtable"); // sets the sorters table to a variable
 });
