@@ -43,7 +43,7 @@ $(document).ready(function () {
     });
 
     /**
-     * Hides the editing when clicking on the x in the modalEdit
+     * Hides the editing modal when clicking on the x in the modalEdit
      */
     $("#edit-modal-closer").click(function () {
         modalEdit.css("display", "none");
@@ -66,12 +66,29 @@ $(document).ready(function () {
         modalEdit.css("display", "none");
     });
 
+    /**
+     * Displays the settings modal
+     */
     $("#settingsBtn").click(function(){
         modalSettings.css("display", "block");
     });
 
+    /**
+     * Hides the setting modal when clicking on the x in the modalSetting
+     */
     $("#settings-modal-closer").click(function(){
         modalSettings.css("display", "none");
+    });
+
+    /**
+     * Displays the sorting order for the chosen store
+     */
+    $("#showSettingBtn").click(function(){
+        displaySorter();
+    });
+
+    $("#updateSettingBtn").click(function(){
+        updateSorterAndHtml();
     });
 
     /**
@@ -79,10 +96,6 @@ $(document).ready(function () {
      */
     $("#sortingBtn").click(function () {
         sortTable();
-    });
-
-    $("#showSettingBtn").click(function(){
-        displaySorter();
     });
 
     // Functions ***********************************************************************************************************
@@ -258,6 +271,9 @@ $(document).ready(function () {
 
     }
 
+    /**
+     * Function that displays the sorter from the current choice
+     */
     function displaySorter(){
 
         sortingtable.html("");
@@ -286,6 +302,27 @@ $(document).ready(function () {
                     </tr>
                     `);
             }
+        }
+    }
+
+    function updateSorterAndHtml(){
+        const store = storeSelectSettingModal.val();
+
+        for(s of sorter){
+            const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
+            s.sortvalue = sortvalue;
+        }
+
+        tableArea.children().each(function(){
+            const category = $(this).children("td.row-item").attr("name");
+            const sortvalue = getCorrectSortingValue(store,category);
+            $(this).children("td.row-item").attr("value",sortvalue);
+        });
+    }
+
+    function getCorrectSortingValue(store, category){
+        for(s of sorter){
+            if(s.categoryName == category && s.storeName == store) return s.sortvalue;
         }
     }
 
