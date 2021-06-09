@@ -305,6 +305,9 @@ $(document).ready(function () {
         }
     }
 
+    /**
+     * Function that update the selected sorter object and then updates the html elements so sorting can be done
+     */
     function updateSorterAndHtml(){
         const store = storeSelectSettingModal.val();
 
@@ -320,6 +323,12 @@ $(document).ready(function () {
         });
     }
 
+    /**
+     * Function that gets 2 strings with the storename and a category and returns the correct sorting value
+     * @param {String} store 
+     * @param {String} category 
+     * @returns 
+     */
     function getCorrectSortingValue(store, category){
         for(s of sorter){
             if(s.categoryName == category && s.storeName == store) return s.sortvalue;
@@ -355,7 +364,7 @@ $(document).ready(function () {
     }
 
     /**
-     * 
+     * Function that udates the html elements in the list
      * @returns Exits function if input field is empty.
      */
     function updateHtmlListItem(){
