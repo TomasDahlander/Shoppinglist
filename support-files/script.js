@@ -198,7 +198,8 @@ $(document).ready(function () {
         fetch("/support-files/mockdata/Items.json")
             .then((response) => response.json())
             .then((data) => setAndRenderItems(data))
-            .then(() => displaySorter());
+            .then(() => displaySorter())
+            .then(() => sortTable());
     }
 
     /**

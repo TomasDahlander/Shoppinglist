@@ -30,7 +30,7 @@
         "id": 11,
         "storeName": "Wilys",
         "categoryName": "Skafferi",
-        "sortvalue": 5,
+        "sortvalue": 4,
         "users": {
             "id": 7
         }
@@ -39,7 +39,7 @@
         "id": 12,
         "storeName": "Wilys",
         "categoryName": "Frysvaror",
-        "sortvalue": 4,
+        "sortvalue": 3,
         "users": {
             "id": 7
         }
