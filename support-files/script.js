@@ -84,11 +84,16 @@ $(document).ready(function () {
      * Displays the sorting order for the chosen store
      */
     $("#showSettingBtn").click(function(){
-        displaySorter();
+        // displaySorter();
     });
 
     $("#updateSettingBtn").click(function(){
         updateSorterAndHtml();
+    });
+
+    $("#settings-modal-category-input").change(function(){
+        // $("#showSettingBtn").trigger('click');
+        displaySorter();
     });
 
     /**
@@ -282,8 +287,6 @@ $(document).ready(function () {
         sortingtable.html("");
         const choice = storeSelectSettingModal.val();
 
-        console.log(sorter);
-
         for(s of sorter){
             let color;
             if(s.storeName == choice){
@@ -293,9 +296,6 @@ $(document).ready(function () {
                         break;
                     }    
                 }
-
-                console.log(s.categoryName);
-                console.log(s.sortvalue);
 
                 sortingtable.append(`
                     <tr>  
