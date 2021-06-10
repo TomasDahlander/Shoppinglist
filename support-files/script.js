@@ -382,6 +382,7 @@ $(document).ready(function () {
         if(itemName.length == 0) return; // if no content is typed in exit the function here
 
         const categoryName = categorySelectEditModal.val();
+        const store = storeSelectSettingModal.val();
         let categoryId;
         let color;
         let sortvalue;
@@ -391,12 +392,13 @@ $(document).ready(function () {
             if (cat.name == categoryName) {
                 categoryId = cat.id;
                 color = cat.color;
+                break;
             }
         }
 
         // Checks the sort value from the sorter for the category and sets the html element value for later sorting
         for (s of sorter) {
-            if (s.categoryName == categoryName) {
+            if (s.categoryName == categoryName && s.storeName == store) {
                 sortvalue = s.sortvalue;
                 break;
             }
