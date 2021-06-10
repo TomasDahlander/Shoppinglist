@@ -1,25 +1,79 @@
 [
     {
         "id": 8,
-        "storeName": "Default",
+        "storeName": "Wilys",
         "categoryName": "Hygien",
-        "sortvalue": 1,
+        "sortvalue": 5,
         "users": {
             "id": 7
         }
     },
     {
         "id": 9,
-        "storeName": "Default",
+        "storeName": "Wilys",
         "categoryName": "Frukt & Grönt",
-        "sortvalue": 2,
+        "sortvalue": 1,
         "users": {
             "id": 7
         }
     },
     {
         "id": 10,
-        "storeName": "Default",
+        "storeName": "Wilys",
+        "categoryName": "Kylvaror",
+        "sortvalue": 2,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "id": 11,
+        "storeName": "Wilys",
+        "categoryName": "Skafferi",
+        "sortvalue": 5,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "id": 12,
+        "storeName": "Wilys",
+        "categoryName": "Frysvaror",
+        "sortvalue": 4,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "id": 13,
+        "storeName": "Wilys",
+        "categoryName": "Övrigt",
+        "sortvalue": 6,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "id": 14,
+        "storeName": "Ica BEA",
+        "categoryName": "Hygien",
+        "sortvalue": 2,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "id": 15,
+        "storeName": "Ica BEA",
+        "categoryName": "Frukt & Grönt",
+        "sortvalue": 5,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "id": 16,
+        "storeName": "Ica BEA",
         "categoryName": "Kylvaror",
         "sortvalue": 3,
         "users": {
@@ -27,28 +81,28 @@
         }
     },
     {
-        "id": 11,
-        "storeName": "Default",
+        "id": 17,
+        "storeName": "Ica BEA",
         "categoryName": "Skafferi",
+        "sortvalue": 6,
+        "users": {
+            "id": 7
+        }
+    },
+    {
+        "id": 18,
+        "storeName": "Ica BEA",
+        "categoryName": "Frysvaror",
         "sortvalue": 4,
         "users": {
             "id": 7
         }
     },
     {
-        "id": 12,
-        "storeName": "Default",
-        "categoryName": "Frysvaror",
-        "sortvalue": 5,
-        "users": {
-            "id": 7
-        }
-    },
-    {
-        "id": 13,
-        "storeName": "Default",
+        "id": 19,
+        "storeName": "Ica BEA",
         "categoryName": "Övrigt",
-        "sortvalue": 6,
+        "sortvalue": 1,
         "users": {
             "id": 7
         }
