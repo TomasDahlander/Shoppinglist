@@ -55,6 +55,7 @@ td {
     padding-left: 5px;
     font-weight: bold;
     padding: 0px 0px 0px 5px;
+    border-radius: 10px;
 }
 
 .sorter-input{
@@ -117,6 +118,10 @@ td {
 
 #settings-modal-category-input{
     margin-top: 20px;
+}
+
+#settings-modal-div{
+    padding-top: 30px;
 }
 
 /* Media queries */

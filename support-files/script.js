@@ -127,6 +127,9 @@ $(document).ready(function () {
             .then(() => fetchCategories());
     }
 
+    /**
+     * Function that sets up the choices you have for the stores
+     */
     function setUpStoreChoices(){
         for(s of sorter){
             if(!(stores.includes(s.storeName))){
@@ -279,6 +282,8 @@ $(document).ready(function () {
         sortingtable.html("");
         const choice = storeSelectSettingModal.val();
 
+        console.log(sorter);
+
         for(s of sorter){
             let color;
             if(s.storeName == choice){
@@ -288,6 +293,9 @@ $(document).ready(function () {
                         break;
                     }    
                 }
+
+                console.log(s.categoryName);
+                console.log(s.sortvalue);
 
                 sortingtable.append(`
                     <tr>  
@@ -312,8 +320,10 @@ $(document).ready(function () {
         const store = storeSelectSettingModal.val();
 
         for(s of sorter){
-            const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
-            s.sortvalue = sortvalue;
+            if(s.storeName == store){
+                const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
+                s.sortvalue = sortvalue;
+            }
         }
 
         tableArea.children().each(function(){
