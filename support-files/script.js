@@ -81,18 +81,16 @@ $(document).ready(function () {
     });
 
     /**
-     * Displays the sorting order for the chosen store
+     * Button that updates the sorter and sets it for use when sorting
      */
-    $("#showSettingBtn").click(function(){
-        // displaySorter();
-    });
-
     $("#updateSettingBtn").click(function(){
         updateSorterAndHtml();
     });
 
+    /**
+     * When choosing a new store this event is triggered to display the sorter for that store
+     */
     $("#settings-modal-category-input").change(function(){
-        // $("#showSettingBtn").trigger('click');
         displaySorter();
     });
 
@@ -199,7 +197,8 @@ $(document).ready(function () {
     function fetchItems() {
         fetch("/support-files/mockdata/Items.json")
             .then((response) => response.json())
-            .then((data) => setAndRenderItems(data));
+            .then((data) => setAndRenderItems(data))
+            .then(() => displaySorter());
     }
 
     /**
