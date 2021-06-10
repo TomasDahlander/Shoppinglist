@@ -5,6 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Shoppinglist</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
         <link rel="stylesheet" href="/support-files/cerulean.bootstrap.min.css" />
         <link rel="stylesheet" href="/support-files/styles.css" />
     </head>
@@ -16,7 +20,14 @@
                 <div class="col-8">
                     <h1 id="headlineText">Shoppinglist</h1>
                 </div>
-                <div class="col-2">&#9776;</div>
+                <div class="col-2">
+                    <i
+                        id="refreshBtn"
+                        class="fa fa-refresh"
+                        style="font-size: 25px; padding-top: 5px"
+                        aria-hidden="true"
+                    ></i>
+                </div>
             </div>
             <!-- Headline ends -->
 
@@ -44,15 +55,13 @@
 
             <!-- Add modal start -->
             <div id="add-modal-div" class="modal">
-
                 <div class="modal-content">
-
                     <div class="row">
                         <div class="col-12">
                             <span id="add-modal-closer" class="close float-end">&times;</span>
                         </div>
                     </div>
-                    
+
                     <!-- Text input -->
                     <input
                         id="addInput"
@@ -65,28 +74,28 @@
                     <!-- Category choice and button -->
                     <div class="row">
                         <div class="col-8 text-start">
-                            <select id="add-modal-category-input" class="form-select category-input"></select>
+                            <select
+                                id="add-modal-category-input"
+                                class="form-select category-input"
+                            ></select>
                         </div>
                         <div class="col-4 text-end">
                             <button id="okAddBtn" class="btn btn-primary">OK</button>
                         </div>
                     </div>
-                    
                 </div>
             </div>
             <!-- Add modal ends -->
 
             <!-- Edit modal start -->
             <div id="edit-modal-div" class="modal">
-
                 <div class="modal-content">
-
                     <div class="row">
                         <div class="col-12">
                             <span id="edit-modal-closer" class="close float-end">&times;</span>
                         </div>
                     </div>
-                    
+
                     <!-- Text input -->
                     <input
                         id="editInput"
@@ -99,25 +108,27 @@
                     <!-- Category choice and button -->
                     <div class="row">
                         <div class="col-8 text-start">
-                            <select id="edit-modal-category-input" class="form-select category-input"></select>
+                            <select
+                                id="edit-modal-category-input"
+                                class="form-select category-input"
+                            ></select>
                         </div>
                         <div class="col-4 text-end">
                             <button id="okEditBtn" class="btn btn-primary">OK</button>
                         </div>
                     </div>
-                    
                 </div>
             </div>
             <!-- Edit modal ends -->
 
             <!-- Sorter settings modal start -->
             <div id="settings-modal-div" class="modal">
-
                 <div class="modal-content">
-
                     <div class="row">
                         <div class="col-12">
-                            <button id="createSorterBtn" class="btn btn-primary float-start">New Store +</button>
+                            <button id="createSorterBtn" class="btn btn-primary float-start">
+                                New Store +
+                            </button>
                             <span id="settings-modal-closer" class="close float-end">&times;</span>
                         </div>
                     </div>
@@ -125,25 +136,27 @@
                     <!-- Store choice selector -->
                     <div class="row">
                         <div class="col text-start">
-                            <select id="settings-modal-category-input" class="form-select category-input"></select>
+                            <select
+                                id="settings-modal-category-input"
+                                class="form-select category-input"
+                            ></select>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col text-end">
-                            <button id="updateSettingBtn" class="btn btn-primary">Use & Update</button>
+                            <button id="updateSettingBtn" class="btn btn-primary">
+                                Use & Update
+                            </button>
                         </div>
                     </div>
 
                     <div class="row table-area">
-                        <table id="sortingtable">
-                        </table>
+                        <table id="sortingtable"></table>
                     </div>
-
                 </div>
             </div>
             <!-- Sorter settings modal ends -->
-
         </div>
 
         <script
