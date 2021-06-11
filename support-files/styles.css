@@ -138,3 +138,9 @@ td {
         font-size: 0.8rem;
     }
 }
+
+@media screen and (min-width: 500px){
+    #maindiv{
+        width: 500px;
+    }
+}
