@@ -1,7 +1,7 @@
 // Global variables ********************************************************************************************************
 
 // Lists & items
-let categories; 
+let categories;
 let itemList;
 let user;
 let sorter;
@@ -61,7 +61,7 @@ $(document).ready(function () {
     /**
      * Updates the current list element both in list and the html table list and closes the modal
      */
-    $("#okEditBtn").click(function(){
+    $("#okEditBtn").click(function () {
         updateHtmlListItem();
         modalEdit.css("display", "none");
     });
@@ -69,28 +69,28 @@ $(document).ready(function () {
     /**
      * Displays the settings modal
      */
-    $("#settingsBtn").click(function(){
+    $("#settingsBtn").click(function () {
         modalSettings.css("display", "block");
     });
 
     /**
      * Hides the setting modal when clicking on the x in the modalSetting
      */
-    $("#settings-modal-closer").click(function(){
+    $("#settings-modal-closer").click(function () {
         modalSettings.css("display", "none");
     });
 
     /**
      * Button that updates the sorter and sets it for use when sorting
      */
-    $("#updateSettingBtn").click(function(){
+    $("#updateSettingBtn").click(function () {
         updateSorterAndHtml();
     });
 
     /**
      * When choosing a new store this event is triggered to display the sorter for that store
      */
-    $("#settings-modal-category-input").change(function(){
+    $("#settings-modal-category-input").change(function () {
         displaySorter();
     });
 
@@ -99,6 +99,18 @@ $(document).ready(function () {
      */
     $("#sortingBtn").click(function () {
         sortTable();
+    });
+
+    $("#refreshBtn").click(function () {
+        console.log("Clicked on refresh button!");
+    });
+
+    $("#logutBtn").click(function () {
+        console.log("Clicked on logout button!");
+    });
+
+    $("#createSorterBtn").click(function () {
+        console.log("Clicked on new store button!");
     });
 
     // Functions ***********************************************************************************************************
@@ -124,7 +136,7 @@ $(document).ready(function () {
             .then(function (data) {
                 sorter = data;
             })
-            .then(function(){
+            .then(function () {
                 setUpStoreChoices();
             })
             .then(() => fetchCategories());
@@ -133,14 +145,14 @@ $(document).ready(function () {
     /**
      * Function that sets up the choices you have for the stores
      */
-    function setUpStoreChoices(){
-        for(s of sorter){
-            if(!(stores.includes(s.storeName))){
+    function setUpStoreChoices() {
+        for (s of sorter) {
+            if (!stores.includes(s.storeName)) {
                 stores.push(s.storeName);
             }
         }
-        
-        for(store of stores){
+
+        for (store of stores) {
             storeSelectSettingModal.append(`
             <option class="option-input">
                 ${store}
@@ -258,43 +270,52 @@ $(document).ready(function () {
         }
 
         /**
-         * Listener on the id for the item element rows that toggles if the items is checkod or not 
+         * Listener on the id for the item element rows that toggles if the items is checkod or not
          */
-        $(`#${item.id}`).click(function(){
+        $(`#${item.id}`).click(function () {
             const id = $(this).prop("id");
             $(this).toggleClass("checked-item");
             changeItemCheckedStatusInListForId(id);
         });
 
+        $(`#${item.id}`).on("swiperight", function () {
+            /// Försök till swipe right... Behövs bibliotek för det.... pung
+            $(this).css("color", "red");
+            console.log("swiping!");
+        });
+
+        // $("div.box").on("swiperight", swiperightHandler);
+
+        // // Callback function references the event target and adds the 'swiperight' class to it
+        // function swiperightHandler(event) {
+        //     $(event.target).addClass("swiperight");
+        // }
+
         /**
          * Listener for the edit button for each element thats added to the item table list
          */
-        $(`#edit${item.id}`).click(function(){
-            // listElement = $(this).parent();
+        $(`#edit${item.id}`).click(function () {
             currentEditableItemId = `${item.id}`;
-            // listElement.css({"background-color":"orange"});
             setUpEditModal(`${item.id}`);
             modalEdit.css("display", "block");
         });
-
     }
 
     /**
      * Function that displays the sorter from the current choice
      */
-    function displaySorter(){
-
+    function displaySorter() {
         sortingtable.html("");
         const choice = storeSelectSettingModal.val();
 
-        for(s of sorter){
+        for (s of sorter) {
             let color;
-            if(s.storeName == choice){
-                for(cat of categories){
-                    if(s.categoryName == cat.name) {
+            if (s.storeName == choice) {
+                for (cat of categories) {
+                    if (s.categoryName == cat.name) {
                         color = cat.color;
                         break;
-                    }    
+                    }
                 }
 
                 sortingtable.append(`
@@ -316,43 +337,43 @@ $(document).ready(function () {
     /**
      * Function that update the selected sorter object and then updates the html elements so sorting can be done
      */
-    function updateSorterAndHtml(){
+    function updateSorterAndHtml() {
         const store = storeSelectSettingModal.val();
 
-        for(s of sorter){
-            if(s.storeName == store){
+        for (s of sorter) {
+            if (s.storeName == store) {
                 const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
                 s.sortvalue = sortvalue;
             }
         }
 
-        tableArea.children().each(function(){
+        tableArea.children().each(function () {
             const category = $(this).children("td.row-item").attr("name");
-            const sortvalue = getCorrectSortingValue(store,category);
-            $(this).children("td.row-item").attr("value",sortvalue);
+            const sortvalue = getCorrectSortingValue(store, category);
+            $(this).children("td.row-item").attr("value", sortvalue);
         });
     }
 
     /**
      * Function that gets 2 strings with the storename and a category and returns the correct sorting value
-     * @param {String} store 
-     * @param {String} category 
-     * @returns 
+     * @param {String} store
+     * @param {String} category
+     * @returns
      */
-    function getCorrectSortingValue(store, category){
-        for(s of sorter){
-            if(s.categoryName == category && s.storeName == store) return s.sortvalue;
+    function getCorrectSortingValue(store, category) {
+        for (s of sorter) {
+            if (s.categoryName == category && s.storeName == store) return s.sortvalue;
         }
     }
 
     /**
      * Function that toggle the checked status in the itemList
-     * @param {Long} id 
+     * @param {Long} id
      */
-    function changeItemCheckedStatusInListForId(id){
-        for(item of itemList){
-            if(item.id == id){
-                if(item.checked) item.checked = false;
+    function changeItemCheckedStatusInListForId(id) {
+        for (item of itemList) {
+            if (item.id == id) {
+                if (item.checked) item.checked = false;
                 else item.checked = true;
                 break;
             }
@@ -361,11 +382,11 @@ $(document).ready(function () {
 
     /**
      * Function that populates the modal with the info from the item from the row you clicked on
-     * @param {Long} id 
+     * @param {Long} id
      */
-    function setUpEditModal(id){
-        for(item of itemList){
-            if(id == item.id) {
+    function setUpEditModal(id) {
+        for (item of itemList) {
+            if (id == item.id) {
                 editInputField.val(item.name);
                 categorySelectEditModal.val(item.category.name);
                 break;
@@ -377,9 +398,9 @@ $(document).ready(function () {
      * Function that udates the html elements in the list
      * @returns Exits function if input field is empty.
      */
-    function updateHtmlListItem(){
+    function updateHtmlListItem() {
         const itemName = editInputField.val();
-        if(itemName.length == 0) return; // if no content is typed in exit the function here
+        if (itemName.length == 0) return; // if no content is typed in exit the function here
 
         const categoryName = categorySelectEditModal.val();
         const store = storeSelectSettingModal.val();
@@ -405,8 +426,8 @@ $(document).ready(function () {
         }
 
         // Update the array and then the html list
-        for(item of itemList){
-            if(item.id == currentEditableItemId){
+        for (item of itemList) {
+            if (item.id == currentEditableItemId) {
                 item.name = itemName;
                 item.category.id = categoryId;
                 item.category.name = categoryName;
@@ -418,9 +439,9 @@ $(document).ready(function () {
         // Changes the html element
         const itemElement = $(`#${currentEditableItemId}`);
         itemElement.text(itemName);
-        itemElement.attr("value",sortvalue);
-        itemElement.parent().css({"background-color":`${color}`});
-        itemElement.attr("name",categoryName);
+        itemElement.attr("value", sortvalue);
+        itemElement.parent().css({ "background-color": `${color}` });
+        itemElement.attr("name", categoryName);
     }
 
     /**
