@@ -14,3 +14,11 @@ button {
 #maindiv {
     width: 250px;
 }
+
+#errorMessage {
+    display: none;
+    color: red;
+    font-weight: bold;
+    font-size: 18;
+    margin-top: 20px;
+}

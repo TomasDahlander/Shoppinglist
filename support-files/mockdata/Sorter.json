@@ -3,7 +3,7 @@
         "id": 8,
         "storeName": "Wilys",
         "categoryName": "Hygien",
-        "sortvalue": 5,
+        "sortValue": 5,
         "users": {
             "id": 7
         }
@@ -12,7 +12,7 @@
         "id": 9,
         "storeName": "Wilys",
         "categoryName": "Frukt & Grönt",
-        "sortvalue": 1,
+        "sortValue": 1,
         "users": {
             "id": 7
         }
@@ -21,7 +21,7 @@
         "id": 10,
         "storeName": "Wilys",
         "categoryName": "Kylvaror",
-        "sortvalue": 2,
+        "sortValue": 2,
         "users": {
             "id": 7
         }
@@ -30,7 +30,7 @@
         "id": 11,
         "storeName": "Wilys",
         "categoryName": "Skafferi",
-        "sortvalue": 4,
+        "sortValue": 4,
         "users": {
             "id": 7
         }
@@ -39,7 +39,7 @@
         "id": 12,
         "storeName": "Wilys",
         "categoryName": "Frysvaror",
-        "sortvalue": 3,
+        "sortValue": 3,
         "users": {
             "id": 7
         }
@@ -48,7 +48,7 @@
         "id": 13,
         "storeName": "Wilys",
         "categoryName": "Övrigt",
-        "sortvalue": 6,
+        "sortValue": 6,
         "users": {
             "id": 7
         }
@@ -57,7 +57,7 @@
         "id": 14,
         "storeName": "Ica BEA",
         "categoryName": "Hygien",
-        "sortvalue": 2,
+        "sortValue": 2,
         "users": {
             "id": 7
         }
@@ -66,7 +66,7 @@
         "id": 15,
         "storeName": "Ica BEA",
         "categoryName": "Frukt & Grönt",
-        "sortvalue": 5,
+        "sortValue": 5,
         "users": {
             "id": 7
         }
@@ -75,7 +75,7 @@
         "id": 16,
         "storeName": "Ica BEA",
         "categoryName": "Kylvaror",
-        "sortvalue": 3,
+        "sortValue": 3,
         "users": {
             "id": 7
         }
@@ -84,7 +84,7 @@
         "id": 17,
         "storeName": "Ica BEA",
         "categoryName": "Skafferi",
-        "sortvalue": 6,
+        "sortValue": 6,
         "users": {
             "id": 7
         }
@@ -93,7 +93,7 @@
         "id": 18,
         "storeName": "Ica BEA",
         "categoryName": "Frysvaror",
-        "sortvalue": 4,
+        "sortValue": 4,
         "users": {
             "id": 7
         }
@@ -102,7 +102,7 @@
         "id": 19,
         "storeName": "Ica BEA",
         "categoryName": "Övrigt",
-        "sortvalue": 1,
+        "sortValue": 1,
         "users": {
             "id": 7
         }

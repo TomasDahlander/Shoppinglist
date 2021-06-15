@@ -5,7 +5,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Login</title>
-        <link rel="stylesheet" href="/support-files/cerulean.bootstrap.min.css" />
+        <link
+            rel="stylesheet"
+            href="/support-files/cerulean.bootstrap.min.css"
+        />
         <link rel="stylesheet" href="/support-files/login.css" />
     </head>
     <body>
@@ -17,16 +20,28 @@
                 </div>
             </div>
             <!-- Headline ends -->
-      
+
             <!-- Input starts  -->
             <div class="row">
                 <div class="col-12">
-                    <label for="username">Username:</label><br>
-                    <input id="username" type="text" class="form-control" maxlength="50" placeholder="Username...">
+                    <label for="username">Username:</label><br />
+                    <input
+                        id="username"
+                        type="text"
+                        class="form-control"
+                        maxlength="50"
+                        placeholder="Username..."
+                    />
                 </div>
                 <div class="col-12">
-                    <label for="password">Password:</label><br>
-                    <input id="password" type="text" class="form-control" maxlength="50" placeholder="Password..."><br>
+                    <label for="password">Password:</label><br />
+                    <input
+                        id="password"
+                        type="text"
+                        class="form-control"
+                        maxlength="50"
+                        placeholder="Password..."
+                    /><br />
                 </div>
                 <div class="col-12 text-center">
                     <button id="loginBtn" class="btn btn-primary">Login</button>
@@ -34,7 +49,11 @@
             </div>
             <!-- Input ends  -->
 
-            
+            <div id="errorMessage" class="row text-center">
+                <div class="col-12">
+                    <p>Wrong credentials!</p>
+                </div>
+            </div>
         </div>
 
         <script

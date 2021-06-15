@@ -44,13 +44,13 @@ td {
     padding-left: 10px;
 }
 
-.category-input{
+.category-input {
     width: 100%;
     margin-top: 10px;
     display: inline;
 }
 
-.sorter-display{
+.sorter-display {
     text-align: left !important;
     padding-left: 5px;
     font-weight: bold;
@@ -58,7 +58,7 @@ td {
     border-radius: 10px;
 }
 
-.sorter-input{
+.sorter-input {
     padding: 0px;
     text-align: center;
 }
@@ -111,36 +111,36 @@ td {
 }
 
 #addInput,
-#editInput{
+#editInput {
     margin-top: 30px;
 }
 
-#settings-modal-category-input{
+#settings-modal-category-input {
     margin-top: 20px;
 }
 
-#settings-modal-div{
+#settings-modal-div {
     padding-top: 30px;
 }
 
 /* Media queries */
 
-@media screen and (max-width: 370px){
-    #add-modal-category-input{
-        font-size: 0.8rem;
-    }
-    
-    #edit-modal-category-input{
+@media screen and (max-width: 370px) {
+    #add-modal-category-input {
         font-size: 0.8rem;
     }
 
-    #settings-modal-category-input{
+    #edit-modal-category-input {
+        font-size: 0.8rem;
+    }
+
+    #settings-modal-category-input {
         font-size: 0.8rem;
     }
 }
 
-@media screen and (min-width: 500px){
-    #maindiv{
+@media screen and (min-width: 500px) {
+    #maindiv {
         width: 500px;
     }
 }
