@@ -503,14 +503,38 @@ $(document).ready(function () {
                 name: categoryName,
                 color: color,
             },
-            users: {
+            user: {
                 id: user.id,
             },
         };
 
-        // Adds the item to the itemList and render the item to the html list with the parameter onload = false
-        itemList.unshift(item);
-        renderItem(item, false);
+        // Sends the item to the database and when returned is added to the Html list
+        sendItemToDatabase(item);
+    }
+
+    function sendItemToDatabase(item) {
+        fetch("https://td-shoppinglist-backend.herokuapp.com/item/add", {
+            method: "POST",
+            body: JSON.stringify(item),
+            headers: {
+                "Content-type": "application/json",
+            },
+        })
+            .then(function (response) {
+                if (response.status == 200) {
+                    return response.json();
+                } else return "error";
+            })
+            .then(function (data) {
+                if (data == "error") {
+                    console.log("error");
+                } else {
+                    console.log(data);
+                    itemList.unshift(data);
+                    renderItem(data, false);
+                }
+            })
+            .then(() => resetAddInputValue());
     }
 
     /**
