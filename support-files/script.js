@@ -25,8 +25,10 @@ let sortingtable; // The table where the sorters are displayed within
 let currentEditableItemId;
 
 // Memory for swiping
-let touchstartX = 0;
-let touchendX = 0;
+let touchStartX = 0;
+let touchEndX = 0;
+let touchStartY = 0;
+let touchEndY = 0;
 
 $(document).ready(function () {
     if (localStorage.getItem("user") == null) {
@@ -128,9 +130,7 @@ $(document).ready(function () {
      * Fetches the sorter from the database and sets it to the variable sorter
      */
     function fetchSorter() {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`
-        ) //  /support-files/mockdata/Sorter.json
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`) //  /support-files/mockdata/Sorter.json
             .then((response) => response.json())
             .then(function (data) {
                 sorter = data;
@@ -206,9 +206,7 @@ $(document).ready(function () {
      * Fetches the item array from the database
      */
     function fetchItems() {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`
-        ) // /support-files/mockdata/Items.json
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`)
             .then((response) => response.json())
             .then((data) => setAndRenderItems(data))
             .then(() => displaySorter())
@@ -279,27 +277,19 @@ $(document).ready(function () {
             changeItemCheckedStatusInListForId(id);
         });
 
-        document
-            .getElementById(`${item.id}`)
-            .addEventListener("touchstart", function (event) {
-                touchstartX = event.changedTouches[0].screenX;
-                console.log(touchstartX);
-            });
+        // Set up swipe right start touch listener for deleting items
+        document.getElementById(`${item.id}`).addEventListener("touchstart", function (event) {
+            touchStartX = event.changedTouches[0].screenX;
+            touchStartY = event.changedTouches[0].screenY;
+        });
 
-        document
-            .getElementById(`${item.id}`)
-            .addEventListener("touchend", function (event) {
-                touchendX = event.changedTouches[0].screenX;
-                console.log(touchendX);
-                handleSwipe();
-            });
-
-        // ÄNDRA PÅ DENNA
-        function handleSwipe() {
-            if (touchendX > touchstartX) {
-                console.log("swiped right");
-            }
-        }
+        // Set up swipe right end touch listener for deleting items
+        document.getElementById(`${item.id}`).addEventListener("touchend", function (event) {
+            currentEditableItemId = `${item.id}`;
+            touchEndX = event.changedTouches[0].screenX;
+            touchEndY = event.changedTouches[0].screenY;
+            deleteItemFromHtmlListById(`${item.id}`);
+        });
 
         /**
          * Listener for the edit button for each element thats added to the item table list
@@ -308,6 +298,30 @@ $(document).ready(function () {
             currentEditableItemId = `${item.id}`;
             setUpEditModal(`${item.id}`);
             modalEdit.css("display", "block");
+        });
+    }
+
+    /**
+     * Function that takes an id of an element and removes the parent så it is removed from the list
+     * and then it send it the function deleteItemById
+     * @param {Long} id
+     */
+    function deleteItemFromHtmlListById(id) {
+        const xValue = touchEndX - touchStartX;
+        const yValue = touchEndY - touchStartY;
+        if (xValue > 100 && yValue > -25 && yValue < 25) {
+            $(`#${id}`).parent().remove();
+            deleteItemFromDatabaseById(id);
+        }
+    }
+
+    function deleteItemFromDatabaseById(id) {
+        console.log(id);
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`).then(function (
+            response
+        ) {
+            if (response.status == 200) console.log("Removed item ok!");
+            else console.log("Something went wrong...!");
         });
     }
 
@@ -357,10 +371,7 @@ $(document).ready(function () {
 
         for (s of sorter) {
             if (s.storeName == store) {
-                const sortvalue = $(`#${s.id}`)
-                    .next()
-                    .children("input.form-control")
-                    .val();
+                const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
                 s.sortvalue = sortvalue;
             }
         }
@@ -380,8 +391,7 @@ $(document).ready(function () {
      */
     function getCorrectSortingValue(store, category) {
         for (s of sorter) {
-            if (s.categoryName == category && s.storeName == store)
-                return s.sortvalue;
+            if (s.categoryName == category && s.storeName == store) return s.sortvalue;
         }
     }
 
