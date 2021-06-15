@@ -465,12 +465,40 @@ $(document).ready(function () {
             }
         }
 
+        updateItemInDatabase();
+
         // Changes the html element
         const itemElement = $(`#${currentEditableItemId}`);
         itemElement.text(itemName);
         itemElement.attr("value", sortvalue);
         itemElement.parent().css({ "background-color": `${color}` });
         itemElement.attr("name", categoryName);
+    }
+
+    /**
+     * Function that checks the last editable id and sends that item to the database for update
+     * and alerts if it didnt connect to the database.
+     */
+    function updateItemInDatabase() {
+        let item;
+        for (i of itemList) {
+            if (i.id == currentEditableItemId) {
+                item = i;
+                break;
+            }
+        }
+
+        fetch("https://td-shoppinglist-backend.herokuapp.com/item/add", {
+            method: "POST",
+            body: JSON.stringify(item),
+            headers: {
+                "Content-type": "application/json",
+            },
+        }).then(function (response) {
+            if (response.status != 200) {
+                alert("Could not update item in database!");
+            }
+        });
     }
 
     /**
