@@ -25,516 +25,520 @@ let sortingtable; // The table where the sorters are displayed within
 let currentEditableItemId;
 
 $(document).ready(function () {
-    // Listeners that can be initiated on load *****************************************************************************
+  // Listeners that can be initiated on load *****************************************************************************
 
-    /**
-     * Displays the modal when clicking add
-     */
-    $("#addBtn").click(function () {
-        modalAdd.css("display", "block");
-    });
+  /**
+   * Displays the modal when clicking add
+   */
+  $("#addBtn").click(function () {
+    modalAdd.css("display", "block");
+  });
 
-    /**
-     * Hides the modal when clicking on the x in the modalAdd
-     */
-    $("#add-modal-closer").click(function () {
-        modalAdd.css("display", "none");
-        resetAddInputValue();
-    });
+  /**
+   * Hides the modal when clicking on the x in the modalAdd
+   */
+  $("#add-modal-closer").click(function () {
+    modalAdd.css("display", "none");
+    resetAddInputValue();
+  });
 
-    /**
-     * Hides the editing modal when clicking on the x in the modalEdit
-     */
-    $("#edit-modal-closer").click(function () {
-        modalEdit.css("display", "none");
-    });
+  /**
+   * Hides the editing modal when clicking on the x in the modalEdit
+   */
+  $("#edit-modal-closer").click(function () {
+    modalEdit.css("display", "none");
+  });
 
-    /**
-     * Collects and adds an item to the list from the add modal
-     */
-    $("#okAddBtn").click(function () {
-        getInfoFromAddModal();
-        modalAdd.css("display", "none");
-        resetAddInputValue();
-    });
+  /**
+   * Collects and adds an item to the list from the add modal
+   */
+  $("#okAddBtn").click(function () {
+    getInfoFromAddModal();
+    modalAdd.css("display", "none");
+    resetAddInputValue();
+  });
 
-    /**
-     * Updates the current list element both in list and the html table list and closes the modal
-     */
-    $("#okEditBtn").click(function () {
-        updateHtmlListItem();
-        modalEdit.css("display", "none");
-    });
+  /**
+   * Updates the current list element both in list and the html table list and closes the modal
+   */
+  $("#okEditBtn").click(function () {
+    updateHtmlListItem();
+    modalEdit.css("display", "none");
+  });
 
-    /**
-     * Displays the settings modal
-     */
-    $("#settingsBtn").click(function () {
-        modalSettings.css("display", "block");
-    });
+  /**
+   * Displays the settings modal
+   */
+  $("#settingsBtn").click(function () {
+    modalSettings.css("display", "block");
+  });
 
-    /**
-     * Hides the setting modal when clicking on the x in the modalSetting
-     */
-    $("#settings-modal-closer").click(function () {
-        modalSettings.css("display", "none");
-    });
+  /**
+   * Hides the setting modal when clicking on the x in the modalSetting
+   */
+  $("#settings-modal-closer").click(function () {
+    modalSettings.css("display", "none");
+  });
 
-    /**
-     * Button that updates the sorter and sets it for use when sorting
-     */
-    $("#updateSettingBtn").click(function () {
-        updateSorterAndHtml();
-    });
+  /**
+   * Button that updates the sorter and sets it for use when sorting
+   */
+  $("#updateSettingBtn").click(function () {
+    updateSorterAndHtml();
+  });
 
-    /**
-     * When choosing a new store this event is triggered to display the sorter for that store
-     */
-    $("#settings-modal-category-input").change(function () {
-        displaySorter();
-    });
+  /**
+   * When choosing a new store this event is triggered to display the sorter for that store
+   */
+  $("#settings-modal-category-input").change(function () {
+    displaySorter();
+  });
 
-    /**
-     * Sorts the elements in the list depending on the sorting value for that category
-     */
-    $("#sortingBtn").click(function () {
-        sortTable();
-    });
+  /**
+   * Sorts the elements in the list depending on the sorting value for that category
+   */
+  $("#sortingBtn").click(function () {
+    sortTable();
+  });
 
-    $("#refreshBtn").click(function () {
-        console.log("Clicked on refresh button!");
-    });
+  $("#refreshBtn").click(function () {
+    console.log("Clicked on refresh button!");
+  });
 
-    $("#logutBtn").click(function () {
-        console.log("Clicked on logout button!");
-    });
+  $("#logutBtn").click(function () {
+    console.log("Clicked on logout button!");
+  });
 
-    $("#createSorterBtn").click(function () {
-        console.log("Clicked on new store button!");
-    });
+  $("#createSorterBtn").click(function () {
+    console.log("Clicked on new store button!");
+  });
 
-    // Functions ***********************************************************************************************************
+  // Functions ***********************************************************************************************************
 
-    /**
-     * Fetches the user from a JSON file and sets it to the variable user
-     */
-    function fetchUser() {
-        fetch("/support-files/mockdata/Users.json")
-            .then((response) => response.json())
-            .then(function (userinfo) {
-                user = userinfo;
-            })
-            .then(() => fetchSorter());
+  /**
+   * Fetches the user from a JSON file and sets it to the variable user
+   */
+  function fetchUser() {
+    fetch("/support-files/mockdata/Users.json")
+      .then((response) => response.json())
+      .then(function (userinfo) {
+        user = userinfo;
+      })
+      .then(() => fetchSorter());
+  }
+
+  /**
+   * Fetches the sorter from a JSON file and sets it to the variabler sorter
+   */
+  function fetchSorter() {
+    fetch("https://td-shoppinglist-backend.herokuapp.com/sorting/get/7") //  /support-files/mockdata/Sorter.json
+      .then((response) => response.json())
+      .then(function (data) {
+        sorter = data;
+      })
+      .then(function () {
+        setUpStoreChoices();
+      })
+      .then(() => fetchCategories());
+  }
+
+  /**
+   * Function that sets up the choices you have for the stores
+   */
+  function setUpStoreChoices() {
+    for (s of sorter) {
+      if (!stores.includes(s.storeName)) {
+        stores.push(s.storeName);
+      }
     }
 
-    /**
-     * Fetches the sorter from a JSON file and sets it to the variabler sorter
-     */
-    function fetchSorter() {
-        fetch("/support-files/mockdata/Sorter.json")
-            .then((response) => response.json())
-            .then(function (data) {
-                sorter = data;
-            })
-            .then(function () {
-                setUpStoreChoices();
-            })
-            .then(() => fetchCategories());
-    }
-
-    /**
-     * Function that sets up the choices you have for the stores
-     */
-    function setUpStoreChoices() {
-        for (s of sorter) {
-            if (!stores.includes(s.storeName)) {
-                stores.push(s.storeName);
-            }
-        }
-
-        for (store of stores) {
-            storeSelectSettingModal.append(`
+    for (store of stores) {
+      storeSelectSettingModal.append(`
             <option class="option-input">
                 ${store}
             </option> 
             `);
-        }
+    }
+  }
+
+  /**
+   * Fetches the category array from a JSON file
+   */
+  function fetchCategories() {
+    fetch("https://td-shoppinglist-backend.herokuapp.com/category/get") // /support-files/mockdata/Categories.json
+      .then((response) => response.json())
+      .then((data) => setAndRenderCategories(data))
+      .then(() => fetchItems());
+  }
+
+  /**
+   * Receives JSON data with categories
+   * @param {JSON} categoryDataArray
+   */
+  function setAndRenderCategories(categoryDataArray) {
+    categories = categoryDataArray;
+
+    // Loops through the categories and sets that the Övrigt should be selected from start
+    for (cat of categories) {
+      if (cat.name === "Övrigt") renderCategory(cat, "selected");
+      else renderCategory(cat, "");
+    }
+  }
+
+  /**
+   * Functions that appends one category to dropdown options meny for categories when adding an item
+   * @param {Object} category
+   * @param {String} selected
+   */
+  function renderCategory(category, selected) {
+    categorySelectAddModal.append(`
+            <option id="${category.id}" class="option-input" style="background-color: ${category.color};" ${selected}>
+                ${category.name}
+            </option>
+        `);
+    categorySelectEditModal.append(`
+            <option id="${category.id}" class="option-input" style="background-color: ${category.color};" ${selected}>
+                ${category.name}
+            </option>
+        `);
+  }
+
+  /**
+   * Fetches the item array from a JSON file
+   */
+  function fetchItems() {
+    fetch("https://td-shoppinglist-backend.herokuapp.com/item/get/7") // /support-files/mockdata/Items.json
+      .then((response) => response.json())
+      .then((data) => setAndRenderItems(data))
+      .then(() => displaySorter())
+      .then(() => sortTable());
+  }
+
+  /**
+   * Receives JSON data with items
+   * @param {JSON} categoryDataArray
+   */
+  function setAndRenderItems(itemDataArray) {
+    itemList = itemDataArray;
+
+    // Sends each item to the item render function with true becouse this is on page load
+    for (item of itemList) {
+      renderItem(item, true);
+    }
+  }
+
+  /**
+   * Functions that appends one item to the table for items
+   * @param {Object} item
+   */
+  function renderItem(item, onload) {
+    const color = item.category.color;
+
+    let rowClasses;
+    let sortvalue;
+
+    // Checks the sort value from the sorter for the category and sets the html element value for later sorting
+    for (s of sorter) {
+      if (s.categoryName == item.category.name) {
+        sortvalue = s.sortvalue;
+        break;
+      }
+    }
+
+    // Checks if the item is checked and sets the classes accordingly
+    if (item.checked) {
+      rowClasses = "row-item checked-item";
+    } else {
+      rowClasses = "row-item";
+    }
+
+    // Appends or prepends the html element depending on if it is on load or on adding an item
+    if (onload) {
+      tableArea.append(`
+            <tr style="background-color: ${color};">
+                <td id="${item.id}" value="${sortvalue}" name="${item.category.name}" class="${rowClasses}">${item.name}</td>
+                <td id="edit${item.id}" class="row-button">&vellip;</td>
+            </tr>
+            `);
+    } else {
+      tableArea.prepend(`
+            <tr style="background-color: ${color};">
+                <td id="${item.id}" value="${sortvalue}" name="${item.category.name}" class="${rowClasses}">${item.name}</td>
+                <td id="edit${item.id}" class="row-button">&vellip;</td>
+            </tr>
+            `);
     }
 
     /**
-     * Fetches the category array from a JSON file
+     * Listener on the id for the item element rows that toggles if the items is checkod or not
      */
-    function fetchCategories() {
-        fetch("/support-files/mockdata/Categories.json")
-            .then((response) => response.json())
-            .then((data) => setAndRenderCategories(data))
-            .then(() => fetchItems());
-    }
+    $(`#${item.id}`).click(function () {
+      const id = $(this).prop("id");
+      $(this).toggleClass("checked-item");
+      changeItemCheckedStatusInListForId(id);
+    });
+
+    $(`#${item.id}`).on("swiperight", function () {
+      /// Försök till swipe right... Behövs bibliotek för det.... pung
+      $(this).css("color", "red");
+      console.log("swiping!");
+    });
+
+    // $("div.box").on("swiperight", swiperightHandler);
+
+    // // Callback function references the event target and adds the 'swiperight' class to it
+    // function swiperightHandler(event) {
+    //     $(event.target).addClass("swiperight");
+    // }
 
     /**
-     * Receives JSON data with categories
-     * @param {JSON} categoryDataArray
+     * Listener for the edit button for each element thats added to the item table list
      */
-    function setAndRenderCategories(categoryDataArray) {
-        categories = categoryDataArray;
+    $(`#edit${item.id}`).click(function () {
+      currentEditableItemId = `${item.id}`;
+      setUpEditModal(`${item.id}`);
+      modalEdit.css("display", "block");
+    });
+  }
 
-        // Loops through the categories and sets that the Övrigt should be selected from start
+  /**
+   * Function that displays the sorter from the current choice
+   */
+  function displaySorter() {
+    sortingtable.html("");
+    const choice = storeSelectSettingModal.val();
+
+    for (s of sorter) {
+      let color;
+      if (s.storeName == choice) {
         for (cat of categories) {
-            if (cat.name === "Övrigt") renderCategory(cat, "selected");
-            else renderCategory(cat, "");
-        }
-    }
-
-    /**
-     * Functions that appends one category to dropdown options meny for categories when adding an item
-     * @param {Object} category
-     * @param {String} selected
-     */
-    function renderCategory(category, selected) {
-        categorySelectAddModal.append(`
-            <option id="${category.id}" class="option-input" style="background-color: ${category.color};" ${selected}>
-                ${category.name}
-            </option>
-        `);
-        categorySelectEditModal.append(`
-            <option id="${category.id}" class="option-input" style="background-color: ${category.color};" ${selected}>
-                ${category.name}
-            </option>
-        `);
-    }
-
-    /**
-     * Fetches the item array from a JSON file
-     */
-    function fetchItems() {
-        fetch("/support-files/mockdata/Items.json")
-            .then((response) => response.json())
-            .then((data) => setAndRenderItems(data))
-            .then(() => displaySorter())
-            .then(() => sortTable());
-    }
-
-    /**
-     * Receives JSON data with items
-     * @param {JSON} categoryDataArray
-     */
-    function setAndRenderItems(itemDataArray) {
-        itemList = itemDataArray;
-
-        // Sends each item to the item render function with true becouse this is on page load
-        for (item of itemList) {
-            renderItem(item, true);
-        }
-    }
-
-    /**
-     * Functions that appends one item to the table for items
-     * @param {Object} item
-     */
-    function renderItem(item, onload) {
-        const color = item.category.color;
-
-        let rowClasses;
-        let sortvalue;
-
-        // Checks the sort value from the sorter for the category and sets the html element value for later sorting
-        for (s of sorter) {
-            if (s.categoryName == item.category.name) {
-                sortvalue = s.sortvalue;
-                break;
-            }
+          if (s.categoryName == cat.name) {
+            color = cat.color;
+            break;
+          }
         }
 
-        // Checks if the item is checked and sets the classes accordingly
-        if (item.checked) {
-            rowClasses = "row-item checked-item";
-        } else {
-            rowClasses = "row-item";
-        }
-
-        // Appends or prepends the html element depending on if it is on load or on adding an item
-        if (onload) {
-            tableArea.append(`
-            <tr style="background-color: ${color};">
-                <td id="${item.id}" value="${sortvalue}" name="${item.category.name}" class="${rowClasses}">${item.name}</td>
-                <td id="edit${item.id}" class="row-button">&vellip;</td>
-            </tr>
-            `);
-        } else {
-            tableArea.prepend(`
-            <tr style="background-color: ${color};">
-                <td id="${item.id}" value="${sortvalue}" name="${item.category.name}" class="${rowClasses}">${item.name}</td>
-                <td id="edit${item.id}" class="row-button">&vellip;</td>
-            </tr>
-            `);
-        }
-
-        /**
-         * Listener on the id for the item element rows that toggles if the items is checkod or not
-         */
-        $(`#${item.id}`).click(function () {
-            const id = $(this).prop("id");
-            $(this).toggleClass("checked-item");
-            changeItemCheckedStatusInListForId(id);
-        });
-
-        $(`#${item.id}`).on("swiperight", function () {
-            /// Försök till swipe right... Behövs bibliotek för det.... pung
-            $(this).css("color", "red");
-            console.log("swiping!");
-        });
-
-        // $("div.box").on("swiperight", swiperightHandler);
-
-        // // Callback function references the event target and adds the 'swiperight' class to it
-        // function swiperightHandler(event) {
-        //     $(event.target).addClass("swiperight");
-        // }
-
-        /**
-         * Listener for the edit button for each element thats added to the item table list
-         */
-        $(`#edit${item.id}`).click(function () {
-            currentEditableItemId = `${item.id}`;
-            setUpEditModal(`${item.id}`);
-            modalEdit.css("display", "block");
-        });
-    }
-
-    /**
-     * Function that displays the sorter from the current choice
-     */
-    function displaySorter() {
-        sortingtable.html("");
-        const choice = storeSelectSettingModal.val();
-
-        for (s of sorter) {
-            let color;
-            if (s.storeName == choice) {
-                for (cat of categories) {
-                    if (s.categoryName == cat.name) {
-                        color = cat.color;
-                        break;
-                    }
-                }
-
-                sortingtable.append(`
+        sortingtable.append(`
                     <tr>  
                         <td id="${s.id}" class="sorter-display" style="background-color: ${color};">${s.categoryName}</td>
                         <td style="width: 20%;" class="sorter-input">
                             <input 
                             type="number"
                             class="form-control"
-                            value="${s.sortvalue}"
+                            value="${s.sortValue}"
                             >
                         </td>
                     </tr>
                     `);
-            }
-        }
+      }
+    }
+  }
+
+  /**
+   * Function that update the selected sorter object and then updates the html elements so sorting can be done
+   */
+  function updateSorterAndHtml() {
+    const store = storeSelectSettingModal.val();
+
+    for (s of sorter) {
+      if (s.storeName == store) {
+        const sortvalue = $(`#${s.id}`)
+          .next()
+          .children("input.form-control")
+          .val();
+        s.sortvalue = sortvalue;
+      }
     }
 
-    /**
-     * Function that update the selected sorter object and then updates the html elements so sorting can be done
-     */
-    function updateSorterAndHtml() {
-        const store = storeSelectSettingModal.val();
+    tableArea.children().each(function () {
+      const category = $(this).children("td.row-item").attr("name");
+      const sortvalue = getCorrectSortingValue(store, category);
+      $(this).children("td.row-item").attr("value", sortvalue);
+    });
+  }
 
-        for (s of sorter) {
-            if (s.storeName == store) {
-                const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
-                s.sortvalue = sortvalue;
-            }
-        }
+  /**
+   * Function that gets 2 strings with the storename and a category and returns the correct sorting value
+   * @param {String} store
+   * @param {String} category
+   * @returns
+   */
+  function getCorrectSortingValue(store, category) {
+    for (s of sorter) {
+      if (s.categoryName == category && s.storeName == store)
+        return s.sortvalue;
+    }
+  }
 
-        tableArea.children().each(function () {
-            const category = $(this).children("td.row-item").attr("name");
-            const sortvalue = getCorrectSortingValue(store, category);
-            $(this).children("td.row-item").attr("value", sortvalue);
-        });
+  /**
+   * Function that toggle the checked status in the itemList
+   * @param {Long} id
+   */
+  function changeItemCheckedStatusInListForId(id) {
+    for (item of itemList) {
+      if (item.id == id) {
+        if (item.checked) item.checked = false;
+        else item.checked = true;
+        break;
+      }
+    }
+  }
+
+  /**
+   * Function that populates the modal with the info from the item from the row you clicked on
+   * @param {Long} id
+   */
+  function setUpEditModal(id) {
+    for (item of itemList) {
+      if (id == item.id) {
+        editInputField.val(item.name);
+        categorySelectEditModal.val(item.category.name);
+        break;
+      }
+    }
+  }
+
+  /**
+   * Function that udates the html elements in the list
+   * @returns Exits function if input field is empty.
+   */
+  function updateHtmlListItem() {
+    const itemName = editInputField.val();
+    if (itemName.length == 0) return; // if no content is typed in exit the function here
+
+    const categoryName = categorySelectEditModal.val();
+    const store = storeSelectSettingModal.val();
+    let categoryId;
+    let color;
+    let sortvalue;
+
+    // Loops through the categories to get the correct id and color values
+    for (cat of categories) {
+      if (cat.name == categoryName) {
+        categoryId = cat.id;
+        color = cat.color;
+        break;
+      }
     }
 
-    /**
-     * Function that gets 2 strings with the storename and a category and returns the correct sorting value
-     * @param {String} store
-     * @param {String} category
-     * @returns
-     */
-    function getCorrectSortingValue(store, category) {
-        for (s of sorter) {
-            if (s.categoryName == category && s.storeName == store) return s.sortvalue;
-        }
+    // Checks the sort value from the sorter for the category and sets the html element value for later sorting
+    for (s of sorter) {
+      if (s.categoryName == categoryName && s.storeName == store) {
+        sortvalue = s.sortvalue;
+        break;
+      }
     }
 
-    /**
-     * Function that toggle the checked status in the itemList
-     * @param {Long} id
-     */
-    function changeItemCheckedStatusInListForId(id) {
-        for (item of itemList) {
-            if (item.id == id) {
-                if (item.checked) item.checked = false;
-                else item.checked = true;
-                break;
-            }
-        }
+    // Update the array and then the html list
+    for (item of itemList) {
+      if (item.id == currentEditableItemId) {
+        item.name = itemName;
+        item.category.id = categoryId;
+        item.category.name = categoryName;
+        item.category.color = color;
+        break;
+      }
     }
 
-    /**
-     * Function that populates the modal with the info from the item from the row you clicked on
-     * @param {Long} id
-     */
-    function setUpEditModal(id) {
-        for (item of itemList) {
-            if (id == item.id) {
-                editInputField.val(item.name);
-                categorySelectEditModal.val(item.category.name);
-                break;
-            }
-        }
+    // Changes the html element
+    const itemElement = $(`#${currentEditableItemId}`);
+    itemElement.text(itemName);
+    itemElement.attr("value", sortvalue);
+    itemElement.parent().css({ "background-color": `${color}` });
+    itemElement.attr("name", categoryName);
+  }
+
+  /**
+   * Function that reads the input from the add modal and sends an item object to the
+   * renderItem function with false to onload so the item will be placed on the top of the list
+   */
+  function getInfoFromAddModal() {
+    // Get and check the input value
+    const itemName = addInputField.val();
+    if (itemName.length == 0) return; // if no content is typed in exit the function here
+
+    const categoryName = categorySelectAddModal.val();
+    let categoryid;
+    let color;
+
+    // Loops through the categories to get the correct id and color values
+    for (cat of categories) {
+      if (cat.name == categoryName) {
+        categoryid = cat.id;
+        color = cat.color;
+      }
     }
 
-    /**
-     * Function that udates the html elements in the list
-     * @returns Exits function if input field is empty.
-     */
-    function updateHtmlListItem() {
-        const itemName = editInputField.val();
-        if (itemName.length == 0) return; // if no content is typed in exit the function here
+    // Creates an item object
+    let item = {
+      name: itemName,
+      checked: false,
+      category: {
+        id: categoryid,
+        name: categoryName,
+        color: color,
+      },
+      users: {
+        id: user.id,
+      },
+    };
 
-        const categoryName = categorySelectEditModal.val();
-        const store = storeSelectSettingModal.val();
-        let categoryId;
-        let color;
-        let sortvalue;
+    // Adds the item to the itemList and render the item to the html list with the parameter onload = false
+    itemList.unshift(item);
+    renderItem(item, false);
+  }
 
-        // Loops through the categories to get the correct id and color values
-        for (cat of categories) {
-            if (cat.name == categoryName) {
-                categoryId = cat.id;
-                color = cat.color;
-                break;
-            }
+  /**
+   * Function that resets the values in the addModals input fields by looping through and checks for category Övrigt
+   */
+  function resetAddInputValue() {
+    addInputField.val("");
+    $("#add-modal-category-input").val("Övrigt");
+  }
+
+  /**
+   * Sorting the elements in the item table
+   */
+  function sortTable() {
+    let table, rows, switching, a, b;
+
+    // Set the table to a variable and start with the switching
+    table = document.getElementById("tableArea");
+    switching = true;
+
+    // Loops while not all is sorted
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+
+      // Loops through all the tr elements in the table
+      for (let i = 0; i < rows.length - 1; i++) {
+        a = rows[i].getElementsByTagName("td")[0];
+        b = rows[i + 1].getElementsByTagName("td")[0];
+
+        // Switch places of two elements if the are in the wrong sort order and starts a new loop
+        if (a.getAttribute("value") > b.getAttribute("value")) {
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          break;
         }
-
-        // Checks the sort value from the sorter for the category and sets the html element value for later sorting
-        for (s of sorter) {
-            if (s.categoryName == categoryName && s.storeName == store) {
-                sortvalue = s.sortvalue;
-                break;
-            }
-        }
-
-        // Update the array and then the html list
-        for (item of itemList) {
-            if (item.id == currentEditableItemId) {
-                item.name = itemName;
-                item.category.id = categoryId;
-                item.category.name = categoryName;
-                item.category.color = color;
-                break;
-            }
-        }
-
-        // Changes the html element
-        const itemElement = $(`#${currentEditableItemId}`);
-        itemElement.text(itemName);
-        itemElement.attr("value", sortvalue);
-        itemElement.parent().css({ "background-color": `${color}` });
-        itemElement.attr("name", categoryName);
+      }
     }
+  }
 
-    /**
-     * Function that reads the input from the add modal and sends an item object to the
-     * renderItem function with false to onload so the item will be placed on the top of the list
-     */
-    function getInfoFromAddModal() {
-        // Get and check the input value
-        const itemName = addInputField.val();
-        if (itemName.length == 0) return; // if no content is typed in exit the function here
-
-        const categoryName = categorySelectAddModal.val();
-        let categoryid;
-        let color;
-
-        // Loops through the categories to get the correct id and color values
-        for (cat of categories) {
-            if (cat.name == categoryName) {
-                categoryid = cat.id;
-                color = cat.color;
-            }
-        }
-
-        // Creates an item object
-        let item = {
-            name: itemName,
-            checked: false,
-            category: {
-                id: categoryid,
-                name: categoryName,
-                color: color,
-            },
-            users: {
-                id: user.id,
-            },
-        };
-
-        // Adds the item to the itemList and render the item to the html list with the parameter onload = false
-        itemList.unshift(item);
-        renderItem(item, false);
-    }
-
-    /**
-     * Function that resets the values in the addModals input fields by looping through and checks for category Övrigt
-     */
-    function resetAddInputValue() {
-        addInputField.val("");
-        $("#add-modal-category-input").val("Övrigt");
-    }
-
-    /**
-     * Sorting the elements in the item table
-     */
-    function sortTable() {
-        let table, rows, switching, a, b;
-
-        // Set the table to a variable and start with the switching
-        table = document.getElementById("tableArea");
-        switching = true;
-
-        // Loops while not all is sorted
-        while (switching) {
-            switching = false;
-            rows = table.rows;
-
-            // Loops through all the tr elements in the table
-            for (let i = 0; i < rows.length - 1; i++) {
-                a = rows[i].getElementsByTagName("td")[0];
-                b = rows[i + 1].getElementsByTagName("td")[0];
-
-                // Switch places of two elements if the are in the wrong sort order and starts a new loop
-                if (a.getAttribute("value") > b.getAttribute("value")) {
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                    switching = true;
-                    break;
-                }
-            }
-        }
-    }
-
-    // Runs when loaded ****************************************************************************************************
-    fetchUser(); // Call the user fetch function which is later linked to the remaining 3 fetches below
-    // fetchSorter(); // Call the sorter fetch function
-    // fetchCategories(); // Call the category fetch function
-    // fetchItems(); // Call the item fetch function
-    modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
-    modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
-    modalSettings = $("#settings-modal-div"); // sets the modal for settings to a variable
-    categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
-    categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal
-    storeSelectSettingModal = $("#settings-modal-category-input"); // set the option selector to a variable on the setting modal
-    addInputField = $("#addInput"); // sets the input field in the add modal to a variable
-    editInputField = $("#editInput"); // sets the input field in the edit modal to a variable
-    tableArea = $("#tableArea"); // sets the item table to a variable
-    sortingtable = $("#sortingtable"); // sets the sorters table to a variable
+  // Runs when loaded ****************************************************************************************************
+  // fetchSorter(); // Call the sorter fetch function
+  // fetchCategories(); // Call the category fetch function
+  // fetchItems(); // Call the item fetch function
+  modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
+  modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
+  modalSettings = $("#settings-modal-div"); // sets the modal for settings to a variable
+  categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
+  categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal
+  storeSelectSettingModal = $("#settings-modal-category-input"); // set the option selector to a variable on the setting modal
+  addInputField = $("#addInput"); // sets the input field in the add modal to a variable
+  editInputField = $("#editInput"); // sets the input field in the edit modal to a variable
+  tableArea = $("#tableArea"); // sets the item table to a variable
+  sortingtable = $("#sortingtable"); // sets the sorters table to a variable
+  fetchUser(); // Call the user fetch function which is later linked to the remaining 3 fetches below
 });
