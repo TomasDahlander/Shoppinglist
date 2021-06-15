@@ -113,6 +113,7 @@ $(document).ready(function () {
 
     $("#refreshBtn").click(function () {
         console.log("Clicked on refresh button!");
+        updateItemChecks();
     });
 
     $("#logutBtn").click(function () {
@@ -614,6 +615,25 @@ $(document).ready(function () {
     function resetAddInputValue() {
         addInputField.val("");
         $("#add-modal-category-input").val("Övrigt");
+    }
+
+    /**
+     * Function that send the entire itemList to the database to update all checked item etc
+     */
+    function updateItemChecks() {
+        fetch("https://td-shoppinglist-backend.herokuapp.com/item/add/list", {
+            method: "POST",
+            body: JSON.stringify(itemList),
+            headers: {
+                "Content-type": "application/json",
+            },
+        }).then(function (response) {
+            if (response.status != 200) {
+                alert("Could not update items in database!");
+            } else {
+                alert("All items updated!");
+            }
+        });
     }
 
     /**
