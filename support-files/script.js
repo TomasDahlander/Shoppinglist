@@ -24,6 +24,10 @@ let sortingtable; // The table where the sorters are displayed within
 // Cache memory for less looping
 let currentEditableItemId;
 
+// Memory for swiping
+let touchstartX = 0;
+let touchendX = 0;
+
 $(document).ready(function () {
     if (localStorage.getItem("user") == null) {
         window.location.replace("/login.html");
@@ -121,19 +125,7 @@ $(document).ready(function () {
     // Functions ***********************************************************************************************************
 
     /**
-     * Fetches the user from a JSON file and sets it to the variable user
-     */
-    // function fetchUser() {
-    //     fetch("/support-files/mockdata/Users.json")
-    //         .then((response) => response.json())
-    //         .then(function (userinfo) {
-    //             user = userinfo;
-    //         })
-    //         .then(() => fetchSorter());
-    // }
-
-    /**
-     * Fetches the sorter from a JSON file and sets it to the variabler sorter
+     * Fetches the sorter from the database and sets it to the variable sorter
      */
     function fetchSorter() {
         fetch(
@@ -169,10 +161,10 @@ $(document).ready(function () {
     }
 
     /**
-     * Fetches the category array from a JSON file
+     * Fetches the category array from the database
      */
     function fetchCategories() {
-        fetch("https://td-shoppinglist-backend.herokuapp.com/category/get") // /support-files/mockdata/Categories.json
+        fetch("https://td-shoppinglist-backend.herokuapp.com/category/get")
             .then((response) => response.json())
             .then((data) => setAndRenderCategories(data))
             .then(() => fetchItems());
@@ -211,7 +203,7 @@ $(document).ready(function () {
     }
 
     /**
-     * Fetches the item array from a JSON file
+     * Fetches the item array from the database
      */
     function fetchItems() {
         fetch(
@@ -249,7 +241,7 @@ $(document).ready(function () {
         // Checks the sort value from the sorter for the category and sets the html element value for later sorting
         for (s of sorter) {
             if (s.categoryName == item.category.name) {
-                sortvalue = s.sortvalue;
+                sortvalue = s.sortValue;
                 break;
             }
         }
@@ -287,18 +279,27 @@ $(document).ready(function () {
             changeItemCheckedStatusInListForId(id);
         });
 
-        $(`#${item.id}`).on("swiperight", function () {
-            /// Försök till swipe right... Behövs bibliotek för det.... pung
-            $(this).css("color", "red");
-            console.log("swiping!");
-        });
+        document
+            .getElementById(`${item.id}`)
+            .addEventListener("touchstart", function (event) {
+                touchstartX = event.changedTouches[0].screenX;
+                console.log(touchstartX);
+            });
 
-        // $("div.box").on("swiperight", swiperightHandler);
+        document
+            .getElementById(`${item.id}`)
+            .addEventListener("touchend", function (event) {
+                touchendX = event.changedTouches[0].screenX;
+                console.log(touchendX);
+                handleSwipe();
+            });
 
-        // // Callback function references the event target and adds the 'swiperight' class to it
-        // function swiperightHandler(event) {
-        //     $(event.target).addClass("swiperight");
-        // }
+        // ÄNDRA PÅ DENNA
+        function handleSwipe() {
+            if (touchendX > touchstartX) {
+                console.log("swiped right");
+            }
+        }
 
         /**
          * Listener for the edit button for each element thats added to the item table list
