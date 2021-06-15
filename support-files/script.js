@@ -368,12 +368,22 @@ $(document).ready(function () {
      */
     function updateSorterAndHtml() {
         const store = storeSelectSettingModal.val();
+        let sortArray = [];
 
         for (s of sorter) {
             if (s.storeName == store) {
                 const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
+                if (validateSorterInput(sortvalue)) {
+                    return;
+                }
                 s.sortvalue = sortvalue;
+                sortArray.push(sortvalue);
             }
+        }
+
+        if (validateEntireSorter(sortArray)) {
+            alert("Categories can't have the same value!");
+            return;
         }
 
         tableArea.children().each(function () {
@@ -381,6 +391,39 @@ $(document).ready(function () {
             const sortvalue = getCorrectSortingValue(store, category);
             $(this).children("td.row-item").attr("value", sortvalue);
         });
+    }
+
+    /**
+     * Function that checks if the new input is a valid value and returns true if it is not valid
+     * @param {int} sortInputValue
+     * @returns
+     */
+    function validateSorterInput(sortInputValue) {
+        if (sortInputValue.length < 1) {
+            alert("All categories must have input values!");
+            return true;
+        } else if (sortInputValue > 6) {
+            alert("Value can't be higher then 6!");
+            return true;
+        } else if (sortInputValue < 1) {
+            alert("Value can't be 0 or lower!");
+        } else return false;
+    }
+
+    /**
+     * Function that checks the entire new sortervalues if there is any duplicates and return true inte that case
+     * @param {array} sortArray
+     * @returns boolean
+     */
+    function validateEntireSorter(sortArray) {
+        sortArray = sortArray.sort();
+
+        for (let i = 0; i < sortArray.length - 1; i++) {
+            if (sortArray[i] >= sortArray[i + 1]) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
