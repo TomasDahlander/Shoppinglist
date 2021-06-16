@@ -169,10 +169,34 @@ $(document).ready(function () {
 
     function deleteCurrentSorter() {
         const store = storeSelectSettingModal.val();
-        console.log(store);
-        console.log(user.id);
 
-        // Fortsätt här
+        sorter = sorter.filter(function (value, index, arr) {
+            return value.storeName != store;
+        });
+
+        storeSelectSettingModal.children().each(function () {
+            if ($(this).val() == store) {
+                $(this).remove();
+            }
+        });
+
+        displaySorter();
+
+        // Fortsätt här och koppla på databas
+
+        // fetch(
+        //     `https://td-shoppinglist-backend.herokuapp.com/sorting/delete/by/name/${store}/id/${user.id}`,
+        //     {
+        //         method: "DELETE",
+        //         headers: {
+        //             "Content-type": "application/json",
+        //         },
+        //     }
+        // ).then(function (response) {
+        //     if (response.status != 200) {
+        //         alert("Could not delete sorters in database!");
+        //     } else console.log("Sorters deleted in database!");
+        // });
     }
 
     /**
