@@ -46,7 +46,6 @@ td {
 
 .category-input {
     width: 100%;
-    margin-top: 10px;
     display: inline;
 }
 
@@ -61,6 +60,11 @@ td {
 .sorter-input {
     padding: 0px;
     text-align: center;
+}
+
+.store-action-btn {
+    width: 100%;
+    margin-top: 10px;
 }
 
 /* Modal classes */
@@ -115,12 +119,12 @@ td {
     margin-top: 30px;
 }
 
-#settings-modal-category-input {
-    margin-top: 20px;
-}
-
 #settings-modal-div {
     padding-top: 30px;
+}
+
+#removeSorterBtn {
+    margin-top: 0px;
 }
 
 /* Media queries */
