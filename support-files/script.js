@@ -13,6 +13,7 @@ let modalEdit;
 let modalSettings;
 let storeRemoveModal;
 let storeChangeNameModal;
+let modalCreateStore;
 
 // Elements
 let categorySelectAddModal; // The selector field where you choose the category for your item which to add to the list
@@ -21,6 +22,7 @@ let categorySelectEditModal; // The selector field where you choose the category
 let editInputField; // The input field where you edit an items name
 let storeSelectSettingModal; // The selector field for the choosen store
 let renameStoreInputField; // The input field for renaming a store
+let createNewStoreInputField; // The input field for creating a store
 let tableArea; // The table where the items are displayed within
 let sortingtable; // The table where the sorters are displayed within
 
@@ -131,6 +133,16 @@ $(document).ready(function () {
 
     $("#createSorterBtn").click(function () {
         console.log("Clicked on new store button!");
+        modalCreateStore.css("display", "block");
+    });
+
+    $("#create-store-modal-closer").click(function () {
+        modalCreateStore.css("display", "none");
+    });
+
+    $("#createNewStoreBtn").click(function () {
+        sendNewStoreToDatabase();
+        modalCreateStore.css("display", "none");
     });
 
     $("#removeSorterBtn").click(function () {
@@ -224,7 +236,7 @@ $(document).ready(function () {
         ).then(function (response) {
             if (response.status != 200) {
                 alert("Could not delete sorters in database!");
-            } else console.log("Sorters deleted in database!");
+            }
         });
     }
 
@@ -387,8 +399,8 @@ $(document).ready(function () {
         fetch(`https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`).then(function (
             response
         ) {
-            if (response.status == 200) console.log("Removed item ok!");
-            else alert("Something went wrong when deleting item from database!");
+            if (response.status != 200)
+                alert("Something went wrong when deleting item from database!");
         });
     }
 
@@ -627,7 +639,7 @@ $(document).ready(function () {
         }).then(function (response) {
             if (response.status != 200) {
                 alert("Could not update item in database!");
-            } else console.log("Items updated in database!");
+            }
         });
     }
 
@@ -641,8 +653,48 @@ $(document).ready(function () {
         }).then(function (response) {
             if (response.status != 200) {
                 alert("Could not update sorters in database!");
-            } else console.log("Sorters updated in database!");
+            }
         });
+    }
+
+    function sendNewStoreToDatabase() {
+        const newSorterName = createNewStoreInputField.val();
+
+        fetch(
+            `https://td-shoppinglist-backend.herokuapp.com/sorting/add/with/name/${newSorterName}/userid/${user.id}`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                },
+            }
+        )
+            .then(function (response) {
+                if (response.status != 200) {
+                    return "error";
+                } else {
+                    return response.json();
+                }
+            })
+            .then(function (data) {
+                if (data == "error") {
+                    alert("Could not create new store in database!");
+                } else {
+                    addNewStoreToHtmlList(data);
+                }
+            });
+    }
+
+    function addNewStoreToHtmlList(newSorter) {
+        for (s of newSorter) {
+            sorter.push(s);
+        }
+
+        storeSelectSettingModal.append(`
+            <option class="option-input">
+                ${newSorter[0].storeName}
+            </option> 
+        `);
     }
 
     /**
@@ -771,6 +823,7 @@ $(document).ready(function () {
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
     modalSettings = $("#sorter-modal-div"); // sets the modal for settings to a variable
+    modalCreateStore = $("#new-sorter-modal-div"); // sets the modal for create new store to a varable
     storeRemoveModal = $("#remove-sorter-modal-div"); // set the modal for removing a store
     storeChangeNameModal = $("#rename-sorter-modal-div"); // set the modal for changing store name
     categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
@@ -779,6 +832,7 @@ $(document).ready(function () {
     addInputField = $("#addInput"); // sets the input field in the add modal to a variable
     editInputField = $("#editInput"); // sets the input field in the edit modal to a variable
     renameStoreInputField = $("#storeNameChangeInput"); // sets the input field for renaming store to a variable
+    createNewStoreInputField = $("#createStoreNameInput"); // sets the input field for creating a new store to a variable
     tableArea = $("#tableArea"); // sets the item table to a variable
     sortingtable = $("#sortingtable"); // sets the sorters table to a variable
     fetchSorter(); // Call the sorter fetch function which is later linked to the remaining fetches below

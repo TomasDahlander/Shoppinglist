@@ -137,6 +137,7 @@ td {
     width: 100%;
 }
 
+#createStoreNameInput,
 #addInput,
 #editInput {
     margin-top: 30px;

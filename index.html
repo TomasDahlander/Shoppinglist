@@ -177,62 +177,104 @@
                 </div>
             </div>
             <!-- Sorter settings modal ends -->
-        </div>
 
-        <!-- Remove sorter modal start -->
-        <div id="remove-sorter-modal-div" class="modal-2">
-            <div class="modal-content-2">
-                <div class="row">
-                    <div class="col-12">
-                        <p>
-                            Are you sure you want to remove:
-                            <span id="removingStoreBanner">test</span>
-                        </p>
-                    </div>
-                    <div class="col-6 text-start">
-                        <button id="yesRemoveStoreBtn" class="btn btn-primary">Yes</button>
-                    </div>
-                    <div class="col-6 text-end">
-                        <button id="noRemoveStoreBtn" class="btn btn-primary">No</button>
+            <!-- Remove sorter modal start -->
+            <div id="remove-sorter-modal-div" class="modal-2">
+                <div class="modal-content-2">
+                    <div class="row">
+                        <div class="col-12">
+                            <p>
+                                Are you sure you want to remove:
+                                <span id="removingStoreBanner">test</span>
+                            </p>
+                        </div>
+                        <div class="col-6 text-start">
+                            <button id="yesRemoveStoreBtn" class="btn btn-primary">Yes</button>
+                        </div>
+                        <div class="col-6 text-end">
+                            <button id="noRemoveStoreBtn" class="btn btn-primary">No</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Remove sorter modal ends -->
+            <!-- Remove sorter modal ends -->
 
-        <!-- Rename sorter modal start -->
-        <div id="rename-sorter-modal-div" class="modal-2">
-            <div class="modal-content-2">
-                <div class="row">
-                    <div class="col-12">
-                        <span id="rename-store-modal-closer" class="close float-end">&times;</span>
+            <!-- Rename sorter modal start -->
+            <div id="rename-sorter-modal-div" class="modal-2">
+                <div class="modal-content-2">
+                    <div class="row">
+                        <div class="col-12">
+                            <span id="rename-store-modal-closer" class="close float-end"
+                                >&times;</span
+                            >
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <p>Update name for: <br /><span id="renameStoreBanner"></span></p>
-                    </div>
-                    <div class="col-12 text-start">
-                        <!-- Text input -->
-                        <input
-                            id="storeNameChangeInput"
-                            type="text"
-                            placeholder="input new store name..."
-                            class="form-control"
-                            maxlength="25"
-                        />
-                    </div>
-                    <div class="col-12">
-                        <button id="updateSorterNameBtn" class="btn btn-primary">
-                            Update store name
-                        </button>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <p>Update name for: <br /><span id="renameStoreBanner"></span></p>
+                        </div>
+                        <div class="col-12 text-start">
+                            <!-- Text input -->
+                            <input
+                                id="storeNameChangeInput"
+                                type="text"
+                                placeholder="input new store name..."
+                                class="form-control"
+                                maxlength="25"
+                            />
+                        </div>
+                        <div class="col-12">
+                            <button id="updateSorterNameBtn" class="btn btn-primary">
+                                Update store name
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Rename sorter modal ends -->
+            <!-- Rename sorter modal ends -->
 
+            <!-- New store modal start -->
+            <div id="new-sorter-modal-div" class="modal-2">
+                <div class="modal-content-2">
+                    <div class="row">
+                        <div class="col-12">
+                            <span id="create-store-modal-closer" class="close float-end"
+                                >&times;</span
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Store choice selector -->
+                    <div class="row">
+                        <div class="col text-start">
+                            <!-- Text input -->
+                            <input
+                                id="createStoreNameInput"
+                                type="text"
+                                placeholder="input store name..."
+                                class="form-control"
+                                maxlength="25"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Button for set to use and update sorter -->
+                    <div class="row">
+                        <div class="col-12">
+                            <button id="createNewStoreBtn" class="btn btn-primary">
+                                Create new store
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row table-area">
+                        <table id="sortingtable"></table>
+                    </div>
+                </div>
+            </div>
+            <!-- New store modal start -->
+        </div>
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
