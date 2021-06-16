@@ -9,7 +9,10 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
         />
-        <link rel="stylesheet" href="/support-files/cerulean.bootstrap.min.css" />
+        <link
+            rel="stylesheet"
+            href="/support-files/cerulean.bootstrap.min.css"
+        />
         <link rel="stylesheet" href="/support-files/styles.css" />
     </head>
     <body>
@@ -41,15 +44,24 @@
             <!-- Buttons start -->
             <div class="row">
                 <div class="col-4">
-                    <button id="settingsBtn" class="btn btn-warning main-button">Stores</button>
+                    <button
+                        id="settingsBtn"
+                        class="btn btn-warning main-button"
+                    >
+                        Stores
+                    </button>
                 </div>
 
                 <div class="col-4">
-                    <button id="sortingBtn" class="btn btn-warning main-button">Sort</button>
+                    <button id="sortingBtn" class="btn btn-warning main-button">
+                        Sort
+                    </button>
                 </div>
 
                 <div class="col-4">
-                    <button id="addBtn" class="btn btn-warning main-button">Add +</button>
+                    <button id="addBtn" class="btn btn-warning main-button">
+                        Add +
+                    </button>
                 </div>
             </div>
             <!-- Buttons  ends -->
@@ -65,7 +77,9 @@
                 <div class="modal-content">
                     <div class="row">
                         <div class="col-12">
-                            <span id="add-modal-closer" class="close float-end">&times;</span>
+                            <span id="add-modal-closer" class="close float-end"
+                                >&times;</span
+                            >
                         </div>
                     </div>
 
@@ -87,7 +101,9 @@
                             ></select>
                         </div>
                         <div class="col-4 text-end">
-                            <button id="okAddBtn" class="btn btn-primary">OK</button>
+                            <button id="okAddBtn" class="btn btn-primary">
+                                OK
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -99,7 +115,9 @@
                 <div class="modal-content">
                     <div class="row">
                         <div class="col-12">
-                            <span id="edit-modal-closer" class="close float-end">&times;</span>
+                            <span id="edit-modal-closer" class="close float-end"
+                                >&times;</span
+                            >
                         </div>
                     </div>
 
@@ -121,7 +139,9 @@
                             ></select>
                         </div>
                         <div class="col-4 text-end">
-                            <button id="okEditBtn" class="btn btn-primary">OK</button>
+                            <button id="okEditBtn" class="btn btn-primary">
+                                OK
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -133,10 +153,17 @@
                 <div class="modal-content">
                     <div class="row">
                         <div class="col-12">
-                            <button id="createSorterBtn" class="btn btn-primary float-start">
+                            <button
+                                id="createSorterBtn"
+                                class="btn btn-primary float-start"
+                            >
                                 New Store +
                             </button>
-                            <span id="settings-modal-closer" class="close float-end">&times;</span>
+                            <span
+                                id="settings-modal-closer"
+                                class="close float-end"
+                                >&times;</span
+                            >
                         </div>
                     </div>
 
@@ -150,10 +177,22 @@
                         </div>
                     </div>
 
+                    <!-- Button for set to use and update sorter -->
                     <div class="row">
-                        <div class="col text-end">
-                            <button id="updateSettingBtn" class="btn btn-primary">
+                        <div class="col-6 text-start">
+                            <button
+                                id="updateSorterBtn"
+                                class="btn btn-primary"
+                            >
                                 Use & Update
+                            </button>
+                        </div>
+                        <div class="col-6 text-end">
+                            <button
+                                id="removeSorterBtn"
+                                class="btn btn-primary"
+                            >
+                                Remove Store
                             </button>
                         </div>
                     </div>

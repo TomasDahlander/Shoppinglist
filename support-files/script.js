@@ -93,7 +93,7 @@ $(document).ready(function () {
     /**
      * Button that updates the sorter and sets it for use when sorting
      */
-    $("#updateSettingBtn").click(function () {
+    $("#updateSorterBtn").click(function () {
         updateSorterAndHtml();
     });
 
@@ -131,7 +131,9 @@ $(document).ready(function () {
      * Fetches the sorter from the database and sets it to the variable sorter
      */
     function fetchSorter() {
-        fetch(`https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`) //  /support-files/mockdata/Sorter.json
+        fetch(
+            `https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`
+        ) //  /support-files/mockdata/Sorter.json
             .then((response) => response.json())
             .then(function (data) {
                 sorter = data;
@@ -207,7 +209,9 @@ $(document).ready(function () {
      * Fetches the item array from the database
      */
     function fetchItems() {
-        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`)
+        fetch(
+            `https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`
+        )
             .then((response) => response.json())
             .then((data) => setAndRenderItems(data))
             .then(() => displaySorter())
@@ -279,18 +283,22 @@ $(document).ready(function () {
         });
 
         // Set up swipe right start touch listener for deleting items
-        document.getElementById(`${item.id}`).addEventListener("touchstart", function (event) {
-            touchStartX = event.changedTouches[0].screenX;
-            touchStartY = event.changedTouches[0].screenY;
-        });
+        document
+            .getElementById(`${item.id}`)
+            .addEventListener("touchstart", function (event) {
+                touchStartX = event.changedTouches[0].screenX;
+                touchStartY = event.changedTouches[0].screenY;
+            });
 
         // Set up swipe right end touch listener for deleting items
-        document.getElementById(`${item.id}`).addEventListener("touchend", function (event) {
-            currentEditableItemId = `${item.id}`;
-            touchEndX = event.changedTouches[0].screenX;
-            touchEndY = event.changedTouches[0].screenY;
-            deleteItemFromHtmlListById(`${item.id}`);
-        });
+        document
+            .getElementById(`${item.id}`)
+            .addEventListener("touchend", function (event) {
+                currentEditableItemId = `${item.id}`;
+                touchEndX = event.changedTouches[0].screenX;
+                touchEndY = event.changedTouches[0].screenY;
+                deleteItemFromHtmlListById(`${item.id}`);
+            });
 
         /**
          * Listener for the edit button for each element thats added to the item table list
@@ -318,9 +326,9 @@ $(document).ready(function () {
 
     function deleteItemFromDatabaseById(id) {
         console.log(id);
-        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`).then(function (
-            response
-        ) {
+        fetch(
+            `https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`
+        ).then(function (response) {
             if (response.status == 200) console.log("Removed item ok!");
             else console.log("Something went wrong...!");
         });
@@ -373,11 +381,14 @@ $(document).ready(function () {
 
         for (s of sorter) {
             if (s.storeName == store) {
-                const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
+                const sortvalue = $(`#${s.id}`)
+                    .next()
+                    .children("input.form-control")
+                    .val();
                 if (validateSorterInput(sortvalue)) {
                     return;
                 }
-                s.sortvalue = sortvalue;
+                s.sortValue = sortvalue;
                 sortArray.push(sortvalue);
             }
         }
@@ -431,11 +442,12 @@ $(document).ready(function () {
      * Function that gets 2 strings with the storename and a category and returns the correct sorting value
      * @param {String} store
      * @param {String} category
-     * @returns
+     * @returns sorting value from sorter list
      */
     function getCorrectSortingValue(store, category) {
         for (s of sorter) {
-            if (s.categoryName == category && s.storeName == store) return s.sortvalue;
+            if (s.categoryName == category && s.storeName == store)
+                return s.sortValue;
         }
     }
 
