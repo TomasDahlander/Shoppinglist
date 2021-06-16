@@ -129,14 +129,14 @@
             <!-- Edit modal ends -->
 
             <!-- Sorter settings modal start -->
-            <div id="settings-modal-div" class="modal">
+            <div id="sorter-modal-div" class="modal">
                 <div class="modal-content">
                     <div class="row">
                         <div class="col-12">
                             <button id="createSorterBtn" class="btn btn-info float-start">
                                 Add new store +
                             </button>
-                            <span id="settings-modal-closer" class="close float-end">&times;</span>
+                            <span id="sorter-modal-closer" class="close float-end">&times;</span>
                         </div>
                     </div>
 
@@ -144,7 +144,7 @@
                     <div class="row">
                         <div class="col text-start">
                             <select
-                                id="settings-modal-category-input"
+                                id="sorter-modal-category-input"
                                 class="form-select category-input"
                             ></select>
                         </div>
@@ -182,10 +182,12 @@
         <!-- Remove sorter modal start -->
         <div id="remove-sorter-modal-div" class="modal-2">
             <div class="modal-content-2">
-                <!--  -->
                 <div class="row">
                     <div class="col-12">
-                        <p>Are you sure you want to remove: <span id="removingStore">test</span></p>
+                        <p>
+                            Are you sure you want to remove:
+                            <span id="removingStoreBanner">test</span>
+                        </p>
                     </div>
                     <div class="col-6 text-start">
                         <button id="yesRemoveStoreBtn" class="btn btn-primary">Yes</button>
@@ -197,6 +199,39 @@
             </div>
         </div>
         <!-- Remove sorter modal ends -->
+
+        <!-- Rename sorter modal start -->
+        <div id="rename-sorter-modal-div" class="modal-2">
+            <div class="modal-content-2">
+                <div class="row">
+                    <div class="col-12">
+                        <span id="rename-store-modal-closer" class="close float-end">&times;</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p>Update name for: <br /><span id="renameStoreBanner"></span></p>
+                    </div>
+                    <div class="col-12 text-start">
+                        <!-- Text input -->
+                        <input
+                            id="storeNameChangeInput"
+                            type="text"
+                            placeholder="input new store name..."
+                            class="form-control"
+                            maxlength="25"
+                        />
+                    </div>
+                    <div class="col-12">
+                        <button id="updateSorterNameBtn" class="btn btn-primary">
+                            Update store name
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Rename sorter modal ends -->
 
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"

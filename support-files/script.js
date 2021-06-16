@@ -12,13 +12,15 @@ let modalAdd;
 let modalEdit;
 let modalSettings;
 let storeRemoveModal;
+let storeChangeNameModal;
 
 // Elements
 let categorySelectAddModal; // The selector field where you choose the category for your item which to add to the list
-let addInputField; // The input field where you enter a item to add to the list
-let categorySelectEditModal;
-let editInputField;
-let storeSelectSettingModal;
+let addInputField; // The input field where you enter an item to add to the list
+let categorySelectEditModal; // The selector field where you choose the category for the item of which you are editing
+let editInputField; // The input field where you edit an items name
+let storeSelectSettingModal; // The selector field for the choosen store
+let renameStoreInputField; // The input field for renaming a store
 let tableArea; // The table where the items are displayed within
 let sortingtable; // The table where the sorters are displayed within
 
@@ -87,7 +89,7 @@ $(document).ready(function () {
     /**
      * Hides the setting modal when clicking on the x in the modalSetting
      */
-    $("#settings-modal-closer").click(function () {
+    $("#sorter-modal-closer").click(function () {
         modalSettings.css("display", "none");
     });
 
@@ -101,8 +103,14 @@ $(document).ready(function () {
     /**
      * When choosing a new store this event is triggered to display the sorter for that store
      */
-    $("#settings-modal-category-input").change(function () {
+    $("#sorter-modal-category-input").change(function () {
         displaySorter();
+        tableArea.children().each(function () {
+            const store = storeSelectSettingModal.val();
+            const category = $(this).children("td.row-item").attr("name");
+            const sortvalue = getCorrectSortingValue(store, category);
+            $(this).children("td.row-item").attr("value", sortvalue);
+        });
     });
 
     /**
@@ -126,23 +134,32 @@ $(document).ready(function () {
     });
 
     $("#removeSorterBtn").click(function () {
-        console.log("Clicked on remove sorter button");
+        let store = storeSelectSettingModal.val();
+        $("#removingStoreBanner").text(store);
         storeRemoveModal.css("display", "block");
     });
 
     $("#yesRemoveStoreBtn").click(function () {
-        console.log("Clicked on yes");
         deleteCurrentSorter();
         storeRemoveModal.css("display", "none");
     });
 
     $("#noRemoveStoreBtn").click(function () {
-        console.log("Clicked on no");
         storeRemoveModal.css("display", "none");
     });
 
     $("#renameSorterBtn").click(function () {
-        console.log("Clicked on rename sorter btn");
+        let store = storeSelectSettingModal.val();
+        $("#renameStoreBanner").text(store);
+        storeChangeNameModal.css("display", "block");
+    });
+
+    $("#rename-store-modal-closer").click(function () {
+        storeChangeNameModal.css("display", "none");
+    });
+
+    $("#updateSorterNameBtn").click(function () {
+        updateSorterName();
     });
 
     // Functions ***********************************************************************************************************
@@ -444,6 +461,25 @@ $(document).ready(function () {
         updateSorterInDatabase();
     }
 
+    function updateSorterName() {
+        const oldStore = storeSelectSettingModal.val();
+        const newStore = renameStoreInputField.val();
+
+        for (s of sorter) {
+            if (s.storeName == oldStore) s.storeName = newStore;
+        }
+
+        storeSelectSettingModal.children().each(function () {
+            if ($(this).val() == oldStore) {
+                $(this).text(newStore);
+            }
+        });
+
+        storeChangeNameModal.css("display", "none");
+
+        updateSorterInDatabase();
+    }
+
     /**
      * Function that checks if the new input is a valid value and returns true if it is not valid
      * @param {int} sortInputValue
@@ -734,13 +770,15 @@ $(document).ready(function () {
     // fetchItems(); // Call the item fetch function
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
-    modalSettings = $("#settings-modal-div"); // sets the modal for settings to a variable
-    storeRemoveModal = $("#remove-sorter-modal-div"); // set the modal for removing a sorter/store
+    modalSettings = $("#sorter-modal-div"); // sets the modal for settings to a variable
+    storeRemoveModal = $("#remove-sorter-modal-div"); // set the modal for removing a store
+    storeChangeNameModal = $("#rename-sorter-modal-div"); // set the modal for changing store name
     categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
     categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal
-    storeSelectSettingModal = $("#settings-modal-category-input"); // set the option selector to a variable on the setting modal
+    storeSelectSettingModal = $("#sorter-modal-category-input"); // set the option selector to a variable on the setting modal
     addInputField = $("#addInput"); // sets the input field in the add modal to a variable
     editInputField = $("#editInput"); // sets the input field in the edit modal to a variable
+    renameStoreInputField = $("#storeNameChangeInput"); // sets the input field for renaming store to a variable
     tableArea = $("#tableArea"); // sets the item table to a variable
     sortingtable = $("#sortingtable"); // sets the sorters table to a variable
     fetchSorter(); // Call the sorter fetch function which is later linked to the remaining fetches below

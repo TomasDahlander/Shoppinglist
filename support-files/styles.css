@@ -111,7 +111,7 @@ td {
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 90%;
     border-radius: 10px;
 }
 
@@ -129,6 +129,7 @@ td {
     color: black;
 }
 
+#updateSorterNameBtn,
 #updateSettingBtn,
 #okEditBtn,
 #okAddBtn {
@@ -141,12 +142,17 @@ td {
     margin-top: 30px;
 }
 
-#settings-modal-div {
+#sorter-modal-div {
     padding-top: 30px;
 }
 
 #removeSorterBtn {
     margin-top: 0px;
+}
+
+#removingStoreBanner,
+#renameStoreBanner {
+    font-weight: bolder;
 }
 
 /* Media queries */
