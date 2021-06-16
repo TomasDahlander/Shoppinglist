@@ -112,7 +112,6 @@ $(document).ready(function () {
     });
 
     $("#refreshBtn").click(function () {
-        console.log("Clicked on refresh button!");
         updateItemChecks();
     });
 
@@ -123,6 +122,11 @@ $(document).ready(function () {
 
     $("#createSorterBtn").click(function () {
         console.log("Clicked on new store button!");
+    });
+
+    $("#removeSorterBtn").click(function () {
+        console.log("Clicked on remove sorter button");
+        deleteCurrentSorter();
     });
 
     // Functions ***********************************************************************************************************
@@ -161,6 +165,14 @@ $(document).ready(function () {
             </option> 
             `);
         }
+    }
+
+    function deleteCurrentSorter() {
+        const store = storeSelectSettingModal.val();
+        console.log(store);
+        console.log(user.id);
+
+        // Fortsätt här
     }
 
     /**
@@ -325,12 +337,12 @@ $(document).ready(function () {
     }
 
     function deleteItemFromDatabaseById(id) {
-        console.log(id);
         fetch(
             `https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`
         ).then(function (response) {
             if (response.status == 200) console.log("Removed item ok!");
-            else console.log("Something went wrong...!");
+            else
+                alert("Something went wrong when deleting item from database!");
         });
     }
 
@@ -403,6 +415,7 @@ $(document).ready(function () {
             const sortvalue = getCorrectSortingValue(store, category);
             $(this).children("td.row-item").attr("value", sortvalue);
         });
+        updateSorterInDatabase();
     }
 
     /**
@@ -553,7 +566,21 @@ $(document).ready(function () {
         }).then(function (response) {
             if (response.status != 200) {
                 alert("Could not update item in database!");
-            }
+            } else console.log("Items updated in database!");
+        });
+    }
+
+    function updateSorterInDatabase() {
+        fetch("https://td-shoppinglist-backend.herokuapp.com/sorting/update", {
+            method: "POST",
+            body: JSON.stringify(sorter),
+            headers: {
+                "Content-type": "application/json",
+            },
+        }).then(function (response) {
+            if (response.status != 200) {
+                alert("Could not update sorters in database!");
+            } else console.log("Sorters updated in database!");
         });
     }
 
@@ -611,9 +638,8 @@ $(document).ready(function () {
             })
             .then(function (data) {
                 if (data == "error") {
-                    console.log("error");
+                    alert("Could not send item to database!");
                 } else {
-                    console.log(data);
                     itemList.unshift(data);
                     renderItem(data, false);
                 }
