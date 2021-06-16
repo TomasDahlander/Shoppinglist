@@ -11,6 +11,7 @@ let stores = [];
 let modalAdd;
 let modalEdit;
 let modalSettings;
+let storeRemoveModal;
 
 // Elements
 let categorySelectAddModal; // The selector field where you choose the category for your item which to add to the list
@@ -126,7 +127,22 @@ $(document).ready(function () {
 
     $("#removeSorterBtn").click(function () {
         console.log("Clicked on remove sorter button");
+        storeRemoveModal.css("display", "block");
+    });
+
+    $("#yesRemoveStoreBtn").click(function () {
+        console.log("Clicked on yes");
         deleteCurrentSorter();
+        storeRemoveModal.css("display", "none");
+    });
+
+    $("#noRemoveStoreBtn").click(function () {
+        console.log("Clicked on no");
+        storeRemoveModal.css("display", "none");
+    });
+
+    $("#renameSorterBtn").click(function () {
+        console.log("Clicked on rename sorter btn");
     });
 
     // Functions ***********************************************************************************************************
@@ -135,9 +151,7 @@ $(document).ready(function () {
      * Fetches the sorter from the database and sets it to the variable sorter
      */
     function fetchSorter() {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`
-        ) //  /support-files/mockdata/Sorter.json
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`) //  /support-files/mockdata/Sorter.json
             .then((response) => response.json())
             .then(function (data) {
                 sorter = data;
@@ -182,21 +196,19 @@ $(document).ready(function () {
 
         displaySorter();
 
-        // Fortsätt här och koppla på databas
-
-        // fetch(
-        //     `https://td-shoppinglist-backend.herokuapp.com/sorting/delete/by/name/${store}/id/${user.id}`,
-        //     {
-        //         method: "DELETE",
-        //         headers: {
-        //             "Content-type": "application/json",
-        //         },
-        //     }
-        // ).then(function (response) {
-        //     if (response.status != 200) {
-        //         alert("Could not delete sorters in database!");
-        //     } else console.log("Sorters deleted in database!");
-        // });
+        fetch(
+            `https://td-shoppinglist-backend.herokuapp.com/sorting/delete/by/name/${store}/id/${user.id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-type": "application/json",
+                },
+            }
+        ).then(function (response) {
+            if (response.status != 200) {
+                alert("Could not delete sorters in database!");
+            } else console.log("Sorters deleted in database!");
+        });
     }
 
     /**
@@ -245,9 +257,7 @@ $(document).ready(function () {
      * Fetches the item array from the database
      */
     function fetchItems() {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`
-        )
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`)
             .then((response) => response.json())
             .then((data) => setAndRenderItems(data))
             .then(() => displaySorter())
@@ -319,22 +329,18 @@ $(document).ready(function () {
         });
 
         // Set up swipe right start touch listener for deleting items
-        document
-            .getElementById(`${item.id}`)
-            .addEventListener("touchstart", function (event) {
-                touchStartX = event.changedTouches[0].screenX;
-                touchStartY = event.changedTouches[0].screenY;
-            });
+        document.getElementById(`${item.id}`).addEventListener("touchstart", function (event) {
+            touchStartX = event.changedTouches[0].screenX;
+            touchStartY = event.changedTouches[0].screenY;
+        });
 
         // Set up swipe right end touch listener for deleting items
-        document
-            .getElementById(`${item.id}`)
-            .addEventListener("touchend", function (event) {
-                currentEditableItemId = `${item.id}`;
-                touchEndX = event.changedTouches[0].screenX;
-                touchEndY = event.changedTouches[0].screenY;
-                deleteItemFromHtmlListById(`${item.id}`);
-            });
+        document.getElementById(`${item.id}`).addEventListener("touchend", function (event) {
+            currentEditableItemId = `${item.id}`;
+            touchEndX = event.changedTouches[0].screenX;
+            touchEndY = event.changedTouches[0].screenY;
+            deleteItemFromHtmlListById(`${item.id}`);
+        });
 
         /**
          * Listener for the edit button for each element thats added to the item table list
@@ -361,12 +367,11 @@ $(document).ready(function () {
     }
 
     function deleteItemFromDatabaseById(id) {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`
-        ).then(function (response) {
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`).then(function (
+            response
+        ) {
             if (response.status == 200) console.log("Removed item ok!");
-            else
-                alert("Something went wrong when deleting item from database!");
+            else alert("Something went wrong when deleting item from database!");
         });
     }
 
@@ -417,10 +422,7 @@ $(document).ready(function () {
 
         for (s of sorter) {
             if (s.storeName == store) {
-                const sortvalue = $(`#${s.id}`)
-                    .next()
-                    .children("input.form-control")
-                    .val();
+                const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
                 if (validateSorterInput(sortvalue)) {
                     return;
                 }
@@ -483,8 +485,7 @@ $(document).ready(function () {
      */
     function getCorrectSortingValue(store, category) {
         for (s of sorter) {
-            if (s.categoryName == category && s.storeName == store)
-                return s.sortValue;
+            if (s.categoryName == category && s.storeName == store) return s.sortValue;
         }
     }
 
@@ -734,6 +735,7 @@ $(document).ready(function () {
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
     modalSettings = $("#settings-modal-div"); // sets the modal for settings to a variable
+    storeRemoveModal = $("#remove-sorter-modal-div"); // set the modal for removing a sorter/store
     categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
     categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal
     storeSelectSettingModal = $("#settings-modal-category-input"); // set the option selector to a variable on the setting modal
