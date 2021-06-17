@@ -1,32 +1,32 @@
 // Global variables ********************************************************************************************************
 
-// Lists & items
+// Lists & item variables
 let user = JSON.parse(localStorage.getItem("user"));
-let categories;
-let itemList;
-let sorter;
-let stores = [];
+let categories; // Array that contains the category objects
+let itemList; // Array that contains the item objects
+let sorter; // Array that contains the sorters for the specific user
+let stores = []; // Array that contains all the different stores for the specific user
 
-// Modals
-let modalAdd;
-let modalEdit;
-let modalSettings;
-let storeRemoveModal;
-let storeChangeNameModal;
-let modalCreateStore;
+// Modals variables
+let modalAdd; // The modal that is shown when clicking on the add + button where you can add an item
+let modalEdit; // The modal that i shown when clicking on the edit button next to an item
+let modalStores; // The modal that is shown when clicking on the stores button where you can change store etc
+let modalRemoveStore; // The modal that is shown when clicking on the Remove current store button
+let modalChangeStoreName; // The modal that is shown when clicking on the Rename store button
+let modalCreateStore; // The modal that is shown when clicking on the Add new store + button
 
-// Elements
+// Elements variables
 let categorySelectAddModal; // The selector field where you choose the category for your item which to add to the list
 let addInputField; // The input field where you enter an item to add to the list
 let categorySelectEditModal; // The selector field where you choose the category for the item of which you are editing
 let editInputField; // The input field where you edit an items name
-let storeSelectSettingModal; // The selector field for the choosen store
+let storeSelectOnStoreModal; // The selector field for the choosen store
 let renameStoreInputField; // The input field for renaming a store
 let createNewStoreInputField; // The input field for creating a store
 let tableArea; // The table where the items are displayed within
 let sortingtable; // The table where the sorters are displayed within
 
-// Cache memory for less looping
+// Cache last id in memory for less looping
 let currentEditableItemId;
 
 // Memory for swiping
@@ -36,6 +36,7 @@ let touchStartY = 0;
 let touchEndY = 0;
 
 $(document).ready(function () {
+    // Checks if the user exists in LS and if not changes page to the login.html
     if (localStorage.getItem("user") == null) {
         window.location.replace("/login.html");
     }
@@ -43,14 +44,14 @@ $(document).ready(function () {
     // Listeners that can be initiated on load *****************************************************************************
 
     /**
-     * Displays the modal when clicking add
+     * Displays the modalAdd when clicking on Add + button
      */
     $("#addBtn").click(function () {
         modalAdd.css("display", "block");
     });
 
     /**
-     * Hides the modal when clicking on the x in the modalAdd
+     * Hides the modal when clicking on the X in the modalAdd and calls the resetAddInputValue function
      */
     $("#add-modal-closer").click(function () {
         modalAdd.css("display", "none");
@@ -58,14 +59,14 @@ $(document).ready(function () {
     });
 
     /**
-     * Hides the editing modal when clicking on the x in the modalEdit
+     * Hides the modalEdit when clicking on the X in the modalEdit
      */
     $("#edit-modal-closer").click(function () {
         modalEdit.css("display", "none");
     });
 
     /**
-     * Collects and adds an item to the list from the add modal
+     * Calls the getInfoFromAddModal and resetValueInputvalue functions, and closes the modalAdd when clicking on the OK button on the modalAdd
      */
     $("#okAddBtn").click(function () {
         getInfoFromAddModal();
@@ -74,7 +75,7 @@ $(document).ready(function () {
     });
 
     /**
-     * Updates the current list element both in list and the html table list and closes the modal
+     * Calls the updateHtmlListItem function and closes the modalEdit when clicking OK in modalEdit
      */
     $("#okEditBtn").click(function () {
         updateHtmlListItem();
@@ -82,33 +83,33 @@ $(document).ready(function () {
     });
 
     /**
-     * Displays the settings modal
+     * Displays the modalStores when clicking on the Store button
      */
-    $("#settingsBtn").click(function () {
-        modalSettings.css("display", "block");
+    $("#storesBtn").click(function () {
+        modalStores.css("display", "block");
     });
 
     /**
-     * Hides the setting modal when clicking on the x in the modalSetting
+     * Closes the modalStore when clicking on the X in the modalStore
      */
     $("#sorter-modal-closer").click(function () {
-        modalSettings.css("display", "none");
+        modalStores.css("display", "none");
     });
 
     /**
-     * Button that updates the sorter and sets it for use when sorting
+     * Calls the updateSorterAndHtml function when clicking on the Update Store button on the modalStore
      */
     $("#updateSorterBtn").click(function () {
         updateSorterAndHtml();
     });
 
     /**
-     * When choosing a new store this event is triggered to display the sorter for that store
+     * Calls the displaySorter function and rearanges the html elements for that store list when changes store on the modalStore
      */
     $("#sorter-modal-category-input").change(function () {
         displaySorter();
         tableArea.children().each(function () {
-            const store = storeSelectSettingModal.val();
+            const store = storeSelectOnStoreModal.val();
             const category = $(this).children("td.row-item").attr("name");
             const sortvalue = getCorrectSortingValue(store, category);
             $(this).children("td.row-item").attr("value", sortvalue);
@@ -116,12 +117,15 @@ $(document).ready(function () {
     });
 
     /**
-     * Sorts the elements in the list depending on the sorting value for that category
+     * Calls the sortTable function when clicking on the Sort button
      */
     $("#sortingBtn").click(function () {
         sortTable();
     });
 
+    /**
+     * Calls the updateItemChecks function when clicking on the update symbol in the top right corner
+     */
     $("#refreshBtn").click(function () {
         updateItemChecks();
     });
@@ -131,45 +135,71 @@ $(document).ready(function () {
         window.location.replace("/login.html");
     });
 
+    /**
+     * Displays the modelCreateStore when clicking on Add new store + on he modalStores
+     */
     $("#createSorterBtn").click(function () {
-        console.log("Clicked on new store button!");
         modalCreateStore.css("display", "block");
     });
 
+    /**
+     * Closes the modalCreateStore when clicking on the X on the modalCreateStore
+     */
     $("#create-store-modal-closer").click(function () {
         modalCreateStore.css("display", "none");
     });
 
+    /**
+     * Calls the sendNewStoreToDatabase function and closes the modalCreateStore when clicking on Create new store button on the modalCreateStore
+     */
     $("#createNewStoreBtn").click(function () {
         sendNewStoreToDatabase();
         modalCreateStore.css("display", "none");
     });
 
+    /**
+     * Displays the modalRemoveStore and populates the text with the current store name when clicking on the Remove store button
+     */
     $("#removeSorterBtn").click(function () {
-        let store = storeSelectSettingModal.val();
+        let store = storeSelectOnStoreModal.val();
         $("#removingStoreBanner").text(store);
-        storeRemoveModal.css("display", "block");
+        modalRemoveStore.css("display", "block");
     });
 
+    /**
+     * Calls the deleteCurrentSorter function and closes the modalRemoveStore when clicking on the Yes button on the modalRemoveStore
+     */
     $("#yesRemoveStoreBtn").click(function () {
         deleteCurrentSorter();
-        storeRemoveModal.css("display", "none");
+        modalRemoveStore.css("display", "none");
     });
 
+    /**
+     * Closes the modalRemoveStore when clicking on the No button on the modalRemoveStore
+     */
     $("#noRemoveStoreBtn").click(function () {
-        storeRemoveModal.css("display", "none");
+        modalRemoveStore.css("display", "none");
     });
 
+    /**
+     * Displays the modalChangeStoreName and populates the text with the current store name when clicking on the Rename store button
+     */
     $("#renameSorterBtn").click(function () {
-        let store = storeSelectSettingModal.val();
+        let store = storeSelectOnStoreModal.val();
         $("#renameStoreBanner").text(store);
-        storeChangeNameModal.css("display", "block");
+        modalChangeStoreName.css("display", "block");
     });
 
+    /**
+     * Closes the modalChangeStoreName when clicking on the X on the modalChangeStoreName
+     */
     $("#rename-store-modal-closer").click(function () {
-        storeChangeNameModal.css("display", "none");
+        modalChangeStoreName.css("display", "none");
     });
 
+    /**
+     * Calls the function updateSorterName when clicking on the
+     */
     $("#updateSorterNameBtn").click(function () {
         updateSorterName();
     });
@@ -177,10 +207,13 @@ $(document).ready(function () {
     // Functions ***********************************************************************************************************
 
     /**
-     * Fetches the sorter from the database and sets it to the variable sorter
+     * Fetches the sorters from the database and sets the list to the variable sorter.
+     * Then calls the setUpStoreChoices function and after then calls the function fetchCategories.
      */
     function fetchSorter() {
-        fetch(`https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`) //  /support-files/mockdata/Sorter.json
+        fetch(
+            `https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`
+        )
             .then((response) => response.json())
             .then(function (data) {
                 sorter = data;
@@ -192,7 +225,8 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that sets up the choices you have for the stores
+     * Function that loops thought the sorter list and checks if it exists in the beforehand empty store array.
+     * This array will after this be used to append options to the selector where a store is selected on the modalStores.
      */
     function setUpStoreChoices() {
         for (s of sorter) {
@@ -202,7 +236,7 @@ $(document).ready(function () {
         }
 
         for (store of stores) {
-            storeSelectSettingModal.append(`
+            storeSelectOnStoreModal.append(`
             <option class="option-input">
                 ${store}
             </option> 
@@ -210,14 +244,19 @@ $(document).ready(function () {
         }
     }
 
+    /**
+     * Function that filter away all the sorters with the current selected storeName on the modalStores from the sorter array.
+     * After this it loops through these selector element and removes the current storeName.
+     * Then the function displaySorter is called and a call to the database it performed with the storeName to be removed and the user id.
+     */
     function deleteCurrentSorter() {
-        const store = storeSelectSettingModal.val();
+        const store = storeSelectOnStoreModal.val();
 
         sorter = sorter.filter(function (value, index, arr) {
             return value.storeName != store;
         });
 
-        storeSelectSettingModal.children().each(function () {
+        storeSelectOnStoreModal.children().each(function () {
             if ($(this).val() == store) {
                 $(this).remove();
             }
@@ -241,7 +280,8 @@ $(document).ready(function () {
     }
 
     /**
-     * Fetches the category array from the database
+     * Fetches the category array from the database and then calls the function setAndRenderCategories.
+     * After this calls the function fetchItems.
      */
     function fetchCategories() {
         fetch("https://td-shoppinglist-backend.herokuapp.com/category/get")
@@ -251,7 +291,9 @@ $(document).ready(function () {
     }
 
     /**
-     * Receives JSON data with categories
+     * Receives JSON data with categories and set assign it to the variable categories.
+     * After this it loops through all the categories and calls the function renderCategory with each category
+     * and the string "selected" when the category "Övrigt" is looped over to make this pre selected.
      * @param {JSON} categoryDataArray
      */
     function setAndRenderCategories(categoryDataArray) {
@@ -265,7 +307,8 @@ $(document).ready(function () {
     }
 
     /**
-     * Functions that appends one category to dropdown options meny for categories when adding an item
+     * Function that receives one category object and a string to be appended
+     * to the dropdown options meny for the categories on the add modal
      * @param {Object} category
      * @param {String} selected
      */
@@ -283,10 +326,14 @@ $(document).ready(function () {
     }
 
     /**
-     * Fetches the item array from the database
+     * Fetches the item array from the database with the specifik user id.
+     * Then calls the function setAndRenderItems with the item array.
+     * After this is calls the function displaySorter and then the function sortTable
      */
     function fetchItems() {
-        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`)
+        fetch(
+            `https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`
+        )
             .then((response) => response.json())
             .then((data) => setAndRenderItems(data))
             .then(() => displaySorter())
@@ -294,8 +341,10 @@ $(document).ready(function () {
     }
 
     /**
-     * Receives JSON data with items
-     * @param {JSON} categoryDataArray
+     * Receives JSON data with items and sets this to the variable array itemList.
+     * Then it loops through the itemList and calls the function renderItem with each item
+     * and a boolean depending on if this is render at the fetch of all items or when adding one item.
+     * @param {JSON} itemDataArray
      */
     function setAndRenderItems(itemDataArray) {
         itemList = itemDataArray;
@@ -307,7 +356,11 @@ $(document).ready(function () {
     }
 
     /**
-     * Functions that appends one item to the table for items
+     * Function that receives one item object and a boolean that if true appends other prepends the item to the list
+     * The function collects all the information required from the item such as color, categoryname, if item is checked.
+     * Then it appends or prepends the item to te tableArea where all the items are shown with the item id, color,
+     * sortvalue depending on the sorter, category name, item name.
+     * After this Listeners for this item row and meny button on the right side is set.
      * @param {Object} item
      */
     function renderItem(item, onload) {
@@ -349,7 +402,8 @@ $(document).ready(function () {
         }
 
         /**
-         * Listener on the id for the item element rows that toggles if the items is checkod or not
+         * Toggle wheter an item is checked or not by toggle the class "checked-item" for the currenct element
+         * when clicking on the element with the items id
          */
         $(`#${item.id}`).click(function () {
             const id = $(this).prop("id");
@@ -357,22 +411,35 @@ $(document).ready(function () {
             changeItemCheckedStatusInListForId(id);
         });
 
-        // Set up swipe right start touch listener for deleting items
-        document.getElementById(`${item.id}`).addEventListener("touchstart", function (event) {
-            touchStartX = event.changedTouches[0].screenX;
-            touchStartY = event.changedTouches[0].screenY;
-        });
+        /**
+         * Listener for the start touch fom the element with the item id
+         * and saves it to the coordinate variables.
+         */
+        document
+            .getElementById(`${item.id}`)
+            .addEventListener("touchstart", function (event) {
+                touchStartX = event.changedTouches[0].screenX;
+                touchStartY = event.changedTouches[0].screenY;
+            });
 
-        // Set up swipe right end touch listener for deleting items
-        document.getElementById(`${item.id}`).addEventListener("touchend", function (event) {
-            currentEditableItemId = `${item.id}`;
-            touchEndX = event.changedTouches[0].screenX;
-            touchEndY = event.changedTouches[0].screenY;
-            deleteItemFromHtmlListById(`${item.id}`);
-        });
+        /**
+         * Listener for the end touch from the element with the item id
+         * and saves it to the coordinate variables.
+         * After this the function deleteItemFromHtmlListById is called with the respective item id.
+         */
+        document
+            .getElementById(`${item.id}`)
+            .addEventListener("touchend", function (event) {
+                currentEditableItemId = `${item.id}`;
+                touchEndX = event.changedTouches[0].screenX;
+                touchEndY = event.changedTouches[0].screenY;
+                deleteItemFromHtmlListById(`${item.id}`);
+            });
 
         /**
          * Listener for the edit button for each element thats added to the item table list
+         * and when clicked calls the function setUpEditModal with the respective item id
+         * and displays the modalEdit.
          */
         $(`#edit${item.id}`).click(function () {
             currentEditableItemId = `${item.id}`;
@@ -382,8 +449,10 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that takes an id of an element and removes the parent så it is removed from the list
-     * and then it send it the function deleteItemById
+     * Function that receives an id of an item element and start by calculating the subraction of the coordinates
+     * thats generated by the swiping on the element with that id.
+     * Then it checks if the X axis has been swiped more the 100 px to the right and the Y axis less then 25 px up and down.
+     * If this is true the parent element is removed and the function deleteItemFromDatabaseById is called.
      * @param {Long} id
      */
     function deleteItemFromHtmlListById(id) {
@@ -395,17 +464,27 @@ $(document).ready(function () {
         }
     }
 
+    /**
+     * Function that receives an id of an item and calls the database with this id to have it
+     * removed from the database and alerts if anything goes wrong.
+     * @param {Long} id
+     */
     function deleteItemFromDatabaseById(id) {
-        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`).then(function (
-            response
-        ) {
+        fetch(
+            `https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`
+        ).then(function (response) {
             if (response.status != 200)
                 alert("Something went wrong when deleting item from database!");
         });
     }
 
     /**
-     * Function that displays the sorter from the current choice
+     * Function that displays the sorter from the current store choice.
+     * It starts by sorting the entire sorters array after sorting value and then
+     * clears the entire html list of sorters on the modalStores.
+     * Then it loops through all the sorter and checks if a sorter has the correct
+     * user id and the storeName is the same as the selected one.
+     * If both these are true it is appended to the sortingtable with correct color, sortingvalue and id.
      */
     function displaySorter() {
         // Sorting the sorter to display the categories in correct order
@@ -414,7 +493,7 @@ $(document).ready(function () {
         });
 
         sortingtable.html("");
-        const choice = storeSelectSettingModal.val();
+        const choice = storeSelectOnStoreModal.val();
 
         for (s of sorter) {
             let color;
@@ -443,15 +522,24 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that update the selected sorter object and then updates the html elements so sorting can be done
+     * Function that updates the selected sorter object and then updates the html elements so sorting can be done on the item html list.
+     * It starts by looping through the sorters to collect the input values for the new sorting values to the specific category.
+     * Then it for each it calls the function validateSorterInput and if it return true, exit the function here otherwiese it saves this
+     * value to the sorter and also adds it to an empty array sortArray for later validating.
+     * After this the function validateEntireSorter is called with the new sortArray and if it return true, exit the function here
+     * otherwiese it loops through the item html element and changes the value for the element so sorting can later be done.
+     * After this it calls the function updateSorterInDatabase.
      */
     function updateSorterAndHtml() {
-        const store = storeSelectSettingModal.val();
+        const store = storeSelectOnStoreModal.val();
         let sortArray = [];
 
         for (s of sorter) {
             if (s.storeName == store) {
-                const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
+                const sortvalue = $(`#${s.id}`)
+                    .next()
+                    .children("input.form-control")
+                    .val();
                 if (validateSorterInput(sortvalue)) {
                     return;
                 }
@@ -473,24 +561,33 @@ $(document).ready(function () {
         updateSorterInDatabase();
     }
 
+    /**
+     * Function that updates the store name.
+     * It start by collecting the current name from the selector and the new name from the input.
+     * Then it loops through the sorter and changes the name on the sorter with the old name to the new.
+     * After this it loops through the html elements of the selector options and updates the new name.
+     * Then it closes the modalChangeStoreName and calls the function updateSorterInDatabase.
+     */
     function updateSorterName() {
-        const oldStore = storeSelectSettingModal.val();
+        const oldStore = storeSelectOnStoreModal.val();
         const newStore = renameStoreInputField.val();
 
         for (s of sorter) {
             if (s.storeName == oldStore) s.storeName = newStore;
         }
 
-        storeSelectSettingModal.children().each(function () {
+        storeSelectOnStoreModal.children().each(function () {
             if ($(this).val() == oldStore) {
                 $(this).text(newStore);
             }
         });
 
-        storeChangeNameModal.css("display", "none");
+        modalChangeStoreName.css("display", "none");
 
         updateSorterInDatabase();
     }
+
+    // ################################   FORTSÄTT HÄR MED KOMMENTARER    ##################################################
 
     /**
      * Function that checks if the new input is a valid value and returns true if it is not valid
@@ -533,7 +630,8 @@ $(document).ready(function () {
      */
     function getCorrectSortingValue(store, category) {
         for (s of sorter) {
-            if (s.categoryName == category && s.storeName == store) return s.sortValue;
+            if (s.categoryName == category && s.storeName == store)
+                return s.sortValue;
         }
     }
 
@@ -574,7 +672,7 @@ $(document).ready(function () {
         if (itemName.length == 0) return; // if no content is typed in exit the function here
 
         const categoryName = categorySelectEditModal.val();
-        const store = storeSelectSettingModal.val();
+        const store = storeSelectOnStoreModal.val();
         let categoryId;
         let color;
         let sortvalue;
@@ -690,7 +788,7 @@ $(document).ready(function () {
             sorter.push(s);
         }
 
-        storeSelectSettingModal.append(`
+        storeSelectOnStoreModal.append(`
             <option class="option-input">
                 ${newSorter[0].storeName}
             </option> 
@@ -822,13 +920,13 @@ $(document).ready(function () {
     // fetchItems(); // Call the item fetch function
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
-    modalSettings = $("#sorter-modal-div"); // sets the modal for settings to a variable
+    modalStores = $("#sorter-modal-div"); // sets the modal for settings to a variable
     modalCreateStore = $("#new-sorter-modal-div"); // sets the modal for create new store to a varable
-    storeRemoveModal = $("#remove-sorter-modal-div"); // set the modal for removing a store
-    storeChangeNameModal = $("#rename-sorter-modal-div"); // set the modal for changing store name
+    modalRemoveStore = $("#remove-sorter-modal-div"); // set the modal for removing a store
+    modalChangeStoreName = $("#rename-sorter-modal-div"); // set the modal for changing store name
     categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
     categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal
-    storeSelectSettingModal = $("#sorter-modal-category-input"); // set the option selector to a variable on the setting modal
+    storeSelectOnStoreModal = $("#sorter-modal-category-input"); // set the option selector to a variable on the setting modal
     addInputField = $("#addInput"); // sets the input field in the add modal to a variable
     editInputField = $("#editInput"); // sets the input field in the edit modal to a variable
     renameStoreInputField = $("#storeNameChangeInput"); // sets the input field for renaming store to a variable

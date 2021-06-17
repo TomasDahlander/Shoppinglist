@@ -47,6 +47,7 @@ td {
 .category-input {
     width: 100%;
     display: inline;
+    margin-top: 10px;
 }
 
 .sorter-display {
