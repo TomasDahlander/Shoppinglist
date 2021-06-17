@@ -211,9 +211,7 @@ $(document).ready(function () {
      * Then calls the setUpStoreChoices function and after then calls the function fetchCategories.
      */
     function fetchSorter() {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`
-        )
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`)
             .then((response) => response.json())
             .then(function (data) {
                 sorter = data;
@@ -331,9 +329,7 @@ $(document).ready(function () {
      * After this is calls the function displaySorter and then the function sortTable
      */
     function fetchItems() {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`
-        )
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`)
             .then((response) => response.json())
             .then((data) => setAndRenderItems(data))
             .then(() => displaySorter())
@@ -415,31 +411,27 @@ $(document).ready(function () {
          * Listener for the start touch fom the element with the item id
          * and saves it to the coordinate variables.
          */
-        document
-            .getElementById(`${item.id}`)
-            .addEventListener("touchstart", function (event) {
-                touchStartX = event.changedTouches[0].screenX;
-                touchStartY = event.changedTouches[0].screenY;
-            });
+        document.getElementById(`${item.id}`).addEventListener("touchstart", function (event) {
+            touchStartX = event.changedTouches[0].screenX;
+            touchStartY = event.changedTouches[0].screenY;
+        });
 
         /**
          * Listener for the end touch from the element with the item id
          * and saves it to the coordinate variables.
          * After this the function deleteItemFromHtmlListById is called with the respective item id.
          */
-        document
-            .getElementById(`${item.id}`)
-            .addEventListener("touchend", function (event) {
-                currentEditableItemId = `${item.id}`;
-                touchEndX = event.changedTouches[0].screenX;
-                touchEndY = event.changedTouches[0].screenY;
-                deleteItemFromHtmlListById(`${item.id}`);
-            });
+        document.getElementById(`${item.id}`).addEventListener("touchend", function (event) {
+            currentEditableItemId = `${item.id}`;
+            touchEndX = event.changedTouches[0].screenX;
+            touchEndY = event.changedTouches[0].screenY;
+            deleteItemFromHtmlListById(`${item.id}`);
+        });
 
         /**
          * Listener for the edit button for each element thats added to the item table list
-         * and when clicked calls the function setUpEditModal with the respective item id
-         * and displays the modalEdit.
+         * and when clicked sets a variable with the current item it and then calls the function
+         * setUpEditModal with the respective item id and displays the modalEdit.
          */
         $(`#edit${item.id}`).click(function () {
             currentEditableItemId = `${item.id}`;
@@ -470,9 +462,9 @@ $(document).ready(function () {
      * @param {Long} id
      */
     function deleteItemFromDatabaseById(id) {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`
-        ).then(function (response) {
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`).then(function (
+            response
+        ) {
             if (response.status != 200)
                 alert("Something went wrong when deleting item from database!");
         });
@@ -511,7 +503,7 @@ $(document).ready(function () {
                         <td style="width: 20%;" class="sorter-input">
                             <input 
                             type="number"
-                            class="form-control"
+                            class="form-control sorter-input-values"
                             value="${s.sortValue}"
                             >
                         </td>
@@ -536,10 +528,7 @@ $(document).ready(function () {
 
         for (s of sorter) {
             if (s.storeName == store) {
-                const sortvalue = $(`#${s.id}`)
-                    .next()
-                    .children("input.form-control")
-                    .val();
+                const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
                 if (validateSorterInput(sortvalue)) {
                     return;
                 }
@@ -587,8 +576,6 @@ $(document).ready(function () {
         updateSorterInDatabase();
     }
 
-    // ################################   FORTSÄTT HÄR MED KOMMENTARER    ##################################################
-
     /**
      * Function that checks if the new input is a valid value and returns true if it is not valid
      * @param {int} sortInputValue
@@ -607,7 +594,7 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that checks the entire new sortervalues if there is any duplicates and return true inte that case
+     * Function that checks the entire new sortervalues if there is any duplicates and return true if thats the case
      * @param {array} sortArray
      * @returns boolean
      */
@@ -623,20 +610,20 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that gets 2 strings with the storename and a category and returns the correct sorting value
+     * Function that gets 2 strings with the storeName and a category and returns the correct sorting value from he sorter array
      * @param {String} store
      * @param {String} category
-     * @returns sorting value from sorter list
+     * @returns sorting value from the sorter array
      */
     function getCorrectSortingValue(store, category) {
         for (s of sorter) {
-            if (s.categoryName == category && s.storeName == store)
-                return s.sortValue;
+            if (s.categoryName == category && s.storeName == store) return s.sortValue;
         }
     }
 
     /**
-     * Function that toggle the checked status in the itemList
+     * Function that toggle the checked status in the itemList by looping through the items and
+     * finds the gives item id and changes the checked status for that item.
      * @param {Long} id
      */
     function changeItemCheckedStatusInListForId(id) {
@@ -650,7 +637,9 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that populates the modal with the info from the item from the row you clicked on
+     * Function that populates the modal with the information from the item from the row you clicked on
+     * by looping through the items and finds the item by the given id and populates the values for the
+     * selector with the correct category and the input with the correct item name.
      * @param {Long} id
      */
     function setUpEditModal(id) {
@@ -664,7 +653,15 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that udates the html elements in the list
+     * Function that udates the html item elements in the main item list by
+     * first checking that the input value is not empty.
+     * After that it collects all the necessary information required to change the item by
+     * looping through the categories to get the choosen categoryName, category id and color.
+     * After that it loops throught the sorters to get the correct sortingvalue for the html element.
+     * Then it loops through the itemList to find the correct item and updates it.
+     * After that it calls the function updateItemInDatabase.
+     * And lastly it find the html element by the item id and changes the items
+     * name, sortingvalue, color and categoryName.
      * @returns Exits function if input field is empty.
      */
     function updateHtmlListItem() {
@@ -689,7 +686,7 @@ $(document).ready(function () {
         // Checks the sort value from the sorter for the category and sets the html element value for later sorting
         for (s of sorter) {
             if (s.categoryName == categoryName && s.storeName == store) {
-                sortvalue = s.sortvalue;
+                sortvalue = s.sortValue;
                 break;
             }
         }
@@ -717,7 +714,8 @@ $(document).ready(function () {
 
     /**
      * Function that checks the last editable id and sends that item to the database for update
-     * and alerts if it didnt connect to the database.
+     * by looping throught the itemList for the specific item
+     * and alerts a message if it didnt connect to the database.
      */
     function updateItemInDatabase() {
         let item;
@@ -740,6 +738,8 @@ $(document).ready(function () {
             }
         });
     }
+
+    // ################################   FORTSÄTT HÄR MED KOMMENTARER    #####################################
 
     function updateSorterInDatabase() {
         fetch("https://td-shoppinglist-backend.herokuapp.com/sorting/update", {
