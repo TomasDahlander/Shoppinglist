@@ -60,7 +60,11 @@ td {
 
 .sorter-input {
     padding: 0px;
-    text-align: center;
+    text-align: center !important;
+}
+
+.sorter-input-values {
+    text-align: center !important;
 }
 
 .store-action-btn {
