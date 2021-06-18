@@ -107,9 +107,12 @@ $(document).ready(function () {
      * Calls the displaySorter function and rearanges the html elements for that store list when changes store on the modalStore
      */
     $("#sorter-modal-category-input").change(function () {
+        const store = storeSelectOnStoreModal.val();
+        localStorage.setItem("store", store);
+
         displaySorter();
+
         tableArea.children().each(function () {
-            const store = storeSelectOnStoreModal.val();
             const category = $(this).children("td.row-item").attr("name");
             const sortvalue = getCorrectSortingValue(store, category);
             $(this).children("td.row-item").attr("value", sortvalue);
@@ -246,6 +249,7 @@ $(document).ready(function () {
      * This array will after this be used to append options to the selector where a store is selected on the modalStores.
      */
     function setUpStoreChoices() {
+        const lastStore = localStorage.getItem("store");
         for (s of sorter) {
             if (!stores.includes(s.storeName)) {
                 stores.push(s.storeName);
@@ -258,6 +262,7 @@ $(document).ready(function () {
                 ${store}
             </option> 
             `);
+            storeSelectOnStoreModal.val(lastStore);
         }
     }
 
@@ -383,13 +388,14 @@ $(document).ready(function () {
      */
     function renderItem(item, onload) {
         const color = item.category.color;
+        const lastStore = localStorage.getItem("store");
 
         let rowClasses;
         let sortvalue;
 
         // Checks the sort value from the sorter for the category and sets the html element value for later sorting
         for (s of sorter) {
-            if (s.categoryName == item.category.name) {
+            if (s.categoryName == item.category.name && s.storeName == lastStore) {
                 sortvalue = s.sortValue;
                 break;
             }
