@@ -181,4 +181,11 @@ td {
     #maindiv {
         width: 500px;
     }
+
+    .modal {
+        /* Gör mindre och i mitten... */
+    }
+    .modal-2 {
+        /* Gör mindre och i mitten... */
+    }
 }
