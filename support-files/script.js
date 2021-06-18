@@ -633,12 +633,8 @@ $(document).ready(function () {
     }
 
     /**
-<<<<<<< HEAD
      * Function that gets 2 strings with the storename and a category and returns the correct sorting value
      * by looping through the sorters and returns the sortingvalue based on the category and store name.
-=======
-     * Function that gets 2 strings with the storeName and a category and returns the correct sorting value from he sorter array
->>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
      * @param {String} store
      * @param {String} category
      * @returns sorting value from the sorter array
@@ -650,13 +646,8 @@ $(document).ready(function () {
     }
 
     /**
-<<<<<<< HEAD
-     * Function that toggles the checked status in the itemList
-     * by looping through the items and changes the correct item by the given id
-=======
      * Function that toggle the checked status in the itemList by looping through the items and
      * finds the gives item id and changes the checked status for that item.
->>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
      * @param {Long} id
      */
     function changeItemCheckedStatusInListForId(id) {
@@ -670,13 +661,9 @@ $(document).ready(function () {
     }
 
     /**
-<<<<<<< HEAD
-     * Function that populates the editModal with the info from the item you clicked on in the item list html element
-=======
      * Function that populates the modal with the information from the item from the row you clicked on
      * by looping through the items and finds the item by the given id and populates the values for the
      * selector with the correct category and the input with the correct item name.
->>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
      * @param {Long} id
      */
     function setUpEditModal(id) {
@@ -690,7 +677,6 @@ $(document).ready(function () {
     }
 
     /**
-<<<<<<< HEAD
      * Function that udates a current item and the html element in the item list
      * by first checking the if the name has any input and exit the function here if there isn't any input.
      * Then it collect all the necessary information by first looping through the categories to get the
@@ -699,17 +685,6 @@ $(document).ready(function () {
      * Then it loops through the itemList to find the correct item and updates it with all the information.
      * After this is calls the function updateItemInDatabase and after that it changes the html elements by
      * the new item name, sortvalue, color, categoryname.
-=======
-     * Function that udates the html item elements in the main item list by
-     * first checking that the input value is not empty.
-     * After that it collects all the necessary information required to change the item by
-     * looping through the categories to get the choosen categoryName, category id and color.
-     * After that it loops throught the sorters to get the correct sortingvalue for the html element.
-     * Then it loops through the itemList to find the correct item and updates it.
-     * After that it calls the function updateItemInDatabase.
-     * And lastly it find the html element by the item id and changes the items
-     * name, sortingvalue, color and categoryName.
->>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
      * @returns Exits function if input field is empty.
      */
     function updateHtmlListItem() {
@@ -787,15 +762,10 @@ $(document).ready(function () {
         });
     }
 
-<<<<<<< HEAD
     /**
      * Function that updates the entire sorter in the database by sending the sorter array.
      * If anything goes wrong this is alerted.
      */
-=======
-    // ################################   FORTSÄTT HÄR MED KOMMENTARER    #####################################
-
->>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
     function updateSorterInDatabase() {
         fetch("https://td-shoppinglist-backend.herokuapp.com/sorting/update", {
             method: "POST",
