@@ -130,9 +130,27 @@ $(document).ready(function () {
         updateItemChecks();
     });
 
+    /**
+     * Displays the logoutModal when clicking on the top left button on the main page.
+     */
     $("#logutBtn").click(function () {
+        modalLogout.css("display", "block");
+    });
+
+    /**
+     * Empties the localStorage of the user and redirects to the login.html page when
+     * clicking on the yes button on the logutModal.
+     */
+    $("#yesLogoutBtn").click(function () {
         localStorage.removeItem("user");
         window.location.replace("/login.html");
+    });
+
+    /**
+     * Closes the logoutModal when clicking on the no button on the logoutModal.
+     */
+    $("#noLogoutBtn").click(function () {
+        modalLogout.css("display", "none");
     });
 
     /**
@@ -330,7 +348,10 @@ $(document).ready(function () {
      */
     function fetchItems() {
         fetch(`https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`)
-            .then((response) => response.json())
+            .then(function (response) {
+                $("#loadingMessageDiv").remove();
+                return response.json();
+            })
             .then((data) => setAndRenderItems(data))
             .then(() => displaySorter())
             .then(() => sortTable());
@@ -922,8 +943,9 @@ $(document).ready(function () {
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
     modalStores = $("#sorter-modal-div"); // sets the modal for settings to a variable
     modalCreateStore = $("#new-sorter-modal-div"); // sets the modal for create new store to a varable
-    modalRemoveStore = $("#remove-sorter-modal-div"); // set the modal for removing a store
-    modalChangeStoreName = $("#rename-sorter-modal-div"); // set the modal for changing store name
+    modalRemoveStore = $("#remove-sorter-modal-div"); // set the modal for removing a store to a variable
+    modalChangeStoreName = $("#rename-sorter-modal-div"); // set the modal for changing store name to a variable
+    modalLogout = $("#logout-modal-div"); // set the modal for logout to a variable
     categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
     categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal
     storeSelectOnStoreModal = $("#sorter-modal-category-input"); // set the option selector to a variable on the setting modal
