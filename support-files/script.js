@@ -114,6 +114,7 @@ $(document).ready(function () {
             const sortvalue = getCorrectSortingValue(store, category);
             $(this).children("td.row-item").attr("value", sortvalue);
         });
+        sortTable();
     });
 
     /**
@@ -598,7 +599,8 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that checks if the new input is a valid value and returns true if it is not valid
+     * Function that checks if the new input is a valid value and returns true if it is not valid.
+     * Value must be between 1 and 6.
      * @param {int} sortInputValue
      * @returns
      */
@@ -631,7 +633,12 @@ $(document).ready(function () {
     }
 
     /**
+<<<<<<< HEAD
+     * Function that gets 2 strings with the storename and a category and returns the correct sorting value
+     * by looping through the sorters and returns the sortingvalue based on the category and store name.
+=======
      * Function that gets 2 strings with the storeName and a category and returns the correct sorting value from he sorter array
+>>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
      * @param {String} store
      * @param {String} category
      * @returns sorting value from the sorter array
@@ -643,8 +650,13 @@ $(document).ready(function () {
     }
 
     /**
+<<<<<<< HEAD
+     * Function that toggles the checked status in the itemList
+     * by looping through the items and changes the correct item by the given id
+=======
      * Function that toggle the checked status in the itemList by looping through the items and
      * finds the gives item id and changes the checked status for that item.
+>>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
      * @param {Long} id
      */
     function changeItemCheckedStatusInListForId(id) {
@@ -658,9 +670,13 @@ $(document).ready(function () {
     }
 
     /**
+<<<<<<< HEAD
+     * Function that populates the editModal with the info from the item you clicked on in the item list html element
+=======
      * Function that populates the modal with the information from the item from the row you clicked on
      * by looping through the items and finds the item by the given id and populates the values for the
      * selector with the correct category and the input with the correct item name.
+>>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
      * @param {Long} id
      */
     function setUpEditModal(id) {
@@ -674,6 +690,16 @@ $(document).ready(function () {
     }
 
     /**
+<<<<<<< HEAD
+     * Function that udates a current item and the html element in the item list
+     * by first checking the if the name has any input and exit the function here if there isn't any input.
+     * Then it collect all the necessary information by first looping through the categories to get the
+     * category id, and color by the choosen category name in the selector.
+     * After this it loops through the sorter and collects the correct sortvalue.
+     * Then it loops through the itemList to find the correct item and updates it with all the information.
+     * After this is calls the function updateItemInDatabase and after that it changes the html elements by
+     * the new item name, sortvalue, color, categoryname.
+=======
      * Function that udates the html item elements in the main item list by
      * first checking that the input value is not empty.
      * After that it collects all the necessary information required to change the item by
@@ -683,6 +709,7 @@ $(document).ready(function () {
      * After that it calls the function updateItemInDatabase.
      * And lastly it find the html element by the item id and changes the items
      * name, sortingvalue, color and categoryName.
+>>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
      * @returns Exits function if input field is empty.
      */
     function updateHtmlListItem() {
@@ -760,8 +787,15 @@ $(document).ready(function () {
         });
     }
 
+<<<<<<< HEAD
+    /**
+     * Function that updates the entire sorter in the database by sending the sorter array.
+     * If anything goes wrong this is alerted.
+     */
+=======
     // ################################   FORTSÄTT HÄR MED KOMMENTARER    #####################################
 
+>>>>>>> f1ec4cee11bd9f0295589a1f4a370734e98c58dd
     function updateSorterInDatabase() {
         fetch("https://td-shoppinglist-backend.herokuapp.com/sorting/update", {
             method: "POST",
@@ -776,6 +810,11 @@ $(document).ready(function () {
         });
     }
 
+    /**
+     * Function that creates a new store in the database by sending the new store name and user id
+     * to the database. After this we get a new sorter list back from the database and calls the
+     * function addNewStoreToHtmlList.If anything goes wrong this is alerted.
+     */
     function sendNewStoreToDatabase() {
         const newSorterName = createNewStoreInputField.val();
 
@@ -804,6 +843,11 @@ $(document).ready(function () {
             });
     }
 
+    /**
+     * Function that receives an array of sorters and adds these to the current sorter list with a loop.
+     * After this it appends the store name for all these sorters to the selector on the storeSelectOnStoreModal.
+     * @param {Array} newSorter
+     */
     function addNewStoreToHtmlList(newSorter) {
         for (s of newSorter) {
             sorter.push(s);
@@ -817,8 +861,10 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that reads the input from the add modal and sends an item object to the
-     * renderItem function with false to onload so the item will be placed on the top of the list
+     * Function that first checks if the item names length is more than 1 chararacter.
+     * After this it collect all the necessary information by looping thought the categories
+     * to get the category id and color by the choosen category from the selector on the addModal.
+     * Then creates and item which is sent to the sendItemToDatabase function.
      */
     function getInfoFromAddModal() {
         // Get and check the input value
@@ -855,6 +901,13 @@ $(document).ready(function () {
         sendItemToDatabase(item);
     }
 
+    /**
+     * Function that receives an item object and sends it to the database.
+     * Back from the database we get an item with an id which is added to our itemList and then
+     * passed to the renderItem function and after that calls the function resetAddInputValue.
+     * If there is something wrong with the database this is alerted and the item is not added to the itemList.
+     * @param {object} item
+     */
     function sendItemToDatabase(item) {
         fetch("https://td-shoppinglist-backend.herokuapp.com/item/add", {
             method: "POST",
@@ -880,7 +933,7 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that resets the values in the addModals input fields by looping through and checks for category Övrigt
+     * Function that resets the values in the addModals input and set the category selection to "Övrigt".
      */
     function resetAddInputValue() {
         addInputField.val("");
@@ -888,7 +941,8 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that send the entire itemList to the database to update all checked item etc
+     * Function that send the entire itemList to the database to update all checked item etc.
+     * After that it alert if this worked or not.
      */
     function updateItemChecks() {
         fetch("https://td-shoppinglist-backend.herokuapp.com/item/add/list", {
@@ -907,7 +961,8 @@ $(document).ready(function () {
     }
 
     /**
-     * Sorting the elements in the item table
+     * Function that sorts the elements in the item table by the sorting value that is given to the
+     * elements as value.
      */
     function sortTable() {
         let table, rows, switching, a, b;
