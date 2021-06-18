@@ -114,6 +114,7 @@ $(document).ready(function () {
             const sortvalue = getCorrectSortingValue(store, category);
             $(this).children("td.row-item").attr("value", sortvalue);
         });
+        sortTable();
     });
 
     /**
