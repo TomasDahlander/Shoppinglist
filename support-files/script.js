@@ -533,6 +533,8 @@ $(document).ready(function () {
                             type="number"
                             class="form-control sorter-input-values"
                             value="${s.sortValue}"
+                            max="6"
+                            min="1"
                             >
                         </td>
                     </tr>
