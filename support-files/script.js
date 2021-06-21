@@ -83,6 +83,16 @@ $(document).ready(function () {
     });
 
     /**
+     * Calls the deleteItemFromHtmlListById function when pressing on the remove item button on the editModal
+     */
+    $("#itemRemoveBtn").click(function () {
+        console.log("deleting item...");
+        $(`#${currentEditableItemId}`).parent().remove();
+        deleteItemFromDatabaseById(currentEditableItemId);
+        modalEdit.css("display", "none");
+    });
+
+    /**
      * Displays the modalStores when clicking on the Store button
      */
     $("#storesBtn").click(function () {
