@@ -36,6 +36,7 @@
                     ></i>
                 </div>
             </div>
+
             <!-- Headline ends -->
 
             <!-- Buttons start -->
@@ -53,6 +54,15 @@
                 </div>
             </div>
             <!-- Buttons  ends -->
+
+            <!-- Loading message start -->
+            <div id="loadingMessageDiv" class="row">
+                <div class="col-12">
+                    <p>Loading shoppinglist...</p>
+                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw" style="font-size: 100px"></i>
+                </div>
+            </div>
+            <!-- Loading message ends -->
 
             <!-- List start -->
             <div class="row table-area">
@@ -199,6 +209,24 @@
             </div>
             <!-- Remove sorter modal ends -->
 
+            <!-- Logout modal start -->
+            <div id="logout-modal-div" class="modal-2">
+                <div class="modal-content-2">
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Are you sure you want to logut?</p>
+                        </div>
+                        <div class="col-6 text-start">
+                            <button id="yesLogoutBtn" class="btn btn-info">Yes</button>
+                        </div>
+                        <div class="col-6 text-end">
+                            <button id="noLogoutBtn" class="btn btn-info">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Logout modal ends -->
+
             <!-- Rename sorter modal start -->
             <div id="rename-sorter-modal-div" class="modal-2">
                 <div class="modal-content-2">
@@ -247,7 +275,10 @@
 
                     <!-- Store choice selector -->
                     <div class="row">
-                        <div class="col text-start">
+                        <div class="col-12">
+                            <p>Give name for new store:</p>
+                        </div>
+                        <div class="col-12 text-start">
                             <!-- Text input -->
                             <input
                                 id="createStoreNameInput"

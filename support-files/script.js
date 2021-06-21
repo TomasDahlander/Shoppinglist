@@ -107,9 +107,12 @@ $(document).ready(function () {
      * Calls the displaySorter function and rearanges the html elements for that store list when changes store on the modalStore
      */
     $("#sorter-modal-category-input").change(function () {
+        const store = storeSelectOnStoreModal.val();
+        localStorage.setItem("store", store);
+
         displaySorter();
+
         tableArea.children().each(function () {
-            const store = storeSelectOnStoreModal.val();
             const category = $(this).children("td.row-item").attr("name");
             const sortvalue = getCorrectSortingValue(store, category);
             $(this).children("td.row-item").attr("value", sortvalue);
@@ -131,9 +134,27 @@ $(document).ready(function () {
         updateItemChecks();
     });
 
+    /**
+     * Displays the logoutModal when clicking on the top left button on the main page.
+     */
     $("#logutBtn").click(function () {
+        modalLogout.css("display", "block");
+    });
+
+    /**
+     * Empties the localStorage of the user and redirects to the login.html page when
+     * clicking on the yes button on the logutModal.
+     */
+    $("#yesLogoutBtn").click(function () {
         localStorage.removeItem("user");
         window.location.replace("/login.html");
+    });
+
+    /**
+     * Closes the logoutModal when clicking on the no button on the logoutModal.
+     */
+    $("#noLogoutBtn").click(function () {
+        modalLogout.css("display", "none");
     });
 
     /**
@@ -230,6 +251,7 @@ $(document).ready(function () {
      * This array will after this be used to append options to the selector where a store is selected on the modalStores.
      */
     function setUpStoreChoices() {
+        const lastStore = localStorage.getItem("store");
         for (s of sorter) {
             if (!stores.includes(s.storeName)) {
                 stores.push(s.storeName);
@@ -242,6 +264,7 @@ $(document).ready(function () {
                 ${store}
             </option> 
             `);
+            storeSelectOnStoreModal.val(lastStore);
         }
     }
 
@@ -335,7 +358,10 @@ $(document).ready(function () {
         fetch(
             `https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`
         )
-            .then((response) => response.json())
+            .then(function (response) {
+                $("#loadingMessageDiv").remove();
+                return response.json();
+            })
             .then((data) => setAndRenderItems(data))
             .then(() => displaySorter())
             .then(() => sortTable());
@@ -366,13 +392,17 @@ $(document).ready(function () {
      */
     function renderItem(item, onload) {
         const color = item.category.color;
+        const lastStore = localStorage.getItem("store");
 
         let rowClasses;
         let sortvalue;
 
         // Checks the sort value from the sorter for the category and sets the html element value for later sorting
         for (s of sorter) {
-            if (s.categoryName == item.category.name) {
+            if (
+                s.categoryName == item.category.name &&
+                s.storeName == lastStore
+            ) {
                 sortvalue = s.sortValue;
                 break;
             }
@@ -514,6 +544,8 @@ $(document).ready(function () {
                             type="number"
                             class="form-control sorter-input-values"
                             value="${s.sortValue}"
+                            max="6"
+                            min="1"
                             >
                         </td>
                     </tr>
@@ -959,8 +991,9 @@ $(document).ready(function () {
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
     modalStores = $("#sorter-modal-div"); // sets the modal for settings to a variable
     modalCreateStore = $("#new-sorter-modal-div"); // sets the modal for create new store to a varable
-    modalRemoveStore = $("#remove-sorter-modal-div"); // set the modal for removing a store
-    modalChangeStoreName = $("#rename-sorter-modal-div"); // set the modal for changing store name
+    modalRemoveStore = $("#remove-sorter-modal-div"); // set the modal for removing a store to a variable
+    modalChangeStoreName = $("#rename-sorter-modal-div"); // set the modal for changing store name to a variable
+    modalLogout = $("#logout-modal-div"); // set the modal for logout to a variable
     categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
     categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal
     storeSelectOnStoreModal = $("#sorter-modal-category-input"); // set the option selector to a variable on the setting modal
