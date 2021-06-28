@@ -374,7 +374,12 @@ $(document).ready(function () {
             })
             .then((data) => setAndRenderItems(data))
             .then(() => displaySorter())
-            .then(() => sortTable());
+            .then(() => sortTable())
+            .then(function () {
+                $("#storesBtn").removeAttr("disabled");
+                $("#sortingBtn").removeAttr("disabled");
+                $("#addBtn").removeAttr("disabled");
+            });
     }
 
     /**
