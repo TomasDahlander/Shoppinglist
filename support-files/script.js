@@ -243,9 +243,7 @@ $(document).ready(function () {
      * Then calls the setUpStoreChoices function and after then calls the function fetchCategories.
      */
     function fetchSorter() {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`
-        )
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/sorting/get/${user.id}`)
             .then((response) => response.json())
             .then(function (data) {
                 sorter = data;
@@ -365,9 +363,7 @@ $(document).ready(function () {
      * After this is calls the function displaySorter and then the function sortTable
      */
     function fetchItems() {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`
-        )
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`)
             .then(function (response) {
                 $("#loadingMessageDiv").remove();
                 return response.json();
@@ -414,10 +410,7 @@ $(document).ready(function () {
 
         // Checks the sort value from the sorter for the category and sets the html element value for later sorting
         for (s of sorter) {
-            if (
-                s.categoryName == item.category.name &&
-                s.storeName == lastStore
-            ) {
+            if (s.categoryName == item.category.name && s.storeName == lastStore) {
                 sortvalue = s.sortValue;
                 break;
             }
@@ -461,26 +454,22 @@ $(document).ready(function () {
          * Listener for the start touch fom the element with the item id
          * and saves it to the coordinate variables.
          */
-        document
-            .getElementById(`${item.id}`)
-            .addEventListener("touchstart", function (event) {
-                touchStartX = event.changedTouches[0].screenX;
-                touchStartY = event.changedTouches[0].screenY;
-            });
+        document.getElementById(`${item.id}`).addEventListener("touchstart", function (event) {
+            touchStartX = event.changedTouches[0].screenX;
+            touchStartY = event.changedTouches[0].screenY;
+        });
 
         /**
          * Listener for the end touch from the element with the item id
          * and saves it to the coordinate variables.
          * After this the function deleteItemFromHtmlListById is called with the respective item id.
          */
-        document
-            .getElementById(`${item.id}`)
-            .addEventListener("touchend", function (event) {
-                currentEditableItemId = `${item.id}`;
-                touchEndX = event.changedTouches[0].screenX;
-                touchEndY = event.changedTouches[0].screenY;
-                deleteItemFromHtmlListById(`${item.id}`);
-            });
+        document.getElementById(`${item.id}`).addEventListener("touchend", function (event) {
+            currentEditableItemId = `${item.id}`;
+            touchEndX = event.changedTouches[0].screenX;
+            touchEndY = event.changedTouches[0].screenY;
+            deleteItemFromHtmlListById(`${item.id}`);
+        });
 
         /**
          * Listener for the edit button for each element thats added to the item table list
@@ -516,9 +505,9 @@ $(document).ready(function () {
      * @param {Long} id
      */
     function deleteItemFromDatabaseById(id) {
-        fetch(
-            `https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`
-        ).then(function (response) {
+        fetch(`https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`).then(function (
+            response
+        ) {
             if (response.status != 200)
                 alert("Something went wrong when deleting item from database!");
         });
@@ -584,10 +573,7 @@ $(document).ready(function () {
 
         for (s of sorter) {
             if (s.storeName == store) {
-                const sortvalue = $(`#${s.id}`)
-                    .next()
-                    .children("input.form-control")
-                    .val();
+                const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
                 if (validateSorterInput(sortvalue)) {
                     return;
                 }
@@ -678,8 +664,7 @@ $(document).ready(function () {
      */
     function getCorrectSortingValue(store, category) {
         for (s of sorter) {
-            if (s.categoryName == category && s.storeName == store)
-                return s.sortValue;
+            if (s.categoryName == category && s.storeName == store) return s.sortValue;
         }
     }
 
@@ -812,8 +797,10 @@ $(document).ready(function () {
                 "Content-type": "application/json",
             },
         }).then(function (response) {
-            if (response.status != 200) {
-                alert("Could not update sorters in database!");
+            if (response.status == 200) {
+                alert("Successfully updates the store in the database!");
+            } else {
+                alert("Could not update the store in database!");
             }
         });
     }
