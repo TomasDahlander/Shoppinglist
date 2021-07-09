@@ -853,6 +853,7 @@ $(document).ready(function () {
                 ${newSorter[0].storeName}
             </option> 
         `);
+        storeSelectOnStoreModal.val(newSorter[0].storeName);
     }
 
     /**
