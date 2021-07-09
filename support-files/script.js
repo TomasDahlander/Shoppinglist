@@ -272,6 +272,9 @@ $(document).ready(function () {
                 ${store}
             </option> 
             `);
+        }
+
+        if (lastStore != null) {
             storeSelectOnStoreModal.val(lastStore);
         }
     }
