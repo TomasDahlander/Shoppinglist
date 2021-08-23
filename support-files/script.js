@@ -121,12 +121,7 @@ $(document).ready(function () {
         localStorage.setItem("store", store);
 
         displaySorter();
-
-        tableArea.children().each(function () {
-            const category = $(this).children("td.row-item").attr("name");
-            const sortvalue = getCorrectSortingValue(store, category);
-            $(this).children("td.row-item").attr("value", sortvalue);
-        });
+        changeSorterValueInHtmlItemList();
         sortTable();
     });
 
@@ -297,8 +292,6 @@ $(document).ready(function () {
             }
         });
 
-        displaySorter();
-
         fetch(
             `https://td-shoppinglist-backend.herokuapp.com/sorting/delete/by/name/${store}/id/${user.id}`,
             {
@@ -310,6 +303,12 @@ $(document).ready(function () {
         ).then(function (response) {
             if (response.status != 200) {
                 alert("Could not delete sorters in database!");
+            } else {
+                const store = storeSelectOnStoreModal.val();
+                localStorage.setItem("store", store);
+                changeSorterValueInHtmlItemList();
+                displaySorter();
+                sortTable();
             }
         });
     }
@@ -856,7 +855,15 @@ $(document).ready(function () {
                 ${newSorter[0].storeName}
             </option> 
         `);
+
         storeSelectOnStoreModal.val(newSorter[0].storeName);
+
+        const store = storeSelectOnStoreModal.val();
+        localStorage.setItem("store", store);
+
+        changeSorterValueInHtmlItemList();
+        displaySorter();
+        sortTable();
     }
 
     /**
@@ -956,6 +963,19 @@ $(document).ready(function () {
             } else {
                 alert("All items updated!");
             }
+        });
+    }
+
+    /**
+     * Function that changes the sorting values of the html elements in the item list.
+     */
+    function changeSorterValueInHtmlItemList() {
+        const store = storeSelectOnStoreModal.val();
+
+        tableArea.children().each(function () {
+            const category = $(this).children("td.row-item").attr("name");
+            const sortvalue = getCorrectSortingValue(store, category);
+            $(this).children("td.row-item").attr("value", sortvalue);
         });
     }
 
