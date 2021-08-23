@@ -86,7 +86,6 @@ $(document).ready(function () {
      * Calls the deleteItemFromHtmlListById function when pressing on the remove item button on the editModal
      */
     $("#itemRemoveBtn").click(function () {
-        console.log("deleting item...");
         $(`#${currentEditableItemId}`).parent().remove();
         deleteItemFromDatabaseById(currentEditableItemId);
         modalEdit.css("display", "none");
@@ -225,7 +224,7 @@ $(document).ready(function () {
     });
 
     /**
-     * Calls the function updateSorterName when clicking on the
+     * Calls the function updateSorterName when clicking on the Update store name button on the modalChangeStoreName
      */
     $("#updateSorterNameBtn").click(function () {
         updateSorterName();
@@ -360,9 +359,10 @@ $(document).ready(function () {
     }
 
     /**
-     * Fetches the item array from the database with the specifik user id.
+     * Fetches the item array from the database with the specific user id.
      * Then calls the function setAndRenderItems with the item array.
-     * After this is calls the function displaySorter and then the function sortTable
+     * After this it calls the function displaySorter and then the function sortTable.
+     * After this it makes the three button Stores, Sort and Add + enabled for use.
      */
     function fetchItems() {
         fetch(`https://td-shoppinglist-backend.herokuapp.com/item/get/${user.id}`)
@@ -383,7 +383,7 @@ $(document).ready(function () {
     /**
      * Receives JSON data with items and sets this to the variable array itemList.
      * Then it loops through the itemList and calls the function renderItem with each item
-     * and a boolean depending on if this is render at the fetch of all items or when adding one item.
+     * and a boolean depending on if this is rendered at the fetch of all items or when adding one item.
      * @param {JSON} itemDataArray
      */
     function setAndRenderItems(itemDataArray) {
@@ -396,10 +396,10 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that receives one item object and a boolean that if true appends other prepends the item to the list
+     * Function that receives one item object and a boolean that if true appends else prepends the item to the list.
      * The function collects all the information required from the item such as color, categoryname, if item is checked.
-     * Then it appends or prepends the item to te tableArea where all the items are shown with the item id, color,
-     * sortvalue depending on the sorter, category name, item name.
+     * Then it appends or prepends the item to the tableArea where all the items are shown with the item id, color,
+     * sortvalue depending on the sorter, category name and item name.
      * After this Listeners for this item row and meny button on the right side is set.
      * @param {Object} item
      */
@@ -443,7 +443,7 @@ $(document).ready(function () {
         }
 
         /**
-         * Toggle wheter an item is checked or not by toggle the class "checked-item" for the currenct element
+         * Listener that toggles whether an item is checked or not by toggle the class "checked-item" for the currenct element
          * when clicking on the element with the items id
          */
         $(`#${item.id}`).click(function () {
@@ -453,7 +453,7 @@ $(document).ready(function () {
         });
 
         /**
-         * Listener for the start touch fom the element with the item id
+         * Listener for the start touch from the element with the item id
          * and saves it to the coordinate variables.
          */
         document.getElementById(`${item.id}`).addEventListener("touchstart", function (event) {
@@ -475,7 +475,7 @@ $(document).ready(function () {
 
         /**
          * Listener for the edit button for each element thats added to the item table list
-         * and when clicked sets a variable with the current item it and then calls the function
+         * and when clicked sets a variable with the current item id and then calls the function
          * setUpEditModal with the respective item id and displays the modalEdit.
          */
         $(`#edit${item.id}`).click(function () {
@@ -519,7 +519,7 @@ $(document).ready(function () {
      * Function that displays the sorter from the current store choice.
      * It starts by sorting the entire sorters array after sorting value and then
      * clears the entire html list of sorters on the modalStores.
-     * Then it loops through all the sorter and checks if a sorter has the correct
+     * Then it loops through all the sorters and checks if a sorter has the correct
      * user id and the storeName is the same as the selected one.
      * If both these are true it is appended to the sortingtable with correct color, sortingvalue and id.
      */
@@ -563,9 +563,9 @@ $(document).ready(function () {
     /**
      * Function that updates the selected sorter object and then updates the html elements so sorting can be done on the item html list.
      * It starts by looping through the sorters to collect the input values for the new sorting values to the specific category.
-     * Then it for each it calls the function validateSorterInput and if it return true, exit the function here otherwiese it saves this
+     * Then for each it calls the function validateSorterInput and if it returns true, exits the function here otherwise it saves this
      * value to the sorter and also adds it to an empty array sortArray for later validating.
-     * After this the function validateEntireSorter is called with the new sortArray and if it return true, exit the function here
+     * After this the function validateEntireSorter is called with the new sortArray and if it return true, exits the function here
      * otherwiese it loops through the item html element and changes the value for the element so sorting can later be done.
      * After this it calls the function updateSorterInDatabase.
      */
@@ -599,9 +599,9 @@ $(document).ready(function () {
 
     /**
      * Function that updates the store name.
-     * It start by collecting the current name from the selector and the new name from the input.
+     * It starts by collecting the current name from the selector and the new name from the input.
      * Then it loops through the sorter and changes the name on the sorter with the old name to the new.
-     * After this it loops through the html elements of the selector options and updates the new name.
+     * After this it loops through the html elements of the selector options and updates to the new name.
      * Then it closes the modalChangeStoreName and calls the function updateSorterInDatabase.
      */
     function updateSorterName() {
@@ -627,7 +627,7 @@ $(document).ready(function () {
      * Function that checks if the new input is a valid value and returns true if it is not valid.
      * Value must be between 1 and 6.
      * @param {int} sortInputValue
-     * @returns
+     * @returns boolean
      */
     function validateSorterInput(sortInputValue) {
         if (sortInputValue.length < 1) {
@@ -704,12 +704,12 @@ $(document).ready(function () {
     /**
      * Function that udates a current item and the html element in the item list
      * by first checking the if the name has any input and exit the function here if there isn't any input.
-     * Then it collect all the necessary information by first looping through the categories to get the
+     * Then it collects all the necessary information by first looping through the categories to get the
      * category id, and color by the choosen category name in the selector.
      * After this it loops through the sorter and collects the correct sortvalue.
      * Then it loops through the itemList to find the correct item and updates it with all the information.
      * After this is calls the function updateItemInDatabase and after that it changes the html elements by
-     * the new item name, sortvalue, color, categoryname.
+     * the new item name, sortvalue, color and categoryname.
      * @returns Exits function if input field is empty.
      */
     function updateHtmlListItem() {
@@ -810,7 +810,7 @@ $(document).ready(function () {
     /**
      * Function that creates a new store in the database by sending the new store name and user id
      * to the database. After this we get a new sorter list back from the database and calls the
-     * function addNewStoreToHtmlList.If anything goes wrong this is alerted.
+     * function addNewStoreToHtmlList. If anything goes wrong this is alerted.
      */
     function sendNewStoreToDatabase() {
         const newSorterName = createNewStoreInputField.val();
@@ -868,7 +868,7 @@ $(document).ready(function () {
 
     /**
      * Function that first checks if the item names length is more than 1 chararacter.
-     * After this it collect all the necessary information by looping thought the categories
+     * After this it collects all the necessary information by looping thought the categories
      * to get the category id and color by the choosen category from the selector on the addModal.
      * Then creates and item which is sent to the sendItemToDatabase function.
      */
@@ -947,8 +947,8 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that send the entire itemList to the database to update all checked item etc.
-     * After that it alert if this worked or not.
+     * Function that sends the entire itemList to the database to update all checked item etc.
+     * After that it alerts if this worked or not.
      */
     function updateItemChecks() {
         fetch("https://td-shoppinglist-backend.herokuapp.com/item/add/list", {
@@ -980,8 +980,8 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that sorts the elements in the item table by the sorting value that is given to the
-     * elements as value.
+     * Function that sorts the elements in the item table by the sorting value
+     * that has been given to the elements as value.
      */
     function sortTable() {
         let table, rows, switching, a, b;
@@ -1011,8 +1011,6 @@ $(document).ready(function () {
     }
 
     // Runs when loaded ****************************************************************************************************
-    // fetchCategories(); // Call the category fetch function
-    // fetchItems(); // Call the item fetch function
     modalAdd = $("#add-modal-div"); // sets the modal for adding to a variable
     modalEdit = $("#edit-modal-div"); // sets the modal for editing to a variable
     modalStores = $("#sorter-modal-div"); // sets the modal for settings to a variable
