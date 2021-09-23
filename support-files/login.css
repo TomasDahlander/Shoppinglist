@@ -1,24 +1,31 @@
 body {
-    background-color: linen;
+  background-color: linen;
 }
 
 h1 {
-    color: black;
-    padding-top: 40px;
+  color: black;
+  padding-top: 40px;
 }
 
 button {
-    width: 100px;
+  width: 100px;
 }
 
 #maindiv {
-    width: 250px;
+  width: 250px;
 }
 
 #errorMessage {
-    display: none;
-    color: red;
-    font-weight: bold;
-    font-size: 18;
-    margin-top: 20px;
+  display: none;
+  color: red;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+#loadingSymbol {
+  display: none;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 18px;
 }
