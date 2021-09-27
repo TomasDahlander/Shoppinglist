@@ -508,10 +508,22 @@ $(document).ready(function () {
    * @param {Long} id
    */
   function deleteItemFromDatabaseById(id) {
+    deleteItemFromVariableList(id);
     fetch(`https://td-shoppinglist-backend.herokuapp.com/item/delete/${id}`).then(function (
       response
     ) {
       if (response.status != 200) alert("Something went wrong when deleting item from database!");
+    });
+  }
+
+  /**
+   * Function that takes an item id and removes it from the global item array itemList.
+   * This to prevent duplicates when updating the itemList for checks.
+   * @param {Long}} id
+   */
+  function deleteItemFromVariableList(id) {
+    itemList = itemList.filter(function (item) {
+      return item.id != id;
     });
   }
 
@@ -1000,7 +1012,7 @@ $(document).ready(function () {
         a = rows[i].getElementsByTagName("td")[0];
         b = rows[i + 1].getElementsByTagName("td")[0];
 
-        // Switch places of two elements if the are in the wrong sort order and starts a new loop
+        // Switch places of two elements if they are in the wrong sort order and starts a new loop
         if (a.getAttribute("value") > b.getAttribute("value")) {
           rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
           switching = true;
