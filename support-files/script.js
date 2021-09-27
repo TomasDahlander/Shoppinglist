@@ -826,6 +826,7 @@ $(document).ready(function () {
    */
   function sendNewStoreToDatabase() {
     const newSorterName = createNewStoreInputField.val();
+    createNewStoreInputField.val("");
 
     fetch(
       `https://td-shoppinglist-backend.herokuapp.com/sorting/add/with/name/${newSorterName}/userid/${user.id}`,
