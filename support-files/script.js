@@ -134,8 +134,9 @@ $(document).ready(function () {
     /**
      * Calls the updateItemChecks function when clicking on the update symbol in the top right corner
      */
-    $("#refreshBtn").click(function () {
-        updateItemChecks();
+    $("#profileBtn").click(function () {
+        console.log("Pressed profile button!");
+        alert("Profile page is coming soon!");
     });
 
     /**
@@ -646,8 +647,8 @@ $(document).ready(function () {
         if (sortInputValue.length < 1) {
             alert("All categories must have input values!");
             return true;
-        } else if (sortInputValue > 6) {
-            alert("Value can't be higher then 6!");
+        } else if (sortInputValue > categories.length) {
+            alert(`Value can't be higher then ${categories.length}!`);
             return true;
         } else if (sortInputValue < 1) {
             alert("Value can't be 0 or lower!");
@@ -980,26 +981,6 @@ $(document).ready(function () {
     function resetAddInputValue() {
         addInputField.val("");
         $("#add-modal-category-input").val("Övrigt");
-    }
-
-    /**
-     * Function that sends the entire itemList to the database to update all checked item etc.
-     * After that it alerts if this worked or not.
-     */
-    function updateItemChecks() {
-        fetch("https://td-shoppinglist-backend.herokuapp.com/item/add/list", {
-            method: "POST",
-            body: JSON.stringify(itemList),
-            headers: {
-                "Content-type": "application/json",
-            },
-        }).then(function (response) {
-            if (response.status != 200) {
-                alert("Could not update items in database!");
-            } else {
-                alert("All items updated!");
-            }
-        });
     }
 
     /**
