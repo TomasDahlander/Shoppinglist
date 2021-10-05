@@ -14,6 +14,7 @@ let modalStores; // The modal that is shown when clicking on the stores button w
 let modalRemoveStore; // The modal that is shown when clicking on the Remove current store button
 let modalChangeStoreName; // The modal that is shown when clicking on the Rename store button
 let modalCreateStore; // The modal that is shown when clicking on the Add new store + button
+let modalMessage; // The modal that is shown instead of alerts
 
 // Elements variables
 let categorySelectAddModal; // The selector field where you choose the category for your item which to add to the list
@@ -25,6 +26,7 @@ let renameStoreInputField; // The input field for renaming a store
 let createNewStoreInputField; // The input field for creating a store
 let tableArea; // The table where the items are displayed within
 let sortingtable; // The table where the sorters are displayed within
+let alertMessage; // The message that is displayed instead of the alerts
 
 // Cache last id in memory for less looping
 let currentEditableItemId;
@@ -132,11 +134,17 @@ $(document).ready(function () {
     });
 
     /**
-     * Calls the updateItemChecks function when clicking on the update symbol in the top right corner
+     * Displays the message board modal
      */
     $("#profileBtn").click(function () {
-        console.log("Pressed profile button!");
-        alert("Profile page is coming soon!");
+        setAndDisplayAlertMessage("Pressed profile button!");
+    });
+
+    /**
+     * Closes the message board modal
+     */
+    $("#okMessageBtn").click(function () {
+        modalMessage.css("display", "none");
     });
 
     /**
@@ -302,7 +310,7 @@ $(document).ready(function () {
             }
         ).then(function (response) {
             if (response.status != 200) {
-                alert("Could not delete sorters in database!");
+                setAndDisplayAlertMessage("Could not delete sorters in database!");
             } else {
                 const store = storeSelectOnStoreModal.val();
                 localStorage.setItem("store", store);
@@ -514,7 +522,7 @@ $(document).ready(function () {
             response
         ) {
             if (response.status != 200)
-                alert("Something went wrong when deleting item from database!");
+                setAndDisplayAlertMessage("Something went wrong when deleting item from database!");
         });
     }
 
@@ -580,17 +588,19 @@ $(document).ready(function () {
      * Then for each it calls the function validateSorterInput and if it returns true, exits the function here otherwise it saves this
      * value to the sorter and also adds it to an empty array sortArray for later validating.
      * After this the function validateEntireSorter is called with the new sortArray and if it return true, exits the function here
-     * otherwiese it loops through the item html element and changes the value for the element so sorting can later be done.
-     * After this it calls the function updateSorterInDatabase.
+     * otherwiese it calls the function updateSorterInDatabase and then
+     * loops through the item html element and changes the value for the element so sorting can later be done.
      */
     function updateSorterAndHtml() {
         const store = storeSelectOnStoreModal.val();
         let sortArray = [];
+        const oldSorter = JSON.parse(JSON.stringify(sorter)); // Deep copy of sorter array to revert back to if anything fails
 
         for (s of sorter) {
             if (s.storeName == store) {
                 const sortvalue = $(`#${s.id}`).next().children("input.form-control").val();
                 if (validateSorterInput(sortvalue)) {
+                    sorter = oldSorter;
                     return;
                 }
                 s.sortValue = sortvalue;
@@ -599,16 +609,22 @@ $(document).ready(function () {
         }
 
         if (validateEntireSorter(sortArray)) {
-            alert("Categories can't have the same value!");
+            setAndDisplayAlertMessage("Categories can't have the same value!");
+            sorter = oldSorter;
             return;
         }
 
-        tableArea.children().each(function () {
-            const category = $(this).children("td.row-item").attr("name");
-            const sortvalue = getCorrectSortingValue(store, category);
-            $(this).children("td.row-item").attr("value", sortvalue);
-        });
-        updateSorterInDatabase();
+        const wentOkInDatabase = updateSorterInDatabase();
+
+        if (wentOkInDatabase) {
+            tableArea.children().each(function () {
+                const category = $(this).children("td.row-item").attr("name");
+                const sortvalue = getCorrectSortingValue(store, category);
+                $(this).children("td.row-item").attr("value", sortvalue);
+            });
+        } else {
+            sorter = oldSorter;
+        }
     }
 
     /**
@@ -645,13 +661,17 @@ $(document).ready(function () {
      */
     function validateSorterInput(sortInputValue) {
         if (sortInputValue.length < 1) {
-            alert("All categories must have input values!");
+            setAndDisplayAlertMessage("All categories must have input values!");
             return true;
         } else if (sortInputValue > categories.length) {
-            alert(`Value can't be higher then ${categories.length}!`);
+            setAndDisplayAlertMessage(`Value can't be higher then ${categories.length}!`);
             return true;
         } else if (sortInputValue < 1) {
-            alert("Value can't be 0 or lower!");
+            setAndDisplayAlertMessage("Value can't be 0 or lower!");
+            return true;
+        } else if (sortInputValue != Math.floor(sortInputValue)) {
+            setAndDisplayAlertMessage("Value can't be a decimal number!");
+            return true;
         } else return false;
     }
 
@@ -716,7 +736,9 @@ $(document).ready(function () {
             },
         }).then(function (response) {
             if (response.status != 200) {
-                alert("Could not update checks in database!");
+                setAndDisplayAlertMessage(
+                    "Could not update item in the database!/nServer appears to be down..."
+                );
             }
         });
     }
@@ -775,6 +797,8 @@ $(document).ready(function () {
             }
         }
 
+        let currentItem;
+
         // Update the array and then the html list
         for (item of itemList) {
             if (item.id == currentEditableItemId) {
@@ -782,11 +806,12 @@ $(document).ready(function () {
                 item.category.id = categoryId;
                 item.category.name = categoryName;
                 item.category.color = color;
+                currentItem = item;
                 break;
             }
         }
 
-        updateItemInDatabase();
+        updateItemInDatabase(currentItem);
 
         // Changes the html element
         const itemElement = $(`#${currentEditableItemId}`);
@@ -797,37 +822,11 @@ $(document).ready(function () {
     }
 
     /**
-     * Function that checks the last editable id and sends that item to the database for update
-     * by looping throught the itemList for the specific item
-     * and alerts a message if it didnt connect to the database.
-     */
-    function updateItemInDatabase() {
-        let item;
-        for (i of itemList) {
-            if (i.id == currentEditableItemId) {
-                item = i;
-                break;
-            }
-        }
-
-        fetch("https://td-shoppinglist-backend.herokuapp.com/item/add", {
-            method: "POST",
-            body: JSON.stringify(item),
-            headers: {
-                "Content-type": "application/json",
-            },
-        }).then(function (response) {
-            if (response.status != 200) {
-                alert("Could not update item in database!");
-            }
-        });
-    }
-
-    /**
      * Function that updates the entire sorter in the database by sending the sorter array.
      * If anything goes wrong this is alerted.
      */
     function updateSorterInDatabase() {
+        let wentOk;
         fetch("https://td-shoppinglist-backend.herokuapp.com/sorting/update", {
             method: "POST",
             body: JSON.stringify(sorter),
@@ -836,11 +835,14 @@ $(document).ready(function () {
             },
         }).then(function (response) {
             if (response.status == 200) {
-                alert("Successfully updates the store in the database!");
+                setAndDisplayAlertMessage("Successfully updates the store in the database!");
+                ok = true;
             } else {
-                alert("Could not update the store in database!");
+                setAndDisplayAlertMessage("Could not update the store in database!");
+                ok = false;
             }
         });
+        return wentOk;
     }
 
     /**
@@ -870,7 +872,7 @@ $(document).ready(function () {
             })
             .then(function (data) {
                 if (data == "error") {
-                    alert("Could not create new store in database!");
+                    setAndDisplayAlertMessage("Could not create new store in database!");
                 } else {
                     addNewStoreToHtmlList(data);
                 }
@@ -966,7 +968,7 @@ $(document).ready(function () {
             })
             .then(function (data) {
                 if (data == "error") {
-                    alert("Could not send item to database!");
+                    setAndDisplayAlertMessage("Could not send item to database!");
                 } else {
                     itemList.unshift(data);
                     renderItem(data, false);
@@ -994,6 +996,15 @@ $(document).ready(function () {
             const sortvalue = getCorrectSortingValue(store, category);
             $(this).children("td.row-item").attr("value", sortvalue);
         });
+    }
+
+    /**
+     * Function that takes a message and display the messagemodal with this message.
+     * @param {String} message Message to be shown
+     */
+    function setAndDisplayAlertMessage(message) {
+        alertMessage.html(message);
+        modalMessage.css("display", "block");
     }
 
     /**
@@ -1035,6 +1046,7 @@ $(document).ready(function () {
     modalRemoveStore = $("#remove-sorter-modal-div"); // set the modal for removing a store to a variable
     modalChangeStoreName = $("#rename-sorter-modal-div"); // set the modal for changing store name to a variable
     modalLogout = $("#logout-modal-div"); // set the modal for logout to a variable
+    modalMessage = $("#message-modal-div"); // set the modal for message to a variable
     categorySelectAddModal = $("#add-modal-category-input"); // sets the option selector to a variable on the adding modal
     categorySelectEditModal = $("#edit-modal-category-input"); // sets the option selector to a variable on the editing modal
     storeSelectOnStoreModal = $("#sorter-modal-category-input"); // set the option selector to a variable on the setting modal
@@ -1044,7 +1056,6 @@ $(document).ready(function () {
     createNewStoreInputField = $("#createStoreNameInput"); // sets the input field for creating a new store to a variable
     tableArea = $("#tableArea"); // sets the item table to a variable
     sortingtable = $("#sortingtable"); // sets the sorters table to a variable
-    fetchSorter(); // Call the sorter fetch function which is later linked to the remaining fetches below
-    // fetchCategories(); // Call the category fetch function
-    // fetchItems(); // Call the item fetch function
+    alertMessage = $("#alertMessage");
+    fetchSorter(); // Call the sorter fetch function which is later linked to the remaining fetches
 });
