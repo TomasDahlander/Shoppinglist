@@ -1056,6 +1056,6 @@ $(document).ready(function () {
     createNewStoreInputField = $("#createStoreNameInput"); // sets the input field for creating a new store to a variable
     tableArea = $("#tableArea"); // sets the item table to a variable
     sortingtable = $("#sortingtable"); // sets the sorters table to a variable
-    alertMessage = $("#alertMessage");
+    alertMessage = $("#alertMessage"); // sets the alertmessage element to a variable
     fetchSorter(); // Call the sorter fetch function which is later linked to the remaining fetches
 });

@@ -1,3 +1,6 @@
+let modalMessage; // The modal that is shown instead of alerts
+let alertMessage; // Variable for the alertmessage element
+
 $(document).ready(function () {
     // Collects the user from localstorage
     let user = JSON.parse(localStorage.getItem("user"));
@@ -16,15 +19,29 @@ $(document).ready(function () {
     $("#changePasswordBtn").click(function () {
         const oldP = $("#oldPassword").val();
         const newP = $("#newPassword").val();
-        console.log(oldP);
-        console.log(newP);
+        setAndDisplayAlertMessage(`Old password: ${oldP}<br>New password: ${newP}`);
     });
 
     $("#changeUsernameBtn").click(function () {
-        const oldP = $("#oldUsername").val();
-        const newP = $("#newUsername").val();
-        console.log(oldP);
-        console.log(newP);
+        const oldU = $("#oldUsername").val();
+        const newU = $("#newUsername").val();
+        setAndDisplayAlertMessage(`Old username: ${oldU}<br>New username: ${newU}`);
+    });
+
+    /**
+     * Function that takes a message and display the messagemodal with this message.
+     * @param {String} message Message to be shown
+     */
+    function setAndDisplayAlertMessage(message) {
+        alertMessage.html(message);
+        modalMessage.css("display", "block");
+    }
+
+    /**
+     * Closes the message board modal
+     */
+    $("#okMessageBtn").click(function () {
+        modalMessage.css("display", "none");
     });
 
     /**
@@ -65,4 +82,7 @@ $(document).ready(function () {
     //             }
     //         });
     // }
+
+    modalMessage = $("#message-modal-div"); // sets the modal for message to a variable
+    alertMessage = $("#alertMessage"); // sets the alert p element to a varialbe
 });
