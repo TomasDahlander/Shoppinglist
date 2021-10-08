@@ -4,15 +4,33 @@ body {
 
 h1 {
     color: black;
-    padding-top: 40px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+h3,
+h4,
+h5 {
+    color: black;
 }
 
 button {
-    width: 100px;
+    text-align: center;
+    display: inline-block;
+    width: 70%;
+}
+
+.input-div {
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 
 #maindiv {
     width: 250px;
+}
+
+#accountName {
+    color: darkblue;
 }
 
 #errorMessage {

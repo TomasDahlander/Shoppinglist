@@ -137,7 +137,7 @@ $(document).ready(function () {
      * Displays the message board modal
      */
     $("#profileBtn").click(function () {
-        setAndDisplayAlertMessage("Pressed profile button!");
+        window.location.replace("/profile.html");
     });
 
     /**
