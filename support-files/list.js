@@ -73,7 +73,6 @@ $(document).ready(function () {
     $("#okAddBtn").click(function () {
         getInfoFromAddModal();
         modalAdd.css("display", "none");
-        resetAddInputValue();
     });
 
     /**
@@ -415,14 +414,14 @@ $(document).ready(function () {
      */
     function renderItem(item, onload) {
         const color = item.category.color;
-        const lastStore = localStorage.getItem("store");
+        const store = storeSelectOnStoreModal.val();
 
         let rowClasses;
         let sortvalue;
 
         // Checks the sort value from the sorter for the category and sets the html element value for later sorting
         for (s of sorter) {
-            if (s.categoryName == item.category.name && s.storeName == lastStore) {
+            if (s.categoryName == item.category.name && s.storeName == store) {
                 sortvalue = s.sortValue;
                 break;
             }
