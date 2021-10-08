@@ -1,3 +1,4 @@
+// Global variables
 let modalMessage; // The modal that is shown instead of alerts
 let alertMessage; // Variable for the alertmessage element
 
@@ -5,23 +6,32 @@ $(document).ready(function () {
     // Collects the user from localstorage
     let user = JSON.parse(localStorage.getItem("user"));
 
-    // Checks if the user exists in LS and if true changes page to the index.html which contains the list
+    // Redirects to login page if the user doesn't exists in localstorage otherwise sets the accountname
     if (user == null) {
         window.location.replace("/login.html");
     } else {
         $("#accountName").html(user.username);
     }
 
+    /**
+     * Listener for the go back button which redirects to the list page
+     */
     $("#goBackBtn").click(function () {
         window.location.replace("/list.html");
     });
 
+    /**
+     * Listener for the change password button
+     */
     $("#changePasswordBtn").click(function () {
         const oldP = $("#oldPassword").val();
         const newP = $("#newPassword").val();
         setAndDisplayAlertMessage(`Old password: ${oldP}<br>New password: ${newP}`);
     });
 
+    /**
+     * Listener for the change username button
+     */
     $("#changeUsernameBtn").click(function () {
         const oldU = $("#oldUsername").val();
         const newU = $("#newUsername").val();
