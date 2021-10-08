@@ -45,13 +45,26 @@ $(document).ready(function () {
     });
 
     /**
-     * Listener for the two input fields for username & password when pressing enter and calls the sendLoginCredentialsToDatabase function
+     * Listener for the two input fields for Username when pressing enter key
      */
-    // $("#username, #password").on("keydown", function (event) {
-    //     if (event.keyCode == 13) {
-    //         sendLoginCredentialsToDatabase();
-    //     }
-    // });
+    $("#oldUsername, #newUsername").on("keydown", function (event) {
+        if (event.keyCode == 13) {
+            const oldU = $("#oldUsername").val();
+            const newU = $("#newUsername").val();
+            setAndDisplayAlertMessage(`Old username: ${oldU}<br>New username: ${newU}`);
+        }
+    });
+
+    /**
+     * Listener for the two input fields for Password when pressing enter key
+     */
+    $("#oldPassword, #newPassword").on("keydown", function (event) {
+        if (event.keyCode == 13) {
+            const oldU = $("#oldPassword,").val();
+            const newU = $("#newPassword,").val();
+            setAndDisplayAlertMessage(`Old password: ${oldU}<br>New password: ${newU}`);
+        }
+    });
 
     /**
      * Function that collects the two values from the input fields and send them to the database.
