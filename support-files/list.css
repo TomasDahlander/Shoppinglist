@@ -8,6 +8,11 @@ td {
     color: rgb(0, 0, 0);
 }
 
+select {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
 /* Pre Classes */
 
 .row {
