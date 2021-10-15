@@ -8,7 +8,9 @@ td {
     color: rgb(0, 0, 0);
 }
 
+option,
 select {
+    -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
 }
