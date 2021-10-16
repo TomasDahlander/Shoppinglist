@@ -8,12 +8,12 @@ td {
     color: rgb(0, 0, 0);
 }
 
-option,
+/* option,
 select {
     -moz-appearance: none !important;
     -webkit-appearance: none !important;
     appearance: none !important;
-}
+} */
 
 /* Pre Classes */
 
