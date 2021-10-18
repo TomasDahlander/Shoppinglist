@@ -32,15 +32,28 @@
             <!-- Headline ends -->
 
             <!-- Account info starts -->
-            <div class="row pb-2">
+            <div class="row pb-3">
                 <div class="col-12">
                     <h4>Account name: <span id="accountName"></span></h4>
                 </div>
             </div>
             <!-- Account info ends -->
 
+            <!-- Select field option starts -->
+            <div class="row pb-3">
+                <div class="col-12">
+                    <select id="option-selector" class="form-select option-input">
+                        <option id="option-password" class="option-input" selected>
+                            Change password
+                        </option>
+                        <option id="option-username" class="option-input">Change username</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Select field option ends -->
+
             <!-- Input passwords starts  -->
-            <div class="row">
+            <div id="change-password-div" class="row">
                 <div class="col-12">
                     <h5>Change password</h5>
                 </div>
@@ -51,6 +64,7 @@
                         class="form-control"
                         maxlength="50"
                         placeholder="Old password"
+                        autocomplete="off"
                     />
                 </div>
                 <div class="col-12 input-div">
@@ -60,6 +74,7 @@
                         class="form-control"
                         maxlength="50"
                         placeholder="New password"
+                        autocomplete="off"
                     />
                 </div>
                 <div class="col-12 text-center">
@@ -69,7 +84,7 @@
             <!-- Input passwords ends  -->
 
             <!-- Input username starts  -->
-            <div class="row pt-4">
+            <div id="change-username-div" class="row">
                 <div class="col-12">
                     <h5>Change username</h5>
                 </div>
@@ -80,6 +95,17 @@
                         class="form-control"
                         maxlength="50"
                         placeholder="New username"
+                        autocomplete="off"
+                    />
+                </div>
+                <div class="col-12 input-div">
+                    <input
+                        id="oldPasswordForUsernameChange"
+                        type="password"
+                        class="form-control"
+                        maxlength="50"
+                        placeholder="Old password"
+                        autocomplete="off"
                     />
                 </div>
                 <div class="col-12 text-center">

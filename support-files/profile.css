@@ -20,6 +20,11 @@ button {
     width: 70%;
 }
 
+.option-input {
+    color: black;
+    font-weight: bold;
+}
+
 .input-div {
     padding-top: 3px;
     padding-bottom: 3px;

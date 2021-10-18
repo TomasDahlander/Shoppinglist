@@ -30,6 +30,14 @@ $(document).ready(function () {
     });
 
     /**
+     * Listener for the selectors field with the options for change
+     */
+    $("#option-selector").change(function () {
+        const option = $(this).val();
+        selectCorrectDiv(option);
+    });
+
+    /**
      * Listener for the change password button
      */
     $("#changePasswordBtn").click(function () {
@@ -43,16 +51,18 @@ $(document).ready(function () {
      */
     $("#changeUsernameBtn").click(function () {
         const newUsername = $("#newUsername").val();
-        changeUsernameInDatabase(newUsername);
+        const oldPassword = $("#oldPasswordForUsernameChange").val();
+        changeUsernameInDatabase(newUsername, oldPassword);
     });
 
     /**
      * Listener for the two input fields for Username when pressing enter key
      */
-    $("#newUsername").on("keydown", function (event) {
+    $("#newUsername, #oldPasswordForUsernameChange").on("keydown", function (event) {
         if (event.keyCode == 13) {
             const newUsername = $("#newUsername").val();
-            changeUsernameInDatabase(newUsername);
+            const oldPassword = $("#oldPasswordForUsernameChange").val();
+            changeUsernameInDatabase(newUsername, oldPassword);
         }
     });
 
@@ -82,12 +92,13 @@ $(document).ready(function () {
      * Function that collects the the old and new usernames and sends it to the database for change
      * and sets the new username in localstorage and the accountname element.
      * @param {String} newUsername The new username you want to change to
+     * @param {String} oldUsername The old password for validation
      */
-    function changeUsernameInDatabase(newUsername) {
+    function changeUsernameInDatabase(newUsername, oldPassword) {
         const dto = {
             oldUsername: user.username,
             newUsername: newUsername,
-            oldPassword: user.password,
+            oldPassword: oldPassword,
         };
 
         fetch("https://td-shoppinglist-backend.herokuapp.com/users/updateUsername", {
@@ -158,7 +169,28 @@ $(document).ready(function () {
             });
     }
 
+    /**
+     * Function that hides all the divs with input
+     */
+    function hideAllDivs() {
+        $("#change-username-div").hide();
+        $("#change-password-div").hide();
+    }
+
+    function selectCorrectDiv(input) {
+        hideAllDivs();
+        switch (input) {
+            case "Change password":
+                $("#change-password-div").show();
+                break;
+            case "Change username":
+                $("#change-username-div").show();
+                break;
+        }
+    }
+
     //***************************** Runs on load ********************************/
     modalMessage = $("#message-modal-div"); // sets the modal for message to a variable
     alertMessage = $("#alertMessage"); // sets the alert p element to a varialbe
+    $("#change-username-div").hide();
 });
