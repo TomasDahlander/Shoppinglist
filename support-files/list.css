@@ -7,13 +7,12 @@ td {
     padding-bottom: 5px;
     color: rgb(0, 0, 0);
 }
-
-/* option,
+option,
 select {
-    -moz-appearance: none !important;
     -webkit-appearance: none !important;
+    -moz-appearance: none !important;
     appearance: none !important;
-} */
+}
 
 /* Pre Classes */
 
